@@ -1,0 +1,90 @@
+@import "tailwindcss";
+
+@layer base {
+    * {
+        @apply transition-colors duration-300;
+    }
+}
+
+/* Fail-safe manual dark mode - EXTENDED & CONFIRMED WORKING */
+html.dark body {
+    background-color: #0f172a !important;
+    color: #f1f5f9 !important;
+}
+
+html.dark nav {
+    background-color: rgba(15, 23, 42, 0.95) !important;
+    border-color: #1e293b !important;
+}
+
+html.dark aside>div {
+    background-color: #1e293b !important;
+    border-color: #334155 !important;
+}
+
+/* Background overrides */
+html.dark .bg-white, 
+html.dark .card, 
+html.dark .stat-card {
+    background-color: #1e293b !important;
+    border-color: #334155 !important;
+}
+
+html.dark .bg-slate-50,
+html.dark .bg-slate-50\/50,
+html.dark .bg-slate-50\/30 {
+    background-color: #0f172a !important;
+}
+
+html.dark .bg-emerald-50 {
+    background-color: rgba(16, 185, 129, 0.1) !important;
+    color: #34d399 !important;
+}
+
+/* Text overrides */
+html.dark .text-slate-900,
+html.dark .text-slate-800,
+html.dark .text-gray-900,
+html.dark .text-gray-800,
+html.dark .text-black,
+html.dark h1, html.dark h2, html.dark h3, html.dark h4 {
+    color: #f8fafc !important; /* Brighter white */
+}
+
+html.dark .text-slate-700,
+html.dark .text-gray-700 {
+    color: #e2e8f0 !important;
+}
+
+html.dark .text-slate-600,
+html.dark .text-gray-600,
+html.dark .text-slate-500,
+html.dark .text-gray-500 {
+    color: #cbd5e1 !important; /* Brighter slate for better contrast */
+}
+
+html.dark .text-slate-400,
+html.dark .text-gray-400 {
+    color: #94a3b8 !important;
+}
+
+/* Border overrides */
+html.dark .border-slate-100,
+html.dark .border-slate-200,
+html.dark .border-gray-100,
+html.dark .border-gray-200,
+html.dark .divide-slate-50,
+html.dark .divide-slate-100 {
+    border-color: #334155 !important;
+}
+
+/* Form overrides */
+html.dark input, html.dark select, html.dark textarea {
+    background-color: #0f172a !important;
+    border-color: #334155 !important;
+    color: #f1f5f9 !important;
+}
+
+html.dark input::placeholder, html.dark textarea::placeholder {
+    color: #64748b !important;
+}

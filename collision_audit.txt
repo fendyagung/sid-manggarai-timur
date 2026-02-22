@@ -1,0 +1,4 @@
+Name Collision Analysis (ignoring prefix):
+Collision for 'Golo Nderu': 2 records
+  - ID: 33 | Full Name: Desa Golo Nderu | Kec: Lamba Leda Selatan (Poco Ranaka)
+  - ID: 110 | Full Name: Desa Golo Nderu | Kec: Kota Komba
