@@ -68,6 +68,12 @@ Route::middleware(['auth'])->prefix('dashboard')->name('pengumuman.')->group(fun
     Route::post('/pengumuman/{pengumuman}/toggle', [App\Http\Controllers\PengumumanController::class, 'toggle'])->name('toggle');
 });
 
+Route::middleware(['auth'])->prefix('dashboard/dpmd/staff')->name('dashboard.dpmd.staff.')->group(function () {
+    Route::post('/store', [App\Http\Controllers\Dashboard\DpmdStaffController::class, 'store'])->name('store');
+    Route::post('/{id}/update', [App\Http\Controllers\Dashboard\DpmdStaffController::class, 'update'])->name('update');
+    Route::delete('/{id}', [App\Http\Controllers\Dashboard\DpmdStaffController::class, 'destroy'])->name('destroy');
+});
+
 // Village Management for DPMD
 Route::middleware(['auth'])->prefix('dashboard/dpmd/desa')->name('dashboard.dpmd.desa.')->group(function () {
     Route::get('/', [\App\Http\Controllers\Dashboard\DesaManagementController::class, 'index'])->name('index');

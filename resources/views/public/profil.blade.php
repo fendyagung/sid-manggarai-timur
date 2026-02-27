@@ -2,96 +2,101 @@
     @php
         $profile = $profile ?? new \App\Models\DpmdProfile();
     @endphp
-    <!-- Hero Section (Simple) -->
-    <section class="relative pt-32 pb-20 bg-slate-950 overflow-hidden text-center">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-4">Profil Instansi DPMD</h1>
-            <p class="text-emerald-400 text-lg md:text-xl font-medium uppercase tracking-widest">Kabupaten Manggarai
-                Timur</p>
+    <!-- Combined Hero & Greeting Section -->
+    <section class="relative min-h-[90vh] flex items-center pt-32 pb-24 bg-white dark:bg-[#020617] overflow-hidden">
+        <!-- Decoration Background (Matching Homepage) -->
+        <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-emerald-500/10 rounded-full blur-[120px] -mr-64 -mt-64 animate-pulse"></div>
+        <div class="absolute bottom-0 left-0 w-[400px] h-[400px] bg-blue-500/10 rounded-full blur-[100px] -ml-32 -mb-32 animate-pulse" style="animation-delay: 2s"></div>
+        
+        <!-- Decorative Floating Dots -->
+        <div class="absolute inset-0 z-0 pointer-events-none opacity-20">
+            <div class="absolute top-1/4 left-10 w-2 h-2 bg-emerald-400 rounded-full animate-ping"></div>
+            <div class="absolute top-1/2 right-20 w-3 h-3 bg-blue-400 rounded-full animate-bounce"></div>
+            <div class="absolute bottom-1/4 left-1/2 w-2 h-2 bg-amber-400 rounded-full animate-pulse"></div>
         </div>
-        <!-- BG Elements -->
-        <div
-            class="absolute top-0 right-0 w-[500px] h-[500px] bg-emerald-500/10 rounded-full blur-[120px] -mr-64 -mt-64">
-        </div>
-        <div
-            class="absolute bottom-0 left-0 w-[300px] h-[300px] bg-blue-500/10 rounded-full blur-[100px] -ml-32 -mb-32">
-        </div>
-    </section>
 
-
-    <!-- Kadis Greeting Section -->
-    <section class="py-24 bg-white dark:bg-slate-900 overflow-hidden relative">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="flex flex-col lg:flex-row items-center gap-16">
-                <!-- Photo Card -->
-                <div class="w-full lg:w-1/2 flex justify-center">
-                    <div class="relative">
-                        <div class="absolute -inset-4 bg-emerald-500/20 rounded-[3rem] blur-2xl"></div>
-                        <div
-                            class="relative w-72 h-96 md:w-80 md:h-[30rem] rounded-[2.5rem] overflow-hidden border-4 border-white dark:border-slate-800 shadow-2xl">
-                            @if($profile->foto_kadis)
-                                <img src="{{ asset('storage/' . $profile->foto_kadis) }}" alt="Kepala Dinas PMD"
-                                    class="w-full h-full object-cover">
-                            @else
-                                <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
-                                    alt="Kepala Dinas PMD" class="w-full h-full object-cover">
-                            @endif
-                            <div
-                                class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-slate-950 to-transparent p-8 text-center">
-                                <h3 class="text-xl font-bold text-white">
-                                    {{ $profile->nama_kadis ?? 'Nama Kepala Dinas' }}
-                                </h3>
-                                <p class="text-emerald-400 text-sm font-medium">Kepala Dinas PMD Matim</p>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+            <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+                <!-- PHOTO AREA with Glassmorphism Effect -->
+                <div class="w-full lg:w-5/12 reveal">
+                    <div class="relative group">
+                        <!-- Abstract Shapes behind photo -->
+                        <div class="absolute -inset-4 bg-gradient-to-tr from-emerald-500/20 to-blue-500/20 rounded-[3rem] blur-2xl group-hover:scale-110 transition-transform duration-1000"></div>
+                        
+                        <div class="relative p-2 bg-white/40 dark:bg-white/5 backdrop-blur-xl border border-white/60 dark:border-white/10 rounded-[3rem] shadow-2xl overflow-hidden">
+                            <div class="aspect-[4/5] rounded-[2.5rem] overflow-hidden relative">
+                                @if($profile->foto_kadis)
+                                    <img src="{{ asset('storage/' . $profile->foto_kadis) }}" alt="Kepala Dinas PMD"
+                                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                                @else
+                                    <div class="w-full h-full bg-emerald-50 dark:bg-emerald-950/20 flex items-center justify-center text-8xl">👤</div>
+                                @endif
+                                
+                                <!-- Modern Badge Overlay -->
+                                <div class="absolute inset-x-0 bottom-0 p-8 bg-gradient-to-t from-slate-950 via-slate-900/40 to-transparent">
+                                    <h3 class="text-2xl font-black text-white tracking-tight leading-tight">
+                                        {{ $profile->nama_kadis ?? 'Nama Kepala Dinas' }}
+                                    </h3>
+                                    <div class="flex items-center gap-2 mt-2">
+                                        <span class="w-8 h-px bg-emerald-500"></span>
+                                        <p class="text-emerald-400 text-xs font-black uppercase tracking-widest">Kepala Dinas PMD</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <!-- Decoration -->
-                        <div
-                            class="absolute -top-6 -right-6 w-24 h-24 bg-emerald-500 rounded-full mix-blend-screen filter blur-xl opacity-30 animate-pulse">
+
+                        <!-- Floating Micro-Card -->
+                        <div class="absolute -right-6 top-1/2 -translate-y-1/2 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border border-white dark:border-slate-800 p-4 rounded-2xl shadow-xl hidden md:block">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center text-white text-xl">✨</div>
+                                <div>
+                                    <p class="text-[10px] text-slate-400 font-black uppercase tracking-tighter">Visi Kami</p>
+                                    <p class="text-xs font-bold text-slate-800 dark:text-white">Membangun dari Desa</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Text Content -->
-                <div class="w-full lg:w-1/2">
-                    <span
-                        class="inline-block py-1 px-3 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-emerald-600 dark:text-emerald-400 text-xs font-bold uppercase tracking-widest mb-6">
-                        Kata Sambutan
-                    </span>
-                    <h1 class="text-4xl md:text-5xl font-bold mb-8 leading-tight text-slate-900 dark:text-white">
-                        @if($profile->sambutan_judul)
-                            {{ $profile->sambutan_judul }}
-                        @else
-                            Membangun Desa, <br>
-                            <span
-                                class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500 dark:from-emerald-400 dark:to-teal-300">Sejahterakan
-                                Rakyat</span>
-                        @endif
-                    </h1>
-                    <div class="space-y-6 text-slate-600 dark:text-slate-300 text-lg leading-relaxed italic">
-                        @if($profile->sambutan_teks)
-                            {!! nl2br(e($profile->sambutan_teks)) !!}
-                        @else
-                            <p>"Selamat datang di Portal SID Manggarai Timur. Kami berkomitmen untuk terus
-                                mendorong transparansi dan inovasi di setiap desa di Kabupaten Manggarai Timur."</p>
-                            <p>"Melalui platform ini, kami mengintegrasikan keindahan pariwisata dengan akuntabilitas
-                                laporan desa, demi menciptakan pemerintahan desa yang mandiri dan berdaya saing."</p>
-                        @endif
-                    </div>
-                    <div class="mt-10 flex flex-wrap gap-4">
-                        <div
-                            class="flex items-center gap-3 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm rounded-2xl p-4">
-                            <div
-                                class="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center font-bold text-white">
-                                1</div>
-                            <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Inovasi Digital</span>
+                <!-- TEXT CONTENT AREA -->
+                <div class="w-full lg:w-7/12 reveal" style="transition-delay: 0.2s">
+                    <div class="space-y-8">
+                        <div>
+                            <span class="inline-flex items-center gap-2 py-2 px-4 rounded-full bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-100 dark:border-emerald-800 text-emerald-600 dark:text-emerald-400 text-[10px] font-black uppercase tracking-[0.2em]">
+                                <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
+                                Profil Instansi dpmd
+                            </span>
+                            <h1 class="text-5xl md:text-7xl font-serif font-black mt-6 leading-tight text-slate-900 dark:text-white">
+                                @if($profile->sambutan_judul)
+                                    {{ $profile->sambutan_judul }}
+                                @else
+                                    Membangun <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500">Desa</span>, <br>
+                                    Sejahterakan <span class="italic font-normal">Rakyat</span>
+                                @endif
+                            </h1>
                         </div>
-                        <div
-                            class="flex items-center gap-3 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 shadow-sm rounded-2xl p-4">
-                            <div
-                                class="w-10 h-10 bg-teal-500 rounded-full flex items-center justify-center font-bold text-white">
-                                2</div>
-                            <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Transparansi
-                                Publik</span>
+
+                        <div class="relative">
+                            <div class="absolute -left-6 top-0 bottom-0 w-1 bg-gradient-to-b from-emerald-500 to-transparent opacity-30"></div>
+                            <div class="text-slate-600 dark:text-slate-300 text-xl leading-relaxed italic font-medium font-serif pl-0 md:pl-4">
+                                @if($profile->sambutan_teks)
+                                    "{!! nl2br(e($profile->sambutan_teks)) !!}"
+                                @else
+                                    <p>"Selamat datang di Portal SID Manggarai Timur. Kami terus berinovasi untuk mendorong transparansi dan kemandirian tata kelola pemerintahan desa di seluruh wilayah."</p>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="flex flex-wrap gap-4 pt-4">
+                            <div class="flex flex-col">
+                                <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Kabupaten</span>
+                                <span class="text-sm font-bold text-slate-800 dark:text-white">Manggarai Timur</span>
+                            </div>
+                            <div class="w-px h-10 bg-slate-200 dark:bg-slate-800"></div>
+                            <div class="flex flex-col">
+                                <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Status</span>
+                                <span class="text-sm font-bold text-emerald-600">Terverifikasi SIPD</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -159,134 +164,74 @@
     </section>
 
     <!-- Organizational Structure Preview -->
-    <section class="py-24 bg-slate-50 dark:bg-slate-900/50 overflow-hidden transition-colors duration-300">
+    <section class="py-24 bg-slate-50 dark:bg-[#020617] overflow-hidden transition-colors duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16 px-4">
-                <h2 class="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-4">Struktur Organisasi</h2>
-                <p class="text-slate-500 dark:text-slate-400 max-w-2xl mx-auto">Sinergi tim profesional untuk membangun
-                    desa yang lebih
-                    baik.</p>
+            <div class="text-center mb-20 px-4 reveal">
+                <span class="text-emerald-500 font-black uppercase tracking-[0.3em] text-[10px]">Struktur Pemerintahan</span>
+                <h2 class="text-3xl md:text-5xl font-serif font-black text-slate-900 dark:text-white mt-4">Organisasi DPMD</h2>
+                <div class="w-16 h-1 bg-gradient-to-r from-emerald-500 to-blue-500 mx-auto rounded-full mt-6"></div>
             </div>
 
             <!-- Team Grid -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center px-4">
-                <div class="group">
-                    <div
-                        class="w-24 h-24 md:w-32 md:h-32 bg-slate-200 rounded-full mx-auto mb-4 overflow-hidden border-4 border-white shadow-lg group-hover:border-emerald-500 transition-all">
-                        <div class="w-full h-full flex items-center justify-center text-slate-400">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                            </svg>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 px-4">
+                @forelse($profile->staffs()->where('is_active', true)->orderBy('urutan')->get() as $staff)
+                    <div class="group reveal" style="transition-delay: {{ $loop->index * 0.1 }}s">
+                        <div class="relative p-6 bg-white/60 dark:bg-white/5 backdrop-blur-md border border-white/80 dark:border-white/10 rounded-[2.5rem] shadow-xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 text-center overflow-hidden">
+                            <!-- Shine effect on hover -->
+                            <div class="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                            
+                            <div class="relative z-10">
+                                <div class="w-28 h-28 mx-auto mb-6 rounded-3xl overflow-hidden ring-4 ring-emerald-500/10 group-hover:ring-emerald-500/30 transition-all shadow-inner">
+                                    @if($staff->foto)
+                                        <img src="{{ asset('storage/' . $staff->foto) }}" alt="{{ $staff->nama }}"
+                                            class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700">
+                                    @else
+                                        <div class="w-full h-full flex items-center justify-center text-4xl bg-emerald-50 dark:bg-emerald-900/20 text-emerald-300">👤</div>
+                                    @endif
+                                </div>
+                                <h4 class="font-bold text-slate-800 dark:text-white text-base mb-1 tracking-tight">
+                                    {{ $staff->nama }}
+                                </h4>
+                                <p class="text-[9px] text-emerald-600 dark:text-emerald-400 font-black uppercase tracking-widest bg-emerald-50 dark:bg-emerald-900/30 py-1.5 px-3 rounded-full inline-block">
+                                    {{ $staff->jabatan }}
+                                </p>
+                            </div>
                         </div>
                     </div>
-                    <h4 class="font-bold text-slate-800 dark:text-white text-sm md:text-base">
-                        {{ $profile->nama_sekretaris ?? 'Sekretaris' }}
-                    </h4>
-                    <p
-                        class="text-[10px] md:text-xs text-slate-500 dark:text-slate-400 uppercase font-bold tracking-widest">
-                        Sekretaris
-                        Dinas</p>
-                </div>
-                <div class="group">
-                    <div
-                        class="w-24 h-24 md:w-32 md:h-32 bg-slate-200 rounded-full mx-auto mb-4 overflow-hidden border-4 border-white shadow-lg group-hover:border-emerald-500 transition-all">
-                        <div class="w-full h-full flex items-center justify-center text-slate-400">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                            </svg>
-                        </div>
+                @empty
+                    <div class="col-span-full text-center py-20 bg-white/40 dark:bg-white/5 backdrop-blur-md rounded-[3rem] border-2 border-dashed border-slate-200 dark:border-slate-800">
+                        <p class="text-slate-400 italic font-medium">Data struktur organisasi belum tersedia.</p>
                     </div>
-                    <h4 class="font-bold text-slate-800 dark:text-white text-sm md:text-base">
-                        {{ $profile->nama_kabid_pemberdayaan ?? 'Kabid' }}
-                    </h4>
-                    <p
-                        class="text-[10px] md:text-xs text-slate-500 dark:text-slate-400 uppercase font-bold tracking-widest">
-                        Bidang
-                        Pemberdayaan</p>
-                </div>
-                <div class="group">
-                    <div
-                        class="w-24 h-24 md:w-32 md:h-32 bg-slate-200 rounded-full mx-auto mb-4 overflow-hidden border-4 border-white shadow-lg group-hover:border-emerald-500 transition-all">
-                        <div class="w-full h-full flex items-center justify-center text-slate-400">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                            </svg>
-                        </div>
-                    </div>
-                    <h4 class="font-bold text-slate-800 dark:text-white text-sm md:text-base">
-                        {{ $profile->nama_kabid_pemerintahan ?? 'Kabid' }}
-                    </h4>
-                    <p
-                        class="text-[10px] md:text-xs text-slate-500 dark:text-slate-400 uppercase font-bold tracking-widest">
-                        Bidang
-                        Pemerintahan</p>
-                </div>
-                <div class="group">
-                    <div
-                        class="w-24 h-24 md:w-32 md:h-32 bg-slate-200 rounded-full mx-auto mb-4 overflow-hidden border-4 border-white shadow-lg group-hover:border-emerald-500 transition-all">
-                        <div class="w-full h-full flex items-center justify-center text-slate-400">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                            </svg>
-                        </div>
-                    </div>
-                    <h4 class="font-bold text-slate-800 dark:text-slate-200 text-sm md:text-base">
-                        {{ $profile->nama_kabid_ekonomi ?? 'Kabid' }}
-                    </h4>
-                    <p
-                        class="text-[10px] md:text-xs text-slate-500 dark:text-slate-400 uppercase font-bold tracking-widest">
-                        Bidang Ekonomi
-                    </p>
-                </div>
+                @endforelse
             </div>
         </div>
     </section>
 
-    <!-- DPMD Photo Gallery Section -->
-    @if($profile && $profile->exists && $profile->galleries->where('type', 'foto')->count() > 0)
-        <section class="py-24 bg-white dark:bg-slate-900 transition-colors duration-300">
+    <!-- Dynamic Gallery Section -->
+    @if($profile && $profile->exists && $profile->galleries->count() > 0)
+        <section class="py-24 bg-white dark:bg-[#020617] transition-colors duration-300">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-16 px-4">
-                    <span class="text-emerald-500 font-bold uppercase tracking-widest text-xs">Dokumentasi</span>
-                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mt-2">Galeri Foto Kegiatan</h2>
+                <div class="text-center mb-20 px-4 reveal">
+                    <span class="text-emerald-500 font-black uppercase tracking-[0.3em] text-[10px]">Dokumentasi</span>
+                    <h2 class="text-3xl md:text-5xl font-serif font-black text-slate-900 dark:text-white mt-4">Galeri DPMD</h2>
+                    <div class="w-16 h-1 bg-gradient-to-r from-emerald-500 to-blue-500 mx-auto rounded-full mt-6"></div>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                    @foreach($profile->galleries->where('type', 'foto') as $photo)
-                        <div
-                            class="group relative aspect-[4/3] rounded-[2rem] overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Photos with premium styling -->
+                    @foreach($profile->galleries->where('type', 'foto')->take(6) as $photo)
+                        <div class="group relative aspect-[4/3] rounded-[2.5rem] overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-700 reveal" style="transition-delay: {{ $loop->index * 0.1 }}s">
                             <img src="{{ asset('storage/' . $photo->url_or_path) }}"
-                                class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
-                            <div
-                                class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
-                                <p class="text-white font-medium italic">DPMD Manggarai Timur</p>
+                                class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-1000">
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
+                                <div class="w-8 h-px bg-emerald-500 mb-2"></div>
+                                <p class="text-white font-bold text-xs uppercase tracking-widest">Dokumentasi Kegiatan</p>
                             </div>
                         </div>
                     @endforeach
-                </div>
-            </div>
-        </section>
-    @endif
 
-    <!-- DPMD Video Gallery Section -->
-    @if($profile && $profile->exists && $profile->galleries->where('type', 'video')->count() > 0)
-        <section class="py-24 bg-slate-50 dark:bg-slate-950/50 transition-colors duration-300">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-16 px-4">
-                    <span class="text-rose-500 font-bold uppercase tracking-widest text-xs">Video Edukasi & Info</span>
-                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mt-2">Galeri Video DPMD</h2>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                    @foreach($profile->galleries->where('type', 'video') as $video)
+                    <!-- Video Containers -->
+                    @foreach($profile->galleries->where('type', 'video')->take(2) as $video)
                         @php
                             $videoId = '';
                             if (str_contains($video->url_or_path, 'v=')) {
@@ -294,19 +239,22 @@
                                 $videoId = $vars['v'] ?? '';
                             } elseif (str_contains($video->url_or_path, 'youtu.be/')) {
                                 $videoId = explode('youtu.be/', $video->url_or_path)[1] ?? '';
-                                if (str_contains($videoId, '?'))
-                                    $videoId = explode('?', $videoId)[0];
+                                if (str_contains($videoId, '?')) $videoId = explode('?', $videoId)[0];
                             }
                         @endphp
                         @if($videoId)
-                            <div
-                                class="bg-white dark:bg-slate-800 p-4 rounded-[2.5rem] shadow-xl border border-slate-100 dark:border-slate-700">
-                                <div class="aspect-video rounded-2xl overflow-hidden shadow-inner">
+                            <div class="lg:col-span-2 bg-white/40 dark:bg-white/5 backdrop-blur-xl p-4 rounded-[3rem] shadow-xl border border-white dark:border-white/10 reveal" style="transition-delay: 0.3s">
+                                <div class="aspect-video rounded-[2rem] overflow-hidden shadow-inner ring-1 ring-slate-200/50 dark:ring-slate-700/50">
                                     <iframe class="w-full h-full" src="https://www.youtube.com/embed/{{ $videoId }}"
                                         title="YouTube video player" frameborder="0"
                                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                         allowfullscreen></iframe>
                                 </div>
+                            </div>
+                        @else
+                            <div class="group relative aspect-video rounded-[3rem] overflow-hidden bg-slate-100 dark:bg-slate-800 flex flex-col items-center justify-center p-8 border border-dashed border-slate-200 dark:border-slate-700 reveal">
+                                <div class="text-4xl mb-4">📺</div>
+                                <p class="text-slate-400 italic text-sm text-center font-medium">Pratinjau video tidak dapat dimuat</p>
                             </div>
                         @endif
                     @endforeach

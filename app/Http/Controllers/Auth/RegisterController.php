@@ -53,12 +53,24 @@ class RegisterController extends Controller
             }
         }
 
-        $user = User::create([
+        $userData = [
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => $request->role,
-        ]);
+        ];
+
+        // Auto-set username based on role
+        if ($request->role === 'admin_desa') {
+            $desa = \App\Models\Desa::find($request->desa_id);
+            if ($desa) {
+                $userData['username'] = $desa->kode_desa;
+            }
+        } elseif ($request->role === 'admin_dpmd') {
+            $userData['username'] = 'admin_dpmd';
+        }
+
+        $user = User::create($userData);
 
         // Link the user to the Desa if role is admin_desa
         if ($request->role === 'admin_desa' && $request->desa_id) {

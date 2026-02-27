@@ -15,4 +15,9 @@ class DpmdProfile extends Model
     {
         return $this->hasMany(DpmdGallery::class, 'dpmd_profile_id');
     }
+
+    public function staffs()
+    {
+        return $this->hasMany(DpmdStaff::class, 'dpmd_profile_id');
+    }
 }

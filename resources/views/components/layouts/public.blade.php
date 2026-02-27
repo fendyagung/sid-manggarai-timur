@@ -79,7 +79,7 @@
         id="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
-                <div class="flex items-center gap-3">
+                <div class="flex items-center gap-3 mr-8 min-w-fit">
                     <!-- Logo Section -->
                     <a href="{{ url('/') }}" class="flex items-center gap-3">
                         @if($profile && $profile->logo_website)
@@ -91,42 +91,44 @@
                                 M
                             </div>
                         @endif
-                        <div>
+                        <div class="flex flex-col justify-center">
                             <span
-                                class="block font-bold text-lg tracking-tight text-slate-800 dark:text-white leading-none">SID</span>
-                            <span class="block text-xs font-medium text-slate-500 tracking-wider">MANGGARAI TIMUR</span>
+                                class="block font-bold text-xl tracking-tighter text-slate-800 dark:text-white leading-tight">SID</span>
+                            <span
+                                class="block text-[9px] font-extrabold text-slate-400 dark:text-slate-500 tracking-[0.15em] whitespace-nowrap uppercase">Manggarai
+                                Timur</span>
                         </div>
                     </a>
                 </div>
-                <div class="hidden md:flex items-center h-20">
+                <div class="hidden lg:flex items-center h-20 mr-10">
                     @if(!Request::is('dashboard*'))
-                        <div class="flex items-center gap-2">
+                        <div class="flex items-center gap-4">
                             <a href="{{ url('/') }}"
-                                class="px-4 py-2 mx-0.5 flex items-center font-bold text-xs whitespace-nowrap transition-all duration-300 {{ Request::is('/') ? 'bg-[#064e3b] dark:bg-emerald-600 text-white shadow-md rounded-lg' : 'text-slate-600 dark:text-slate-300 hover:text-[#064e3b] dark:hover:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-slate-800 rounded-lg' }}">
+                                class="px-4 py-2 mx-0.5 flex items-center font-bold text-[13px] whitespace-nowrap transition-all duration-300 {{ Request::is('/') ? 'bg-[#064e3b] dark:bg-emerald-600 text-white shadow-md rounded-lg' : 'text-slate-600 dark:text-slate-300 hover:text-[#064e3b] dark:hover:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-slate-800 rounded-lg' }}">
                                 BERANDA
                             </a>
                             <a href="{{ route('public.profil') }}"
-                                class="px-4 py-2 mx-0.5 flex items-center font-bold text-xs whitespace-nowrap transition-all duration-300 {{ Request::is('profil') ? 'bg-[#064e3b] dark:bg-emerald-600 text-white shadow-md rounded-lg' : 'text-slate-600 dark:text-slate-300 hover:text-[#064e3b] dark:hover:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-slate-800 rounded-lg' }}">
+                                class="px-4 py-2 mx-0.5 flex items-center font-bold text-[13px] whitespace-nowrap transition-all duration-300 {{ Request::is('profil') ? 'bg-[#064e3b] dark:bg-emerald-600 text-white shadow-md rounded-lg' : 'text-slate-600 dark:text-slate-300 hover:text-[#064e3b] dark:hover:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-slate-800 rounded-lg' }}">
                                 PROFIL
                             </a>
                             <a href="{{ route('public.desa-wisata') }}"
-                                class="px-4 py-2 mx-0.5 flex items-center font-bold text-xs whitespace-nowrap transition-all duration-300 {{ Request::is('jelajah/desa-wisata') ? 'bg-[#064e3b] dark:bg-emerald-600 text-white shadow-md rounded-lg' : 'text-slate-600 dark:text-slate-300 hover:text-[#064e3b] dark:hover:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-slate-800 rounded-lg' }}">
+                                class="px-4 py-2 mx-0.5 flex items-center font-bold text-[13px] whitespace-nowrap transition-all duration-300 {{ Request::is('jelajah/desa-wisata') ? 'bg-[#064e3b] dark:bg-emerald-600 text-white shadow-md rounded-lg' : 'text-slate-600 dark:text-slate-300 hover:text-[#064e3b] dark:hover:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-slate-800 rounded-lg' }}">
                                 DESA WISATA
                             </a>
                             <a href="{{ route('public.komoditi') }}"
-                                class="px-4 py-2 mx-0.5 flex items-center font-bold text-xs whitespace-nowrap transition-all duration-300 {{ Request::is('jelajah/komoditi') ? 'bg-[#064e3b] dark:bg-emerald-600 text-white shadow-md rounded-lg' : 'text-slate-600 dark:text-slate-300 hover:text-[#064e3b] dark:hover:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-slate-800 rounded-lg' }}">
+                                class="px-4 py-2 mx-0.5 flex items-center font-bold text-[13px] whitespace-nowrap transition-all duration-300 {{ Request::is('jelajah/komoditi') ? 'bg-[#064e3b] dark:bg-emerald-600 text-white shadow-md rounded-lg' : 'text-slate-600 dark:text-slate-300 hover:text-[#064e3b] dark:hover:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-slate-800 rounded-lg' }}">
                                 KOMODITI
                             </a>
                             <a href="{{ route('public.laporan-desa') }}"
-                                class="px-4 py-2 mx-0.5 flex items-center font-bold text-xs whitespace-nowrap transition-all duration-300 {{ Request::is('laporan-desa') ? 'bg-[#064e3b] dark:bg-emerald-600 text-white shadow-md rounded-lg' : 'text-slate-600 dark:text-slate-300 hover:text-[#064e3b] dark:hover:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-slate-800 rounded-lg' }}">
+                                class="px-4 py-2 mx-0.5 flex items-center font-bold text-[13px] whitespace-nowrap transition-all duration-300 {{ Request::is('laporan-desa') ? 'bg-[#064e3b] dark:bg-emerald-600 text-white shadow-md rounded-lg' : 'text-slate-600 dark:text-slate-300 hover:text-[#064e3b] dark:hover:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-slate-800 rounded-lg' }}">
                                 LAPORAN DESA
                             </a>
                             <a href="{{ route('public.berita') }}"
-                                class="px-4 py-2 mx-0.5 flex items-center font-bold text-xs whitespace-nowrap transition-all duration-300 {{ Request::is('berita') ? 'bg-[#064e3b] dark:bg-emerald-600 text-white shadow-md rounded-lg' : 'text-slate-600 dark:text-slate-300 hover:text-[#064e3b] dark:hover:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-slate-800 rounded-lg' }}">
+                                class="px-4 py-2 mx-0.5 flex items-center font-bold text-[13px] whitespace-nowrap transition-all duration-300 {{ Request::is('berita') ? 'bg-[#064e3b] dark:bg-emerald-600 text-white shadow-md rounded-lg' : 'text-slate-600 dark:text-slate-300 hover:text-[#064e3b] dark:hover:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-slate-800 rounded-lg' }}">
                                 BERITA
                             </a>
                             <a href="{{ route('public.kontak') }}"
-                                class="px-4 py-2 mx-0.5 flex items-center font-bold text-xs whitespace-nowrap transition-all duration-300 {{ Request::is('layanan/kontak') ? 'bg-[#064e3b] dark:bg-emerald-600 text-white shadow-md rounded-lg' : 'text-slate-600 dark:text-slate-300 hover:text-[#064e3b] dark:hover:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-slate-800 rounded-lg' }}">
+                                class="px-4 py-2 mx-0.5 flex items-center font-bold text-[13px] whitespace-nowrap transition-all duration-300 {{ Request::is('layanan/kontak') ? 'bg-[#064e3b] dark:bg-emerald-600 text-white shadow-md rounded-lg' : 'text-slate-600 dark:text-slate-300 hover:text-[#064e3b] dark:hover:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-slate-800 rounded-lg' }}">
                                 KONTAK
                             </a>
                         </div>
@@ -306,6 +308,26 @@
             } else {
                 navbar.classList.remove('shadow-md');
             }
+        });
+
+        // Scroll Reveal Animation (Intersection Observer)
+        const revealCallback = (entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    // Once visible, no need to observe anymore
+                    // observer.unobserve(entry.target);
+                }
+            });
+        };
+
+        const revealObserver = new IntersectionObserver(revealCallback, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        document.querySelectorAll('.reveal').forEach(el => {
+            revealObserver.observe(el);
         });
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fslightbox/3.0.9/index.js"></script>

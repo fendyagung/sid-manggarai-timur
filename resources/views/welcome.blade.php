@@ -31,18 +31,54 @@
 
 <x-layouts.public>
     <style>
-        /* Floating ornament dots */
+        /* Floating ornament dots & Blobs */
         .dot-field {
             position: absolute;
             inset: 0;
             pointer-events: none;
             overflow: hidden;
+            z-index: 1;
+        }
+
+        /* Glassmorphism Blobs */
+        .blob {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(59, 130, 246, 0.2) 100%);
+            filter: blur(80px);
+            border-radius: 50%;
+            z-index: 0;
+            animation: moveBlob 20s infinite alternate;
+        }
+
+        .blob-1 {
+            top: -100px;
+            right: -100px;
+            animation-delay: 0s;
+        }
+
+        .blob-2 {
+            bottom: -100px;
+            left: -100px;
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(239, 68, 68, 0.15) 100%);
+            animation-delay: -5s;
+        }
+
+        @keyframes moveBlob {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            100% {
+                transform: translate(50px, 100px) scale(1.1);
+            }
         }
 
         .dot {
             position: absolute;
             border-radius: 50%;
-            background: rgba(217, 119, 6, 0.1);
+            background: rgba(217, 119, 6, 0.2);
             animation: floatDot 8s ease-in-out infinite;
         }
 
@@ -68,7 +104,7 @@
             top: 60%;
             left: 30%;
             animation-delay: 3s;
-            background: rgba(56, 176, 106, 0.2);
+            background: rgba(56, 176, 106, 0.3);
         }
 
         .dot:nth-child(4) {
@@ -85,7 +121,7 @@
             top: 15%;
             left: 80%;
             animation-delay: 4s;
-            background: rgba(56, 176, 106, 0.15);
+            background: rgba(56, 176, 106, 0.25);
         }
 
         .dot:nth-child(6) {
@@ -101,49 +137,64 @@
             0%,
             100% {
                 transform: translateY(0px) scale(1);
-                opacity: .6;
+                opacity: .4;
             }
 
             50% {
-                transform: translateY(-18px) scale(1.2);
-                opacity: 1;
+                transform: translateY(-25px) scale(1.3);
+                opacity: 0.8;
             }
         }
 
         .hero {
             min-height: 100vh;
-            background: linear-gradient(135deg, #fdf8f0 0%, #f3f4f1 100%);
+            background: #ffffff;
             position: relative;
             overflow: hidden;
             display: flex;
             align-items: center;
-            transition: background 0.3s;
+            transition: background 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .dark .hero {
-            background: linear-gradient(135deg, #020617 0%, #0f172a 100%);
+            background: #020617;
         }
 
         .hero-grid {
             position: relative;
-            z-index: 2;
+            z-index: 10;
             display: grid;
             grid-template-columns: 1.1fr 1fr;
-            gap: 60px;
+            gap: 80px;
             align-items: center;
-            max-width: 1160px;
+            max-width: 1280px;
             margin: 0 auto;
-            padding: 100px 40px 80px;
+            padding: 120px 40px 80px;
             width: 100%;
         }
 
+        @media (max-width: 1024px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                padding-top: 140px;
+                text-align: center;
+            }
+
+            .hero-grid>div:first-child {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
         .hero-title {
-            font-size: 52px;
+            font-size: clamp(40px, 5vw, 64px);
             font-weight: 900;
-            color: #064e3b;
-            line-height: 1.1;
-            margin-bottom: 18px;
-            transition: color 0.3s;
+            color: #0f172a;
+            line-height: 1.05;
+            margin-bottom: 24px;
+            letter-spacing: -0.02em;
         }
 
         .dark .hero-title {
@@ -151,18 +202,56 @@
         }
 
         .hero-title span {
-            color: var(--emas-muda);
+            background: linear-gradient(to right, #d97706, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .hero-title em {
             font-style: italic;
-            color: #166534;
-            font-family: 'Lora', serif;
-            transition: color 0.3s;
+            color: #059669;
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
         }
 
         .dark .hero-title em {
             color: #10b981;
+        }
+
+        /* Premium Glassmorphism Card */
+        .vis-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 2.5rem;
+            padding: 32px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 2;
+            transition: all 0.5s ease;
+        }
+
+        .dark .vis-card {
+            background: rgba(15, 23, 42, 0.6);
+            border-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #fef3c7;
+            border: 1px solid #fbbf24;
+            color: #92400e;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(217, 119, 6, 0.1);
         }
 
         .dark .hero-badge {
@@ -171,32 +260,112 @@
             color: #fbbf24;
         }
 
-        .vis-card {
+        .vc-stat {
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 1.25rem;
+            padding: 20px 10px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .dark .vc-stat {
+            background: rgba(255, 255, 255, 0.03);
+            border-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .vc-stat:hover {
+            transform: translateY(-5px);
             background: white;
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            border-radius: 18px;
-            padding: 22px 24px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .dark .vc-stat:hover {
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        .vc-desa-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 1rem;
+            padding: 12px 16px;
+            transition: all 0.2s ease;
+        }
+
+        .dark .vc-desa-row {
+            background: rgba(255, 255, 255, 0.03);
+            border-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .vc-desa-row:hover {
+            background: white;
+            border-color: #fbbf24;
+            transform: scale(1.02);
+        }
+
+        .dark .vc-desa-row:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        /* Stats Section Enhancements */
+        .stat-item {
             position: relative;
-            z-index: 2;
-            transition: background 0.3s, border-color 0.3s;
+            padding-right: 20px;
         }
 
-        .dark .vis-card {
-            background: #0f172a;
-            border-color: rgba(255, 255, 255, 0.1);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        .stat-item:not(:last-child):after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 20%;
+            height: 60%;
+            width: 1px;
+            background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.1), transparent);
         }
 
-        .dark .vis-card .text-slate-900 {
-            color: white !important;
+        .dark .stat-item:not(:last-child):after {
+            background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.1), transparent);
+        }
+
+        /* Buttons Premium */
+        .btn-primary {
+            background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);
+            box-shadow: 0 10px 30px -5px rgba(217, 119, 6, 0.4);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 15px 40px -5px rgba(217, 119, 6, 0.5);
+        }
+
+        .btn-secondary {
+            background: rgba(16, 185, 129, 0.05);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            color: #065f46;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: #10b981;
+            color: #047857;
+        }
+
+        .dark .btn-secondary {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: rgba(16, 185, 129, 0.2);
+            color: #34d399;
         }
 
         /* Reveal Animation */
         .reveal {
             opacity: 0;
-            transform: translateY(24px);
-            transition: opacity .7s ease, transform .7s ease;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
         .reveal.visible {
@@ -204,126 +373,103 @@
             transform: translateY(0);
         }
 
-        /* Mockup Specific Styles */
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: #fffbeb;
-            border: 1px solid #fef3c7;
-            color: #d97706;
-            padding: 6px 16px;
-            border-radius: 30px;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 22px;
-        }
-
-        .vc-stat {
-            background: #f8fafc;
-            border-radius: 10px;
-            padding: 12px;
-            text-align: center;
-            transition: background 0.3s;
-        }
-
-        .dark .vc-stat {
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        .dark .vc-stat div:first-child {
-            color: #fbbf24 !important;
-        }
-
-        .vdr-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            flex-shrink: 0;
-        }
-
-        .vc-desa-row {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: #f1f5f9;
-            border-radius: 8px;
-            padding: 8px 12px;
-            transition: background 0.3s;
-        }
-
-        .dark .vc-desa-row {
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        .dark .vdr-text-main {
-            color: #f1f5f9 !important;
-        }
-
         .fitur-card {
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 18px;
-            padding: 28px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(10px);
-            transition: all 0.35s;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 2rem;
+            padding: 35px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.02);
             position: relative;
             overflow: hidden;
+        }
+
+        .dark .fitur-card {
+            background: rgba(15, 23, 42, 0.4);
+            border-color: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
         }
 
         .fitur-card:hover {
-            transform: translateY(-6px);
-            background: rgba(255, 255, 255, 0.06);
-            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-10px);
+            background: white;
+            border-color: #fbbf24;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+        }
+
+        .dark .fitur-card:hover {
+            background: rgba(30, 41, 59, 0.6);
+            border-color: rgba(251, 191, 36, 0.3);
         }
 
         .wisata-card {
-            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 2rem;
             overflow: hidden;
-            transition: all .35s;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(10px);
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.02);
+        }
+
+        .dark .wisata-card {
+            background: rgba(15, 23, 42, 0.4);
+            border-color: rgba(255, 255, 255, 0.05);
         }
 
         .wisata-card:hover {
-            transform: translateY(-8px);
-            background: rgba(255, 255, 255, 0.06);
-            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-12px);
+            background: white;
+            border-color: #fbbf24;
+            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.15);
+        }
+
+        .dark .wisata-card:hover {
+            background: rgba(30, 41, 59, 0.6);
         }
 
         .wisata-hero {
-            height: 160px;
+            height: 200px;
             position: relative;
-            display: flex;
-            align-items: flex-end;
-            padding: 16px;
-            background: linear-gradient(160deg, #0f172a, #1a2e4a);
+            overflow: hidden;
         }
 
         .peng-card {
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 14px;
-            padding: 22px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: all .2s;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 1.5rem;
+            padding: 25px;
+            transition: all 0.3s ease;
             cursor: pointer;
             display: flex;
-            gap: 16px;
+            gap: 20px;
             align-items: flex-start;
         }
 
+        .dark .peng-card {
+            background: rgba(15, 23, 42, 0.4);
+            border-color: rgba(255, 255, 255, 0.05);
+        }
+
         .peng-card:hover {
-            border-color: var(--emas-muda);
-            background: rgba(255, 255, 255, 0.06);
-            transform: translateX(4px);
+            border-color: #fbbf24;
+            background: white;
+            transform: scale(1.02) translateX(5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .dark .peng-card:hover {
+            background: rgba(30, 41, 59, 0.6);
         }
     </style>
 
     <!-- HERO -->
     <section class="hero">
+        <!-- Decoration Background -->
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
         <div class="dot-field">
             <div class="dot"></div>
             <div class="dot"></div>
@@ -335,129 +481,153 @@
 
         <div class="hero-grid">
             <!-- LEFT -->
-            <div>
+            <div class="reveal">
                 <div class="hero-badge">🌿 DMPD Kab. Manggarai Timur — NTT</div>
                 <h1 class="hero-title">
                     Sistem Informasi<br>
-                    <span style="color: #f59e0b;">Pelaporan Desa</span><br>
-                    <em>&amp; Promosi Wisata</em>
+                    <span>Pelaporan Desa</span><br>
+                    <em>& Promosi Wisata</em>
                 </h1>
-                <p class="text-slate-600 dark:text-slate-400 text-lg mb-8 leading-relaxed max-w-lg">
+                <p class="text-slate-600 dark:text-slate-400 text-lg mb-10 leading-relaxed max-w-xl">
                     Platform digital terpadu milik Dinas Pemberdayaan Masyarakat dan Desa
                     Kabupaten Manggarai Timur untuk monitoring pelaporan seluruh desa
                     dan promosi potensi wisata Flores NTT kepada dunia.
                 </p>
-                <div class="flex gap-4 mb-12">
+                <div class="flex flex-wrap gap-5 mb-14">
                     <a href="{{ route('login') }}"
-                        style="background: linear-gradient(to right, #d97706, #f59e0b); color: #ffffff;"
-                        class="px-8 py-4 font-bold rounded-xl shadow-xl shadow-amber-600/30 hover:-translate-y-1 transition-all">🔐
-                        Masuk ke Sistem</a>
-                    <a href="#wisata" style="background-color: #ecfdf5; border: 1px solid #10b981; color: #064e3b;"
-                        class="px-8 py-4 font-bold rounded-xl hover:bg-emerald-100 dark:bg-emerald-900/30 dark:border-emerald-700 dark:text-emerald-400 transition-all">🏞️
-                        Jelajahi Desa Wisata</a>
+                        class="btn-primary px-10 py-5 font-extrabold text-white rounded-2xl flex items-center gap-3">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                        </svg>
+                        MASUK KE SISTEM
+                    </a>
+                    <a href="#wisata"
+                        class="btn-secondary px-10 py-5 font-extrabold rounded-2xl flex items-center gap-3">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        JELAJAHI WISATA
+                    </a>
                 </div>
-                <div class="flex gap-8 pt-8 border-t border-slate-200 dark:border-slate-800">
-                    <div>
-                        <div class="text-3xl font-black text-[#d97706] dark:text-amber-400 font-serif">{{ $totalDesa }}
-                        </div>
-                        <div class="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-widest mt-1">Total
-                            Wilayah</div>
+
+                <!-- Stats Grid -->
+                <div
+                    class="grid grid-cols-2 sm:grid-cols-4 gap-8 pt-10 border-t border-slate-200 dark:border-slate-800">
+                    <div class="stat-item">
+                        <div class="text-3xl font-black text-amber-600 dark:text-amber-400 counter"
+                            data-target="{{ $totalDesa }}">0</div>
+                        <div
+                            class="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-widest font-bold mt-2">
+                            Total Wilayah</div>
                     </div>
-                    <div class="w-px bg-slate-200 dark:bg-slate-800"></div>
-                    <div>
-                        <div class="text-3xl font-black text-[#d97706] dark:text-amber-400 font-serif">
-                            {{ $totalKecamatan }}
-                        </div>
-                        <div class="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-widest mt-1">
+                    <div class="stat-item">
+                        <div class="text-3xl font-black text-amber-600 dark:text-amber-400 counter"
+                            data-target="{{ $totalKecamatan }}">0</div>
+                        <div
+                            class="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-widest font-bold mt-2">
                             Kecamatan</div>
                     </div>
-                    <div class="w-px bg-slate-200 dark:bg-slate-800"></div>
-                    <div>
-                        <div class="text-3xl font-black text-[#d97706] dark:text-amber-400 font-serif">
-                            {{ $desaWisataCount }}
-                        </div>
-                        <div class="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-widest mt-1">Desa
-                            Wisata</div>
+                    <div class="stat-item">
+                        <div class="text-3xl font-black text-amber-600 dark:text-amber-400 counter"
+                            data-target="{{ $desaWisataCount }}">0</div>
+                        <div
+                            class="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-widest font-bold mt-2">
+                            Desa Wisata</div>
                     </div>
-                    <div class="w-px bg-slate-200 dark:bg-slate-800"></div>
-                    <div>
-                        <div class="text-3xl font-black text-[#d97706] dark:text-amber-400 font-serif">
-                            {{ $kepatuhanPercent }}%
-                        </div>
-                        <div class="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-widest mt-1">
+                    <div class="stat-item">
+                        <div class="text-3xl font-black text-amber-600 dark:text-amber-400"><span class="counter"
+                                data-target="{{ $kepatuhanPercent }}">0</span>%</div>
+                        <div
+                            class="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-widest font-bold mt-2">
                             Kepatuhan</div>
                     </div>
-                    @if($dpmdProfile && $dpmdProfile->stat_wisatawan)
-                        <div class="w-px bg-slate-200 dark:bg-slate-800"></div>
-                        <div>
-                            <div class="text-3xl font-black text-[#d97706] dark:text-amber-400 font-serif">
-                                {{ $dpmdProfile->stat_wisatawan }}
-                            </div>
-                            <div class="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-widest mt-1">
-                                Wisatawan</div>
-                        </div>
-                    @endif
                 </div>
             </div>
 
             <!-- RIGHT — VISUAL CARD -->
-            <div class="relative">
-                <div class="absolute inset-0 bg-white/5 rounded-3xl transform translate-x-4 translate-y-4"></div>
+            <div class="relative reveal" style="transition-delay: 0.2s">
+                <div
+                    class="absolute -inset-10 bg-gradient-to-br from-emerald-500/20 to-blue-500/20 rounded-full blur-[100px] opacity-50">
+                </div>
+
                 <div class="vis-card">
-                    <div class="flex items-center gap-4 mb-8 pb-4 border-b border-white/10">
+                    <div class="flex items-center gap-5 mb-10 pb-6 border-b border-black/5 dark:border-white/5">
                         <div
-                            class="w-12 h-12 bg-gradient-to-br from-[#d97706] to-[#f59e0b] rounded-xl flex items-center justify-center text-2xl shadow-lg shadow-amber-500/20">
-                            📊</div>
+                            class="w-14 h-14 bg-gradient-to-br from-[#d97706] to-[#f59e0b] rounded-2xl flex items-center justify-center text-3xl shadow-xl shadow-amber-500/20 rotate-3">
+                            📊
+                        </div>
                         <div>
-                            <div class="text-slate-900 font-bold">Dashboard Pelaporan Desa</div>
-                            <div class="text-slate-400 text-[10px] uppercase tracking-widest">
-                                {{ now()->isoFormat('MMMM Y') }}
+                            <div class="text-slate-900 dark:text-white font-black text-lg tracking-tight">Status
+                                Pelaporan Desa</div>
+                            <div
+                                class="text-amber-600 dark:text-amber-400 text-xs font-bold uppercase tracking-widest mt-1">
+                                PERIODE {{ now()->isoFormat('MMMM Y') }}
                             </div>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-3 gap-3 mb-8">
+                    <div class="grid grid-cols-3 gap-4 mb-10">
                         <div class="vc-stat">
-                            <div class="text-2xl font-black text-[#d97706] font-serif">&nbsp;</div>
-                            <div class="text-[10px] text-slate-700 font-bold dark:text-slate-300 uppercase mt-1">Selesai
-                                ✅</div>
-                        </div>
-                        <div class="vc-stat">
-                            <div class="text-2xl font-black text-[#d97706] font-serif">{{ $laporanProses }}</div>
-                            <div class="text-[10px] text-slate-700 font-bold dark:text-slate-300 uppercase mt-1">Proses
-                                ⏳</div>
-                        </div>
-                        <div class="vc-stat">
-                            <div class="text-2xl font-black text-red-600 dark:text-red-400 font-serif">
-                                {{ $belumMelapor }}
+                            <div class="text-2xl font-black text-emerald-600 dark:text-emerald-400 underline decoration-emerald-500/30 underline-offset-4 counter"
+                                data-target="{{ $laporanSelesai }}">0</div>
+                            <div class="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase mt-2">Selesai
                             </div>
-                            <div class="text-[10px] text-slate-700 font-bold dark:text-slate-300 uppercase mt-1">Belum ❗
+                        </div>
+                        <div class="vc-stat">
+                            <div class="text-2xl font-black text-amber-600 dark:text-amber-500 underline decoration-amber-500/30 underline-offset-4 counter"
+                                data-target="{{ $laporanProses }}">0</div>
+                            <div class="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase mt-2">Proses
+                            </div>
+                        </div>
+                        <div class="vc-stat">
+                            <div class="text-2xl font-black text-red-600 dark:text-red-400 underline decoration-red-500/30 underline-offset-4 counter"
+                                data-target="{{ $belumMelapor }}">0</div>
+                            <div class="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase mt-2">Belum
                             </div>
                         </div>
                     </div>
 
-                    <div class="space-y-4">
+                    <div class="space-y-3">
                         @php
                             $recentReports = \App\Models\Laporan::with('desa')->latest()->take(3)->get();
                         @endphp
                         @foreach($recentReports as $rp)
                             <div class="vc-desa-row">
-                                <div class="vdr-dot {{ $rp->status === 'diterima' ? 'bg-emerald-400' : 'bg-amber-400' }}">
+                                <div
+                                    class="w-2.5 h-2.5 rounded-full {{ $rp->status === 'diterima' ? 'bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]' : 'bg-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.5)]' }} animate-pulse">
                                 </div>
                                 <div class="flex-1">
-                                    <div class="text-slate-800 dark:text-slate-200 text-xs font-bold vdr-text-main">
+                                    <div class="text-slate-800 dark:text-slate-200 text-xs font-extrabold tracking-tight">
                                         {{ $rp->desa->nama_desa ?? '-' }}
                                     </div>
-                                    <div class="text-[10px] text-slate-400 dark:text-slate-500">Kec.
-                                        {{ $rp->desa->kecamatan ?? '-' }}
+                                    <div class="text-[10px] text-slate-500 dark:text-slate-400 font-medium tracking-wide">
+                                        Kec. {{ $rp->desa->kecamatan ?? '-' }}
                                     </div>
                                 </div>
                                 <div
-                                    class="text-[10px] font-black uppercase {{ $rp->status === 'diterima' ? 'text-emerald-400' : 'text-amber-400' }}">
-                                    {{ $rp->status === 'diterima' ? 'Terkirim' : 'Proses' }}
+                                    class="px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-[9px] font-black uppercase {{ $rp->status === 'diterima' ? 'text-emerald-600 dark:text-emerald-400' : 'text-amber-600 dark:text-amber-500' }}">
+                                    {{ $rp->status === 'diterima' ? 'Terkirim' : 'Review' }}
                                 </div>
                             </div>
                         @endforeach
+                    </div>
+                </div>
+
+                <!-- Floating Badge -->
+                <div
+                    class="absolute -bottom-6 -left-6 bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-2xl border border-black/5 dark:border-white/10 flex items-center gap-3 animate-bounce-subtle">
+                    <div
+                        class="w-10 h-10 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center text-emerald-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="text-[10px] font-black text-slate-400 uppercase leading-none">Keamanan Data</div>
+                        <div class="text-xs font-black text-slate-800 dark:text-white mt-1">Sistem Terverifikasi</div>
                     </div>
                 </div>
             </div>
@@ -520,7 +690,7 @@
                     mana saja, dan terpantau langsung oleh DMPD.</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 reveal">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
                 @php
                     $steps = [
                         ['num' => '1', 'icon' => '🔐', 'title' => 'Admin Desa Login', 'desc' => 'Login menggunakan username & kode desa yang diberikan DMPD.'],
@@ -531,7 +701,7 @@
                 @endphp
                 @foreach($steps as $s)
                     <div
-                        class="bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-2xl p-8 text-center shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all group">
+                        class="bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-2xl p-8 text-center shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all group reveal">
                         <div
                             class="w-12 h-12 bg-gradient-to-br from-[#d97706] to-[#f59e0b] rounded-full flex items-center justify-center text-xl font-black text-white mx-auto mb-6 shadow-lg shadow-amber-500/20 group-hover:scale-110 transition-transform font-serif">
                             {{ $s['num'] }}
@@ -560,9 +730,9 @@
                     biasa. Berikut destinasi unggulan yang bisa Anda jelajahi.</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 reveal">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 @forelse($featuredDesas as $desa)
-                    <a href="{{ route('public.desa.profil', $desa->id) }}" class="wisata-card block">
+                    <a href="{{ route('public.desa.profil', $desa->id) }}" class="wisata-card block reveal">
                         <div class="wisata-hero relative h-48 overflow-hidden">
                             @if($desa->foto_profil)
                                 <img src="{{ asset('storage/' . $desa->foto_profil) }}"
@@ -689,13 +859,62 @@
     <script>
         // Scroll reveal animation
         const reveals = document.querySelectorAll('.reveal');
+        const observerOptions = {
+            threshold: 0.15,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
+
+                    // Trigger counters inside this reveal section
+                    const counters = entry.target.querySelectorAll('.counter');
+                    counters.forEach(counter => {
+                        if (!counter.classList.contains('animated')) {
+                            animateCounter(counter);
+                        }
+                    });
                 }
             });
-        }, { threshold: 0.1 });
+        }, observerOptions);
+
         reveals.forEach(el => observer.observe(el));
+
+        // Counter Animation Function
+        function animateCounter(el) {
+            el.classList.add('animated');
+            const target = +el.getAttribute('data-target');
+            const duration = 2000; // 2 seconds
+            const stepTime = 20;
+            const steps = duration / stepTime;
+            const increment = target / steps;
+            let current = 0;
+
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    el.innerText = target;
+                    clearInterval(timer);
+                } else {
+                    el.innerText = Math.floor(current);
+                }
+            }, stepTime);
+        }
+
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', function () {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('py-3', 'shadow-xl', 'bg-white/95', 'dark:bg-slate-900/95');
+                navbar.classList.remove('py-5', 'bg-[#fdf8f0]/90');
+            } else {
+                navbar.classList.remove('py-3', 'shadow-xl', 'bg-white/95', 'dark:bg-slate-900/95');
+                navbar.classList.add('py-5', 'bg-[#fdf8f0]/90');
+            }
+        });
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fslightbox/3.0.9/index.js"></script>
+    </body>
 </x-layouts.public>

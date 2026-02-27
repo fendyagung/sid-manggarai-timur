@@ -555,35 +555,25 @@
 
                 <!-- Navigation Links from Public Layout -->
                 <div
-                    class="flex flex-wrap items-center gap-1 border-l border-slate-200 dark:border-slate-700 pl-10 h-full">
-                    <a href="{{ url('/') }}"
-                        class="px-2 py-1.5 text-[10px] md:text-[11px] font-bold tracking-tight rounded-lg transition-all {{ Request::is('/') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:text-emerald-700 dark:hover:text-emerald-300' }}">
-                        BERANDA
-                    </a>
-                    <a href="{{ route('public.profil') }}"
-                        class="px-2 py-1.5 text-[10px] md:text-[11px] font-bold tracking-tight rounded-lg transition-all {{ Request::is('profil') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:text-emerald-700 dark:hover:text-emerald-300' }}">
-                        PROFIL
-                    </a>
-                    <a href="{{ route('public.desa-wisata') }}"
-                        class="px-2 py-1.5 text-[10px] md:text-[11px] font-bold tracking-tight rounded-lg transition-all {{ Request::is('jelajah/desa-wisata') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:text-emerald-700 dark:hover:text-emerald-300' }}">
-                        WISATA
-                    </a>
-                    <a href="{{ route('public.komoditi') }}"
-                        class="px-2 py-1.5 text-[10px] md:text-[11px] font-bold tracking-tight rounded-lg transition-all {{ Request::is('jelajah/komoditi') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:text-emerald-700 dark:hover:text-emerald-300' }}">
-                        KOMODITI
-                    </a>
-                    <a href="{{ route('public.laporan-desa') }}"
-                        class="px-2 py-1.5 text-[10px] md:text-[11px] font-bold tracking-tight rounded-lg transition-all {{ Request::is('laporan-desa') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:text-emerald-700 dark:hover:text-emerald-300' }}">
-                        LAPORAN
-                    </a>
-                    <a href="{{ route('public.berita') }}"
-                        class="px-2 py-1.5 text-[10px] md:text-[11px] font-bold tracking-tight rounded-lg transition-all {{ Request::is('berita') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:text-emerald-700 dark:hover:text-emerald-300' }}">
-                        BERITA
-                    </a>
-                    <a href="{{ route('public.kontak') }}"
-                        class="px-2 py-1.5 text-[10px] md:text-[11px] font-bold tracking-tight rounded-lg transition-all {{ Request::is('layanan/kontak') ? 'bg-emerald-600 text-white shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:text-emerald-700 dark:hover:text-emerald-300' }}">
-                        KONTAK
-                    </a>
+                    class="flex flex-wrap items-center gap-2 border-l border-slate-200 dark:border-slate-700 pl-8 h-full mr-10">
+                    @php
+                        $navItems = [
+                            ['label' => 'BERANDA', 'route' => url('/'), 'pattern' => '/'],
+                            ['label' => 'PROFIL', 'route' => route('public.profil'), 'pattern' => 'profil'],
+                            ['label' => 'WISATA', 'route' => route('public.desa-wisata'), 'pattern' => 'jelajah/desa-wisata'],
+                            ['label' => 'KOMODITI', 'route' => route('public.komoditi'), 'pattern' => 'jelajah/komoditi'],
+                            ['label' => 'LAPORAN', 'route' => route('public.laporan-desa'), 'pattern' => 'laporan-desa'],
+                            ['label' => 'BERITA', 'route' => route('public.berita'), 'pattern' => 'berita'],
+                            ['label' => 'KONTAK', 'route' => route('public.kontak'), 'pattern' => 'layanan/kontak'],
+                        ];
+                    @endphp
+
+                    @foreach($navItems as $item)
+                        <a href="{{ $item['route'] }}"
+                            class="px-4 py-2 text-[13px] font-black tracking-widest rounded-xl transition-all {{ Request::is($item['pattern']) ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-500/20' : 'text-slate-700 dark:text-slate-200 hover:bg-emerald-50 dark:hover:bg-emerald-900/40 hover:text-emerald-800 dark:hover:text-emerald-100' }}">
+                            {{ $item['label'] }}
+                        </a>
+                    @endforeach
                 </div>
             </div>
             <div class="topbar-right">

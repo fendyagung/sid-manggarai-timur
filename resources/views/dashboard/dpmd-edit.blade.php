@@ -289,44 +289,66 @@
             </div>
 
 
-            <!-- Team Section -->
-            <div class="pt-8 border-t border-slate-100">
-                <h3 class="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
-                    <span class="w-2 h-6 bg-blue-500 rounded-full"></span>
-                    Struktur Nama Pejabat
-                </h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Team Management Section -->
+            <div class="pt-12 border-t border-slate-100">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
                     <div>
-                        <label for="nama_sekretaris" class="block text-sm font-semibold text-slate-700 mb-2">Nama
-                            Sekretaris
-                            Dinas</label>
-                        <input type="text" name="nama_sekretaris" id="nama_sekretaris"
-                            value="{{ old('nama_sekretaris', $profile->nama_sekretaris) }}"
-                            class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none">
+                        <h3 class="text-xl font-black text-slate-800 dark:text-white uppercase tracking-tight">
+                            Struktur Organisasi DPMD
+                        </h3>
+                        <p class="text-xs text-blue-500 font-bold uppercase tracking-widest mt-1">Kelola Pejabat & Staff
+                            Secara Dinamis</p>
                     </div>
-                    <div>
-                        <label for="nama_kabid_pemberdayaan"
-                            class="block text-sm font-semibold text-slate-700 mb-2">Nama Kabid
-                            Pemberdayaan</label>
-                        <input type="text" name="nama_kabid_pemberdayaan" id="nama_kabid_pemberdayaan"
-                            value="{{ old('nama_kabid_pemberdayaan', $profile->nama_kabid_pemberdayaan) }}"
-                            class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none">
-                    </div>
-                    <div>
-                        <label for="nama_kabid_pemerintahan"
-                            class="block text-sm font-semibold text-slate-700 mb-2">Nama Kabid
-                            Pemerintahan</label>
-                        <input type="text" name="nama_kabid_pemerintahan" id="nama_kabid_pemerintahan"
-                            value="{{ old('nama_kabid_pemerintahan', $profile->nama_kabid_pemerintahan) }}"
-                            class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none">
-                    </div>
-                    <div>
-                        <label for="nama_kabid_ekonomi" class="block text-sm font-semibold text-slate-700 mb-2">Nama
-                            Kabid Ekonomi</label>
-                        <input type="text" name="nama_kabid_ekonomi" id="nama_kabid_ekonomi"
-                            value="{{ old('nama_kabid_ekonomi', $profile->nama_kabid_ekonomi) }}"
-                            class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none">
-                    </div>
+                    <button type="button" onclick="openStaffModal()"
+                        class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-2xl shadow-lg shadow-blue-500/20 transition-all flex items-center gap-2 self-start">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                        Tambah Pejabat/Staff
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    @forelse($profile->staffs->sortBy('urutan') as $staff)
+                        <div
+                            class="group relative bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-700 rounded-3xl p-6 transition-all hover:shadow-xl hover:-translate-y-1">
+                            <div class="flex items-start gap-4">
+                                <div class="w-16 h-16 rounded-2xl overflow-hidden bg-white shadow-sm flex-shrink-0">
+                                    @if($staff->foto)
+                                        <img src="{{ asset('storage/' . $staff->foto) }}" class="w-full h-full object-cover">
+                                    @else
+                                        <div
+                                            class="w-full h-full flex items-center justify-center text-2xl bg-blue-50 text-blue-300">
+                                            👤
+                                        </div>
+                                    @endif
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <h4 class="font-bold text-slate-800 dark:text-white truncate">{{ $staff->nama }}</h4>
+                                    <p
+                                        class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mt-1">
+                                        {{ $staff->jabatan }}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="mt-6 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <button type="button" onclick='editStaff(@json($staff))'
+                                    class="flex-1 py-2 text-xs font-bold bg-white dark:bg-slate-700 text-slate-600 dark:text-slate-200 border border-slate-200 dark:border-slate-600 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-600 transition-all">
+                                    Edit
+                                </button>
+                                <button type="button" onclick="deleteStaff('{{ $staff->id }}')"
+                                    class="px-4 py-2 text-xs font-bold bg-red-50 text-red-500 rounded-xl hover:bg-red-100 transition-all">
+                                    Hapus
+                                </button>
+                            </div>
+                        </div>
+                    @empty
+                        <div
+                            class="col-span-full py-12 text-center bg-slate-50 dark:bg-slate-800/20 border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-[2rem]">
+                            <p class="text-slate-400 text-sm font-medium italic">Belum ada pejabat yang ditambahkan.</p>
+                        </div>
+                    @endforelse
                 </div>
             </div>
 
@@ -378,6 +400,60 @@
                 form.submit();
             }
         }
+
+        // --- Staff Management Logic ---
+        function openStaffModal() {
+            const modal = document.getElementById('staff-modal');
+            const form = document.getElementById('staff-form');
+            const title = document.getElementById('modal-title');
+            const method = document.getElementById('staff-method');
+
+            title.innerText = 'Tambah Pejabat Baru';
+            form.action = "{{ route('dashboard.dpmd.staff.store') }}";
+            method.value = 'POST';
+
+            document.getElementById('staff-nama').value = '';
+            document.getElementById('staff-jabatan').value = '';
+            document.getElementById('staff-urutan').value = '';
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeStaffModal() {
+            const modal = document.getElementById('staff-modal');
+            modal.classList.remove('flex');
+            modal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        function editStaff(staff) {
+            const modal = document.getElementById('staff-modal');
+            const form = document.getElementById('staff-form');
+            const title = document.getElementById('modal-title');
+            const method = document.getElementById('staff-method');
+
+            title.innerText = 'Edit Data Pejabat';
+            form.action = `/dashboard/dpmd/staff/${staff.id}/update`;
+            method.value = 'POST';
+
+            document.getElementById('staff-nama').value = staff.nama;
+            document.getElementById('staff-jabatan').value = staff.jabatan;
+            document.getElementById('staff-urutan').value = staff.urutan;
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function deleteStaff(id) {
+            if (confirm('Apakah Anda yakin ingin menghapus pejabat ini dari struktur organisasi?')) {
+                const form = document.getElementById('delete-staff-form');
+                form.action = `/dashboard/dpmd/staff/${id}`;
+                form.submit();
+            }
+        }
     </script>
 
     <style>
@@ -396,5 +472,87 @@
         .animate-fadeIn {
             animation: fadeIn 0.3s ease-out forwards;
         }
+
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .animate-modalIn {
+            animation: modalIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
     </style>
+
+    <!-- Staff Management Modal -->
+    <div id="staff-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
+        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeStaffModal()"></div>
+        <div
+            class="relative w-full max-w-lg bg-white dark:bg-slate-900 rounded-[2.5rem] shadow-2xl overflow-hidden animate-modalIn">
+            <div class="p-8 bg-blue-600 text-white">
+                <h3 id="modal-title" class="text-xl font-black uppercase tracking-tight">Tambah Pejabat Baru</h3>
+                <p class="text-xs text-blue-100 font-bold uppercase tracking-widest mt-1">Lengkapi Data Personal &
+                    Jabatan</p>
+            </div>
+
+            <form id="staff-form" method="POST" enctype="multipart/form-data" class="p-8 space-y-6">
+                @csrf
+                <input type="hidden" id="staff-method" name="_method" value="POST">
+
+                <div>
+                    <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Nama
+                        Lengkap</label>
+                    <input type="text" name="nama" id="staff-nama" required
+                        class="w-full px-6 py-4 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 focus:ring-4 focus:ring-blue-100 outline-none transition-all font-bold dark:text-white"
+                        placeholder="Contoh: Dr. John Doe, M.Si">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Jabatan /
+                        Posisi</label>
+                    <input type="text" name="jabatan" id="staff-jabatan" required
+                        class="w-full px-6 py-4 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 focus:ring-4 focus:ring-blue-100 outline-none transition-all font-bold dark:text-white"
+                        placeholder="Contoh: Sekretaris Dinas">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Urutan Tampil
+                        (Opsional)</label>
+                    <input type="number" name="urutan" id="staff-urutan"
+                        class="w-full px-6 py-4 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 focus:ring-4 focus:ring-blue-100 outline-none transition-all font-bold dark:text-white"
+                        placeholder="Contoh: 1">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Foto Profil
+                        (Opsional)</label>
+                    <input type="file" name="foto"
+                        class="w-full px-6 py-3 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-black file:bg-blue-600 file:text-white hover:file:bg-blue-700 transition-all outline-none dark:text-slate-300">
+                </div>
+
+                <div class="flex items-center gap-3 pt-4">
+                    <button type="submit"
+                        class="flex-1 py-4 bg-blue-600 hover:bg-blue-700 text-white font-black rounded-2xl shadow-lg shadow-blue-500/20 transition-all uppercase tracking-widest text-xs">
+                        Simpan Data
+                    </button>
+                    <button type="button" onclick="closeStaffModal()"
+                        class="px-8 py-4 bg-slate-100 dark:bg-slate-800 text-slate-400 font-black rounded-2xl hover:bg-slate-200 transition-all uppercase tracking-widest text-xs">
+                        Batal
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Delete Form for Staff -->
+    <form id="delete-staff-form" method="POST" class="hidden">
+        @csrf
+        @method('DELETE')
+    </form>
 </x-layouts.admin>
