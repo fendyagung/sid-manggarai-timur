@@ -24,73 +24,34 @@ class DesaSeeder extends Seeder
             'password' => Hash::make('password'),
         ]);
 
-        // 2. Create Admin Desa 1 (Colol)
-        $adminColol = User::create([
-            'name' => 'Admin Desa Colol',
-            'email' => 'colol@desa.id',
+        // 2. Create Admin Desa 1 (Ngampang Mas)
+        $adminNgampangMas = User::create([
+            'name' => 'Admin Desa Ngampang Mas',
+            'email' => 'ngampangmas@desa.id',
             'phone' => '08111111111',
             'role' => 'admin_desa',
             'password' => Hash::make('password'),
         ]);
 
-        // 3. Create Admin Desa 2 (Golo Loni)
-        $adminGoloLoni = User::create([
-            'name' => 'Admin Desa Golo Loni',
-            'email' => 'gololoni@desa.id',
-            'phone' => '08222222222',
-            'role' => 'admin_desa',
-            'password' => Hash::make('password'),
-        ]);
-
-        // 4. Create Desa Colol
-        $desaColol = Desa::create([
-            'nama_desa' => 'Desa Colol',
+        // 4. Create Desa Ngampang Mas
+        $desaNgampangMas = Desa::create([
+            'nama_desa' => 'Desa Ngampang Mas',
             'kode_desa' => '5319012001',
-            'kecamatan' => 'Lamba Leda Timur',
-            'kepala_desa' => 'Paulus Namas',
-            'deskripsi' => 'Colol merupakan pusat penghasil kopi terbaik di Flores.',
+            'kecamatan' => 'Borong',
+            'kepala_desa' => '',
+            'deskripsi' => 'Desa Ngampang Mas terletak di Kecamatan Borong, Kabupaten Manggarai Timur.',
             'is_desa_wisata' => false,
-            'user_id' => $adminColol->id,
+            'user_id' => $adminNgampangMas->id,
         ]);
 
-        // 5. Create Desa Golo Loni
-        $desaGoloLoni = Desa::create([
-            'nama_desa' => 'Desa Golo Loni',
-            'kode_desa' => '5319012002',
-            'kecamatan' => 'Rana Mese',
-            'kepala_desa' => 'Yohanes Bosco',
-            'deskripsi' => 'Golo Loni menawarkan keindahan sawah terasering dan agrowisata.',
-            'is_desa_wisata' => false,
-            'user_id' => $adminGoloLoni->id,
-        ]);
-
-        // 6. Create Sample Laporans for Colol
+        // 5. Create Sample Laporan for Ngampang Mas
         Laporan::create([
-            'desa_id' => $desaColol->id,
+            'desa_id' => $desaNgampangMas->id,
             'judul' => 'Laporan Keuangan Semester 1 2025',
             'kategori' => 'keuangan',
             'keterangan' => 'Laporan realisasi anggaran operasional desa.',
             'tanggal_laporan' => '2025-06-30',
             'status' => 'diterima',
-        ]);
-
-        // 7. Create Sample Laporans for Golo Loni
-        Laporan::create([
-            'desa_id' => $desaGoloLoni->id,
-            'judul' => 'Update Data Penduduk Januari 2026',
-            'kategori' => 'penduduk',
-            'keterangan' => 'Penambahan data kelahiran dan mutasi penduduk.',
-            'tanggal_laporan' => '2026-01-20',
-            'status' => 'pending',
-        ]);
-
-        Laporan::create([
-            'desa_id' => $desaGoloLoni->id,
-            'judul' => 'Laporan Kejadian Bencana Alam',
-            'kategori' => 'kejadian',
-            'keterangan' => 'Terjadi tanah longsor di jalan utama desa.',
-            'tanggal_laporan' => '2026-01-22',
-            'status' => 'pending',
         ]);
     }
 }

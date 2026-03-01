@@ -31,6 +31,10 @@
 
 <x-layouts.public>
     <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
         /* Floating ornament dots & Blobs */
         .dot-field {
             position: absolute;
@@ -45,23 +49,23 @@
             position: absolute;
             width: 500px;
             height: 500px;
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(59, 130, 246, 0.2) 100%);
-            filter: blur(80px);
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.1) 100%);
+            filter: blur(100px);
             border-radius: 50%;
             z-index: 0;
             animation: moveBlob 20s infinite alternate;
         }
 
         .blob-1 {
-            top: -100px;
+            top: -150px;
             right: -100px;
             animation-delay: 0s;
         }
 
         .blob-2 {
-            bottom: -100px;
+            bottom: -150px;
             left: -100px;
-            background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(239, 68, 68, 0.15) 100%);
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.12) 0%, rgba(16, 185, 129, 0.1) 100%);
             animation-delay: -5s;
         }
 
@@ -78,7 +82,7 @@
         .dot {
             position: absolute;
             border-radius: 50%;
-            background: rgba(217, 119, 6, 0.2);
+            background: rgba(255, 255, 255, 0.08);
             animation: floatDot 8s ease-in-out infinite;
         }
 
@@ -148,7 +152,7 @@
 
         .hero {
             min-height: 100vh;
-            background: #ffffff;
+            background: linear-gradient(145deg, #0d2818 0%, #1a3d28 40%, #0f3020 70%, #0a2010 100%);
             position: relative;
             overflow: hidden;
             display: flex;
@@ -157,7 +161,7 @@
         }
 
         .dark .hero {
-            background: #020617;
+            background: linear-gradient(145deg, #0a1f12 0%, #152e1e 40%, #0c2519 70%, #081a0e 100%);
         }
 
         .hero-grid {
@@ -191,59 +195,59 @@
         .hero-title {
             font-size: clamp(40px, 5vw, 64px);
             font-weight: 900;
-            color: #0f172a;
+            color: #ffffff;
             line-height: 1.05;
             margin-bottom: 24px;
             letter-spacing: -0.02em;
         }
 
         .dark .hero-title {
-            color: #f8fafc;
+            color: #ffffff;
         }
 
         .hero-title span {
-            background: linear-gradient(to right, #d97706, #f59e0b);
+            background: linear-gradient(to right, #f59e0b, #fbbf24);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .hero-title em {
             font-style: italic;
-            color: #059669;
+            color: rgba(255, 255, 255, 0.9);
             font-family: 'Playfair Display', serif;
             font-weight: 700;
         }
 
         .dark .hero-title em {
-            color: #10b981;
+            color: rgba(255, 255, 255, 0.9);
         }
 
         /* Premium Glassmorphism Card */
         .vis-card {
-            background: rgba(255, 255, 255, 0.7);
+            background: rgba(20, 55, 35, 0.85);
             backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 2.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 2rem;
             padding: 32px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 30px 60px -10px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
             position: relative;
             z-index: 2;
             transition: all 0.5s ease;
         }
 
         .dark .vis-card {
-            background: rgba(15, 23, 42, 0.6);
-            border-color: rgba(255, 255, 255, 0.1);
-            box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.5);
+            background: rgba(10, 30, 18, 0.9);
+            border-color: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.6);
         }
 
         .hero-badge {
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            background: #fef3c7;
-            border: 1px solid #fbbf24;
-            color: #92400e;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.9);
             padding: 8px 20px;
             border-radius: 50px;
             font-size: 12px;
@@ -251,18 +255,18 @@
             letter-spacing: 0.1em;
             text-transform: uppercase;
             margin-bottom: 30px;
-            box-shadow: 0 4px 15px rgba(217, 119, 6, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
         }
 
         .dark .hero-badge {
-            background: rgba(251, 191, 36, 0.1);
-            border-color: rgba(251, 191, 36, 0.2);
-            color: #fbbf24;
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.15);
+            color: rgba(255, 255, 255, 0.85);
         }
 
         .vc-stat {
-            background: rgba(255, 255, 255, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 1.25rem;
             padding: 20px 10px;
             text-align: center;
@@ -270,44 +274,44 @@
         }
 
         .dark .vc-stat {
-            background: rgba(255, 255, 255, 0.03);
-            border-color: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.07);
         }
 
         .vc-stat:hover {
             transform: translateY(-5px);
-            background: white;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            background: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
         }
 
         .dark .vc-stat:hover {
-            background: rgba(255, 255, 255, 0.07);
+            background: rgba(255, 255, 255, 0.09);
         }
 
         .vc-desa-row {
             display: flex;
             align-items: center;
             gap: 12px;
-            background: rgba(255, 255, 255, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 1rem;
             padding: 12px 16px;
             transition: all 0.2s ease;
         }
 
         .dark .vc-desa-row {
-            background: rgba(255, 255, 255, 0.03);
-            border-color: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.07);
         }
 
         .vc-desa-row:hover {
-            background: white;
-            border-color: #fbbf24;
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(245, 158, 11, 0.5);
             transform: scale(1.02);
         }
 
         .dark .vc-desa-row:hover {
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.09);
         }
 
         /* Stats Section Enhancements */
@@ -323,11 +327,11 @@
             top: 20%;
             height: 60%;
             width: 1px;
-            background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.1), transparent);
+            background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.15), transparent);
         }
 
         .dark .stat-item:not(:last-child):after {
-            background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.1), transparent);
+            background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.12), transparent);
         }
 
         /* Buttons Premium */
@@ -343,22 +347,22 @@
         }
 
         .btn-secondary {
-            background: rgba(16, 185, 129, 0.05);
-            border: 1px solid rgba(16, 185, 129, 0.2);
-            color: #065f46;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.35);
+            color: #ffffff;
             transition: all 0.3s ease;
         }
 
         .btn-secondary:hover {
-            background: rgba(16, 185, 129, 0.1);
-            border-color: #10b981;
-            color: #047857;
+            background: rgba(255, 255, 255, 0.18);
+            border-color: rgba(255, 255, 255, 0.6);
+            color: #ffffff;
         }
 
         .dark .btn-secondary {
-            background: rgba(16, 185, 129, 0.1);
-            border-color: rgba(16, 185, 129, 0.2);
-            color: #34d399;
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.25);
+            color: #ffffff;
         }
 
         /* Reveal Animation */
@@ -463,6 +467,12 @@
         .dark .peng-card:hover {
             background: rgba(30, 41, 59, 0.6);
         }
+
+        @media (max-width: 768px) {
+            .sub-nav {
+                display: none;
+            }
+        }
     </style>
 
     <!-- HERO -->
@@ -488,7 +498,7 @@
                     <span>Pelaporan Desa</span><br>
                     <em>& Promosi Wisata</em>
                 </h1>
-                <p class="text-slate-600 dark:text-slate-400 text-lg mb-10 leading-relaxed max-w-xl">
+                <p class="text-white/70 text-lg mb-10 leading-relaxed max-w-xl">
                     Platform digital terpadu milik Dinas Pemberdayaan Masyarakat dan Desa
                     Kabupaten Manggarai Timur untuk monitoring pelaporan seluruh desa
                     dan promosi potensi wisata Flores NTT kepada dunia.
@@ -513,34 +523,28 @@
                 </div>
 
                 <!-- Stats Grid -->
-                <div
-                    class="grid grid-cols-2 sm:grid-cols-4 gap-8 pt-10 border-t border-slate-200 dark:border-slate-800">
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-8 pt-10 border-t border-white/10">
                     <div class="stat-item">
-                        <div class="text-3xl font-black text-amber-600 dark:text-amber-400 counter"
-                            data-target="{{ $totalDesa }}">0</div>
-                        <div
-                            class="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-widest font-bold mt-2">
-                            Total Wilayah</div>
+                        <div class="text-3xl font-black text-amber-400 counter" data-target="{{ $totalDesa }}">0</div>
+                        <div class="text-[10px] text-white/80 uppercase tracking-widest font-bold mt-2">
+                            Total Desa</div>
                     </div>
                     <div class="stat-item">
-                        <div class="text-3xl font-black text-amber-600 dark:text-amber-400 counter"
-                            data-target="{{ $totalKecamatan }}">0</div>
-                        <div
-                            class="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-widest font-bold mt-2">
+                        <div class="text-3xl font-black text-amber-400 counter" data-target="{{ $totalKecamatan }}">0
+                        </div>
+                        <div class="text-[10px] text-white/80 uppercase tracking-widest font-bold mt-2">
                             Kecamatan</div>
                     </div>
                     <div class="stat-item">
-                        <div class="text-3xl font-black text-amber-600 dark:text-amber-400 counter"
-                            data-target="{{ $desaWisataCount }}">0</div>
-                        <div
-                            class="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-widest font-bold mt-2">
+                        <div class="text-3xl font-black text-amber-400 counter" data-target="{{ $desaWisataCount }}">0
+                        </div>
+                        <div class="text-[10px] text-white/80 uppercase tracking-widest font-bold mt-2">
                             Desa Wisata</div>
                     </div>
                     <div class="stat-item">
-                        <div class="text-3xl font-black text-amber-600 dark:text-amber-400"><span class="counter"
+                        <div class="text-3xl font-black text-amber-400"><span class="counter"
                                 data-target="{{ $kepatuhanPercent }}">0</span>%</div>
-                        <div
-                            class="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-widest font-bold mt-2">
+                        <div class="text-[10px] text-white/80 uppercase tracking-widest font-bold mt-2">
                             Kepatuhan</div>
                     </div>
                 </div>
@@ -553,39 +557,34 @@
                 </div>
 
                 <div class="vis-card">
-                    <div class="flex items-center gap-5 mb-10 pb-6 border-b border-black/5 dark:border-white/5">
+                    <div class="flex items-center gap-5 mb-10 pb-6 border-b border-white/10">
                         <div
-                            class="w-14 h-14 bg-gradient-to-br from-[#d97706] to-[#f59e0b] rounded-2xl flex items-center justify-center text-3xl shadow-xl shadow-amber-500/20 rotate-3">
+                            class="w-14 h-14 bg-gradient-to-br from-[#d97706] to-[#f59e0b] rounded-2xl flex items-center justify-center text-3xl shadow-xl shadow-amber-500/30 rotate-3">
                             📊
                         </div>
                         <div>
-                            <div class="text-slate-900 dark:text-white font-black text-lg tracking-tight">Status
-                                Pelaporan Desa</div>
-                            <div
-                                class="text-amber-600 dark:text-amber-400 text-xs font-bold uppercase tracking-widest mt-1">
-                                PERIODE {{ now()->isoFormat('MMMM Y') }}
+                            <div class="text-white font-black text-lg tracking-tight">Dashboard Pelaporan Desa</div>
+                            <div class="text-amber-400 text-xs font-bold uppercase tracking-widest mt-1">
+                                Kab. Manggarai Timur — {{ now()->isoFormat('MMM Y') }}
                             </div>
                         </div>
                     </div>
 
                     <div class="grid grid-cols-3 gap-4 mb-10">
                         <div class="vc-stat">
-                            <div class="text-2xl font-black text-emerald-600 dark:text-emerald-400 underline decoration-emerald-500/30 underline-offset-4 counter"
-                                data-target="{{ $laporanSelesai }}">0</div>
-                            <div class="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase mt-2">Selesai
-                            </div>
+                            <div class="text-2xl font-black text-amber-400 counter" data-target="{{ $laporanSelesai }}">
+                                0</div>
+                            <div class="text-[10px] text-white font-bold uppercase mt-2">Laporan<br>Selesai ✅</div>
                         </div>
                         <div class="vc-stat">
-                            <div class="text-2xl font-black text-amber-600 dark:text-amber-500 underline decoration-amber-500/30 underline-offset-4 counter"
-                                data-target="{{ $laporanProses }}">0</div>
-                            <div class="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase mt-2">Proses
+                            <div class="text-2xl font-black text-amber-400 counter" data-target="{{ $laporanProses }}">0
                             </div>
+                            <div class="text-[10px] text-white font-bold uppercase mt-2">Sedang<br>Diproses 🔄</div>
                         </div>
                         <div class="vc-stat">
-                            <div class="text-2xl font-black text-red-600 dark:text-red-400 underline decoration-red-500/30 underline-offset-4 counter"
-                                data-target="{{ $belumMelapor }}">0</div>
-                            <div class="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase mt-2">Belum
+                            <div class="text-2xl font-black text-rose-500 counter" data-target="{{ $belumMelapor }}">0
                             </div>
+                            <div class="text-[10px] text-white font-bold uppercase mt-2">Belum<br>Melapor ❗</div>
                         </div>
                     </div>
 
@@ -599,16 +598,16 @@
                                     class="w-2.5 h-2.5 rounded-full {{ $rp->status === 'diterima' ? 'bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]' : 'bg-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.5)]' }} animate-pulse">
                                 </div>
                                 <div class="flex-1">
-                                    <div class="text-slate-800 dark:text-slate-200 text-xs font-extrabold tracking-tight">
+                                    <div class="text-white text-xs font-extrabold tracking-tight">
                                         {{ $rp->desa->nama_desa ?? '-' }}
                                     </div>
-                                    <div class="text-[10px] text-slate-500 dark:text-slate-400 font-medium tracking-wide">
+                                    <div class="text-[10px] text-white font-medium tracking-wide">
                                         Kec. {{ $rp->desa->kecamatan ?? '-' }}
                                     </div>
                                 </div>
                                 <div
-                                    class="px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-[9px] font-black uppercase {{ $rp->status === 'diterima' ? 'text-emerald-600 dark:text-emerald-400' : 'text-amber-600 dark:text-amber-500' }}">
-                                    {{ $rp->status === 'diterima' ? 'Terkirim' : 'Review' }}
+                                    class="px-3 py-1 rounded-full text-[9px] font-black uppercase {{ $rp->status === 'diterima' ? 'bg-emerald-500/20 text-emerald-300' : 'bg-amber-500/20 text-amber-300' }}">
+                                    {{ $rp->status === 'diterima' ? '✅ Terkirim' : '🔄 Proses' }}
                                 </div>
                             </div>
                         @endforeach
@@ -617,17 +616,17 @@
 
                 <!-- Floating Badge -->
                 <div
-                    class="absolute -bottom-6 -left-6 bg-white dark:bg-slate-800 p-4 rounded-2xl shadow-2xl border border-black/5 dark:border-white/10 flex items-center gap-3 animate-bounce-subtle">
+                    class="absolute -bottom-6 -left-6 bg-[#1a3d28]/90 backdrop-blur-sm p-4 rounded-2xl shadow-2xl border border-white/10 flex items-center gap-3 animate-bounce-subtle">
                     <div
-                        class="w-10 h-10 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center text-emerald-600">
+                        class="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
                                 d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                     </div>
                     <div>
-                        <div class="text-[10px] font-black text-slate-400 uppercase leading-none">Keamanan Data</div>
-                        <div class="text-xs font-black text-slate-800 dark:text-white mt-1">Sistem Terverifikasi</div>
+                        <div class="text-[10px] font-black text-white/40 uppercase leading-none">Keamanan Data</div>
+                        <div class="text-xs font-black text-white mt-1">Sistem Terverifikasi</div>
                     </div>
                 </div>
             </div>
@@ -903,17 +902,43 @@
             }, stepTime);
         }
 
-        // Navbar Scroll Effect
-        window.addEventListener('scroll', function () {
-            const navbar = document.getElementById('navbar');
-            if (window.scrollY > 50) {
-                navbar.classList.add('py-3', 'shadow-xl', 'bg-white/95', 'dark:bg-slate-900/95');
-                navbar.classList.remove('py-5', 'bg-[#fdf8f0]/90');
+        // Navbar Scroll Effect — dark green hero aware
+        const navbar = document.getElementById('navbar');
+        const navLinks = navbar ? navbar.querySelectorAll('a[id^="nav-"]') : [];
+        const navBrand = navbar ? navbar.querySelectorAll('span') : [];
+        const heroHeight = document.querySelector('.hero') ? document.querySelector('.hero').offsetHeight : 600;
+
+        function updateNavbar() {
+            if (window.scrollY > heroHeight - 100) {
+                // Scrolled past hero: switch to light navbar
+                navbar.classList.add('bg-white/95', 'dark:bg-slate-900/95', 'shadow-lg', 'border-b', 'border-slate-200');
+                navbar.classList.remove('bg-transparent');
+                // Update link colors
+                navLinks.forEach(link => {
+                    link.classList.remove('text-white/80', 'hover:text-white', 'hover:bg-white/10');
+                    link.classList.add('text-slate-600', 'hover:text-emerald-700', 'hover:bg-emerald-50');
+                });
+                navBrand.forEach(s => {
+                    s.classList.remove('text-white', 'text-white/60');
+                    s.classList.add('text-slate-800', 'dark:text-white', 'text-slate-400');
+                });
             } else {
-                navbar.classList.remove('py-3', 'shadow-xl', 'bg-white/95', 'dark:bg-slate-900/95');
-                navbar.classList.add('py-5', 'bg-[#fdf8f0]/90');
+                // On hero: transparent dark
+                navbar.classList.remove('bg-white/95', 'dark:bg-slate-900/95', 'shadow-lg', 'border-b', 'border-slate-200');
+                navbar.classList.add('bg-transparent');
+                navLinks.forEach(link => {
+                    link.classList.add('text-white/80', 'hover:text-white', 'hover:bg-white/10');
+                    link.classList.remove('text-slate-600', 'hover:text-emerald-700', 'hover:bg-emerald-50');
+                });
+                navBrand.forEach(s => {
+                    s.classList.add('text-white', 'text-white/60');
+                    s.classList.remove('text-slate-800', 'dark:text-white', 'text-slate-400');
+                });
             }
-        });
+        }
+
+        window.addEventListener('scroll', updateNavbar);
+        updateNavbar(); // run on load
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fslightbox/3.0.9/index.js"></script>
     </body>

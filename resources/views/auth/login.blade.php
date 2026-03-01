@@ -667,7 +667,7 @@
                                 </div>
 
                                 <button type="submit" class="btn-submit hijau">
-                                    Masuk ke Dashboard 🚀
+                                    Masuk
                                 </button>
                             </form>
                         </div>
@@ -713,7 +713,7 @@
                                 </div>
 
                                 <button type="submit" class="btn-submit emas">
-                                    Dashboard Admin Pusat 🏛️
+                                    Masuk
                                 </button>
                             </form>
                         </div>

@@ -130,7 +130,7 @@ class DesaController extends Controller
 
         // Last Update Tracking
         $latestReport = \App\Models\Laporan::latest()->first();
-        $lastUpdate = $latestReport ? $latestReport->created_at->diffForHumans() : 'Belum ada data';
+        $lastUpdate = $latestReport ? $latestReport->created_at->locale('id')->diffForHumans() : 'Belum ada data';
 
         return view('public.laporan', compact('dpmdProfile', 'reportsByStatus', 'reportsByCategory', 'totalReports', 'validityRate', 'lastUpdate'));
     }

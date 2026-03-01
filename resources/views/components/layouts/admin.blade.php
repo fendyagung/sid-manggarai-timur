@@ -46,6 +46,15 @@
             --sidebar-w: 260px;
         }
 
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
         body {
             font-family: 'DM Sans', sans-serif;
             background: #fdf8f0;
@@ -249,7 +258,7 @@
         .topbar {
             background: rgba(253, 248, 240, 0.9);
             backdrop-filter: blur(10px);
-            padding: 14px 28px;
+            padding: 12px 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -555,7 +564,7 @@
 
                 <!-- Navigation Links from Public Layout -->
                 <div
-                    class="flex flex-wrap items-center gap-2 border-l border-slate-200 dark:border-slate-700 pl-8 h-full mr-10">
+                    class="flex items-center gap-3 border-l border-slate-200 dark:border-slate-700 pl-10 h-full mr-4 overflow-x-auto no-scrollbar">
                     @php
                         $navItems = [
                             ['label' => 'BERANDA', 'route' => url('/'), 'pattern' => '/'],
@@ -570,7 +579,7 @@
 
                     @foreach($navItems as $item)
                         <a href="{{ $item['route'] }}"
-                            class="px-4 py-2 text-[13px] font-black tracking-widest rounded-xl transition-all {{ Request::is($item['pattern']) ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-500/20' : 'text-slate-700 dark:text-slate-200 hover:bg-emerald-50 dark:hover:bg-emerald-900/40 hover:text-emerald-800 dark:hover:text-emerald-100' }}">
+                            class="px-3 py-1.5 text-[11px] font-bold tracking-wider rounded-xl transition-all {{ Request::is($item['pattern']) ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-500/20' : 'text-slate-700 dark:text-slate-200 hover:bg-emerald-50 dark:hover:bg-emerald-900/40 hover:text-emerald-800 dark:hover:text-emerald-100' }}">
                             {{ $item['label'] }}
                         </a>
                     @endforeach

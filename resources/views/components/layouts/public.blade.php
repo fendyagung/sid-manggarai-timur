@@ -75,7 +75,7 @@
 <body
     class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 antialiased transition-colors duration-300">
     <!-- Navigation -->
-    <nav class="fixed w-full z-50 transition-all duration-300 bg-[#fdf8f0]/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-[#e2e8f0] dark:border-slate-800 shadow-sm"
+    <nav class="fixed w-full z-50 transition-all duration-300 bg-transparent dark:bg-transparent backdrop-blur-md border-b border-transparent"
         id="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
@@ -93,42 +93,65 @@
                         @endif
                         <div class="flex flex-col justify-center">
                             <span
-                                class="block font-bold text-xl tracking-tighter text-slate-800 dark:text-white leading-tight">SID</span>
+                                class="block font-bold text-xl tracking-tighter text-white dark:text-white leading-tight">SID</span>
                             <span
-                                class="block text-[9px] font-extrabold text-slate-400 dark:text-slate-500 tracking-[0.15em] whitespace-nowrap uppercase">Manggarai
+                                class="block text-[9px] font-extrabold text-white/60 dark:text-white/60 tracking-[0.15em] whitespace-nowrap uppercase">Manggarai
                                 Timur</span>
                         </div>
                     </a>
                 </div>
                 <div class="hidden lg:flex items-center h-20 mr-10">
-                    @if(!Request::is('dashboard*'))
+                    @if(!Request::is('dashboard*') && !Request::is('login') && !Request::is('register') && !Request::is('forgot-password') && !Request::is('reset-password*'))
                         <div class="flex items-center gap-4">
+                            @if(request()->routeIs('public.home') || request()->is('/') || request()->path() == '/')
+                                <div class="flex items-center gap-6 mr-8 transition-all duration-300">
+                                    <a href="#fitur"
+                                        class="text-[10px] font-black text-white/80 hover:text-amber-400 transition-all tracking-[0.2em] uppercase">Fitur</a>
+                                    <a href="#wisata"
+                                        class="text-[10px] font-black text-white/80 hover:text-amber-400 transition-all tracking-[0.2em] uppercase">Desa
+                                        Wisata</a>
+                                    <a href="#pengumuman"
+                                        class="text-[10px] font-black text-white/80 hover:text-amber-400 transition-all tracking-[0.2em] uppercase">Pengumuman</a>
+                                    <a href="#cara"
+                                        class="text-[10px] font-black text-white/80 hover:text-amber-400 transition-all tracking-[0.2em] uppercase">Cara
+                                        Kerja</a>
+                                </div>
+                                <div class="w-px h-6 bg-white/10 mr-8"></div>
+                            @endif
+
                             <a href="{{ url('/') }}"
-                                class="px-4 py-2 mx-0.5 flex items-center font-bold text-[13px] whitespace-nowrap transition-all duration-300 {{ Request::is('/') ? 'bg-[#064e3b] dark:bg-emerald-600 text-white shadow-md rounded-lg' : 'text-slate-600 dark:text-slate-300 hover:text-[#064e3b] dark:hover:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-slate-800 rounded-lg' }}">
+                                class="px-3 py-1.5 mx-0.5 flex items-center font-bold text-[11px] whitespace-nowrap transition-all duration-300 {{ Request::is('/') ? 'bg-white/15 text-white rounded-lg' : 'text-white/80 hover:text-white hover:bg-white/10 rounded-lg' }}"
+                                id="nav-home">
                                 BERANDA
                             </a>
                             <a href="{{ route('public.profil') }}"
-                                class="px-4 py-2 mx-0.5 flex items-center font-bold text-[13px] whitespace-nowrap transition-all duration-300 {{ Request::is('profil') ? 'bg-[#064e3b] dark:bg-emerald-600 text-white shadow-md rounded-lg' : 'text-slate-600 dark:text-slate-300 hover:text-[#064e3b] dark:hover:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-slate-800 rounded-lg' }}">
+                                class="px-3 py-1.5 mx-0.5 flex items-center font-bold text-[11px] whitespace-nowrap transition-all duration-300 {{ Request::is('profil') ? 'bg-white/15 text-white rounded-lg' : 'text-white/80 hover:text-white hover:bg-white/10 rounded-lg' }}"
+                                id="nav-profil">
                                 PROFIL
                             </a>
                             <a href="{{ route('public.desa-wisata') }}"
-                                class="px-4 py-2 mx-0.5 flex items-center font-bold text-[13px] whitespace-nowrap transition-all duration-300 {{ Request::is('jelajah/desa-wisata') ? 'bg-[#064e3b] dark:bg-emerald-600 text-white shadow-md rounded-lg' : 'text-slate-600 dark:text-slate-300 hover:text-[#064e3b] dark:hover:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-slate-800 rounded-lg' }}">
+                                class="px-3 py-1.5 mx-0.5 flex items-center font-bold text-[11px] whitespace-nowrap transition-all duration-300 {{ Request::is('jelajah/desa-wisata') ? 'bg-white/15 text-white rounded-lg' : 'text-white/80 hover:text-white hover:bg-white/10 rounded-lg' }}"
+                                id="nav-desa-wisata">
                                 DESA WISATA
                             </a>
                             <a href="{{ route('public.komoditi') }}"
-                                class="px-4 py-2 mx-0.5 flex items-center font-bold text-[13px] whitespace-nowrap transition-all duration-300 {{ Request::is('jelajah/komoditi') ? 'bg-[#064e3b] dark:bg-emerald-600 text-white shadow-md rounded-lg' : 'text-slate-600 dark:text-slate-300 hover:text-[#064e3b] dark:hover:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-slate-800 rounded-lg' }}">
+                                class="px-3 py-1.5 mx-0.5 flex items-center font-bold text-[11px] whitespace-nowrap transition-all duration-300 {{ Request::is('jelajah/komoditi') ? 'bg-white/15 text-white rounded-lg' : 'text-white/80 hover:text-white hover:bg-white/10 rounded-lg' }}"
+                                id="nav-komoditi">
                                 KOMODITI
                             </a>
                             <a href="{{ route('public.laporan-desa') }}"
-                                class="px-4 py-2 mx-0.5 flex items-center font-bold text-[13px] whitespace-nowrap transition-all duration-300 {{ Request::is('laporan-desa') ? 'bg-[#064e3b] dark:bg-emerald-600 text-white shadow-md rounded-lg' : 'text-slate-600 dark:text-slate-300 hover:text-[#064e3b] dark:hover:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-slate-800 rounded-lg' }}">
+                                class="px-3 py-1.5 mx-0.5 flex items-center font-bold text-[11px] whitespace-nowrap transition-all duration-300 {{ Request::is('laporan-desa') ? 'bg-white/15 text-white rounded-lg' : 'text-white/80 hover:text-white hover:bg-white/10 rounded-lg' }}"
+                                id="nav-laporan">
                                 LAPORAN DESA
                             </a>
                             <a href="{{ route('public.berita') }}"
-                                class="px-4 py-2 mx-0.5 flex items-center font-bold text-[13px] whitespace-nowrap transition-all duration-300 {{ Request::is('berita') ? 'bg-[#064e3b] dark:bg-emerald-600 text-white shadow-md rounded-lg' : 'text-slate-600 dark:text-slate-300 hover:text-[#064e3b] dark:hover:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-slate-800 rounded-lg' }}">
+                                class="px-3 py-1.5 mx-0.5 flex items-center font-bold text-[11px] whitespace-nowrap transition-all duration-300 {{ Request::is('berita') ? 'bg-white/15 text-white rounded-lg' : 'text-white/80 hover:text-white hover:bg-white/10 rounded-lg' }}"
+                                id="nav-berita">
                                 BERITA
                             </a>
                             <a href="{{ route('public.kontak') }}"
-                                class="px-4 py-2 mx-0.5 flex items-center font-bold text-[13px] whitespace-nowrap transition-all duration-300 {{ Request::is('layanan/kontak') ? 'bg-[#064e3b] dark:bg-emerald-600 text-white shadow-md rounded-lg' : 'text-slate-600 dark:text-slate-300 hover:text-[#064e3b] dark:hover:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-slate-800 rounded-lg' }}">
+                                class="px-3 py-1.5 mx-0.5 flex items-center font-bold text-[11px] whitespace-nowrap transition-all duration-300 {{ Request::is('layanan/kontak') ? 'bg-white/15 text-white rounded-lg' : 'text-white/80 hover:text-white hover:bg-white/10 rounded-lg' }}"
+                                id="nav-kontak">
                                 KONTAK
                             </a>
                         </div>
@@ -139,57 +162,60 @@
                     @endif
                 </div>
                 <div class="flex items-center space-x-4">
-                    @if(Request::is('dashboard*'))
-                        <a href="{{ url('/') }}"
-                            class="hidden md:flex items-center gap-2 px-4 py-2 text-xs font-bold text-[#2b529a] bg-blue-50 rounded-full hover:bg-[#2b529a] hover:text-white transition-all">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9" />
-                            </svg>
-                            LIHAT WEBSITE
-                        </a>
-                    @endif
-                    @auth
-                        <div class="relative group">
-                            <button
-                                class="flex items-center gap-2 text-slate-700 hover:text-emerald-600 font-medium transition-colors focus:outline-none">
-                                <span>{{ Auth::user()->name }}</span>
+                    @if(!Request::is('login') && !Request::is('register') && !Request::is('forgot-password') && !Request::is('reset-password*'))
+                        @if(Request::is('dashboard*'))
+                            <a href="{{ url('/') }}"
+                                class="hidden md:flex items-center gap-2 px-4 py-2 text-xs font-bold text-[#2b529a] bg-blue-50 rounded-full hover:bg-[#2b529a] hover:text-white transition-all">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
                                     stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M19 9l-7 7-7-7" />
+                                        d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9" />
                                 </svg>
-                            </button>
-                            <div class="hidden md:block">
+                                LIHAT WEBSITE
+                            </a>
+                        @endif
+                        @auth
+                            <div class="relative group">
+                                <button
+                                    class="flex items-center gap-2 text-slate-700 hover:text-emerald-600 font-medium transition-colors focus:outline-none">
+                                    <span>{{ Auth::user()->name }}</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                                        stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </button>
+                                <div class="hidden md:block">
+                                    <x-theme-switcher />
+                                </div>
+                                <!-- Dropdown -->
+                                <div
+                                    class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl py-2 invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all transform origin-top-right border border-gray-100 z-50">
+                                    <a href="{{ route('dashboard') }}"
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-emerald-50 hover:text-emerald-600">
+                                        Dashboard
+                                    </a>
+                                    <div class="border-t border-gray-100 my-1"></div>
+                                    <form method="POST" action="{{ route('logout') }}">
+                                        @csrf
+                                        <button type="submit"
+                                            class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 font-medium">
+                                            Keluar
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        @else
+                            <div class="flex items-center gap-4">
+                                <a href="{{ route('login') }}"
+                                    style="background: linear-gradient(135deg, #d97706, #f59e0b); color: #ffffff;"
+                                    class="px-5 py-2 text-xs font-bold rounded-full shadow-lg shadow-amber-600/30 hover:scale-105 transition-all flex items-center gap-2">
+                                    🔐 Masuk / Login
+                                </a>
                                 <x-theme-switcher />
                             </div>
-                            <!-- Dropdown -->
-                            <div
-                                class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl py-2 invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all transform origin-top-right border border-gray-100 z-50">
-                                <a href="{{ route('dashboard') }}"
-                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-emerald-50 hover:text-emerald-600">
-                                    Dashboard
-                                </a>
-                                <div class="border-t border-gray-100 my-1"></div>
-                                <form method="POST" action="{{ route('logout') }}">
-                                    @csrf
-                                    <button type="submit"
-                                        class="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 font-medium">
-                                        Keluar
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    @else
-                        <div class="flex items-center gap-4">
-                            <a href="{{ route('login') }}" style="background-color: #d97706; color: #ffffff;"
-                                class="px-4 py-2 text-xs font-bold rounded-full shadow-lg shadow-amber-600/20 hover:scale-105 transition-all">
-                                Login Admin
-                            </a>
-                            <x-theme-switcher />
-                        </div>
-                    @endauth
+                        @endauth
+                    @endif
                 </div>
             </div>
         </div>
@@ -200,7 +226,7 @@
         {{ $slot }}
     </main>
 
-    @if(!Request::is('dashboard*'))
+    @if(!Request::is('dashboard*') && !Request::is('login') && !Request::is('register') && !Request::is('forgot-password') && !Request::is('reset-password*'))
         <!-- Footer -->
         <footer class="bg-slate-900 text-white pt-16 pb-8">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -304,9 +330,11 @@
         window.addEventListener('scroll', function () {
             const navbar = document.getElementById('navbar');
             if (window.scrollY > 20) {
-                navbar.classList.add('shadow-md');
+                navbar.classList.add('shadow-md', 'bg-slate-900/90');
+                navbar.classList.remove('bg-transparent');
             } else {
-                navbar.classList.remove('shadow-md');
+                navbar.classList.remove('shadow-md', 'bg-slate-900/90');
+                navbar.classList.add('bg-transparent');
             }
         });
 

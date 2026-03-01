@@ -418,7 +418,7 @@
                 <div class="sc-icon ic-e mb-3">⏳</div>
                 <div class="sc-num text-amber-600">{{ $data['laporan_pending'] }}</div>
                 <div class="text-[11px] text-slate-700 dark:text-slate-300 uppercase font-bold tracking-tight mt-1">Menunggu
-                    Verif</div>
+                    Verifikasi</div>
             </div>
             <div class="stat-card animate-fade-in" style="animation-delay: 0.4s">
                 <div class="sc-icon ic-r mb-3">❗</div>
