@@ -495,8 +495,8 @@
                 <div class="hero-badge">🌿 DMPD Kab. Manggarai Timur — NTT</div>
                 <h1 class="hero-title">
                     Sistem Informasi<br>
-                    <span>Pelaporan Desa</span><br>
-                    <em>& Promosi Wisata</em>
+                    <span class="text-2xl sm:text-3xl lg:text-4xl block mt-2">pelaporan dari desa dan</span>
+                    <em class="text-xl sm:text-2xl lg:text-3xl block mt-1">promosi potensi desa/desa wisata</em>
                 </h1>
                 <p class="text-white/70 text-lg mb-10 leading-relaxed max-w-xl">
                     Platform digital terpadu milik Dinas Pemberdayaan Masyarakat dan Desa
