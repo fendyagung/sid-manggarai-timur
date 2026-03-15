@@ -15,8 +15,18 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        \App\Models\User::updateOrCreate(
+            ['email' => 'admin@dpmd.com'],
+            [
+                'name' => 'Admin DPMD Manggarai Timur',
+                'password' => \Hash::make('password'),
+                'role' => 'admin_dpmd',
+            ]
+        );
+
         $this->call([
-            DesaSeeder::class,
+            KecamatanSeeder::class,
+            DaftarDesaSeeder::class,
             DpmdProfileSeeder::class,
         ]);
     }

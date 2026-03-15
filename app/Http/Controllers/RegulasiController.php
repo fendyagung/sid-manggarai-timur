@@ -51,7 +51,7 @@ class RegulasiController extends Controller
      */
     public function edit(Regulasi $regulasi)
     {
-        if (Auth::user()->role !== 'admin_dpmd') {
+        if (!in_array(Auth::user()->role, ['admin_dpmd', 'admin_kecamatan'])) {
             abort(403);
         }
 
@@ -63,7 +63,7 @@ class RegulasiController extends Controller
      */
     public function update(Request $request, Regulasi $regulasi)
     {
-        if (Auth::user()->role !== 'admin_dpmd') {
+        if (!in_array(Auth::user()->role, ['admin_dpmd', 'admin_kecamatan'])) {
             abort(403);
         }
 
@@ -97,13 +97,17 @@ class RegulasiController extends Controller
      */
     public function destroy(Regulasi $regulasi)
     {
-        if ($regulasi->file_path && Storage::disk('public')->exists($regulasi->file_path)) {
-            Storage::disk('public')->delete($regulasi->file_path);
+        if (!in_array(Auth::user()->role, ['admin_dpmd', 'admin_kecamatan'])) {
+            abort(403);
+        }
+
+        if ($regulasi->file_path && file_exists(storage_path('app/public/' . $regulasi->file_path))) {
+            unlink(storage_path('app/public/' . $regulasi->file_path));
         }
 
         $regulasi->delete();
 
-        return redirect()->back()->with('success', 'Dokumen berhasil dihapus.');
+        return redirect()->route('dashboard.regulasi.index')->with('success', 'Dokumen berhasil dihapus.');
     }
 
     /**
@@ -128,12 +132,13 @@ class RegulasiController extends Controller
             ]);
         }
 
-        if (!$regulasi->file_path || !Storage::disk('public')->exists($regulasi->file_path)) {
-            return redirect()->back()->with('warning', 'File tidak ditemukan.');
+        $fullPath = storage_path('app/public/' . $regulasi->file_path);
+        if (!$regulasi->file_path || !file_exists($fullPath)) {
+            return back()->with('warning', 'File tidak ditemukan.');
         }
 
         $downloadName = $regulasi->original_name ?? ($regulasi->judul . '.' . pathinfo($regulasi->file_path, PATHINFO_EXTENSION));
 
-        return Storage::disk('public')->download($regulasi->file_path, $downloadName);
+        return response()->download($fullPath, $downloadName);
     }
 }

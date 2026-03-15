@@ -159,7 +159,7 @@ class PotensiController extends Controller
 
         if ($user->role !== 'admin_dpmd') {
             $desa = Desa::where('user_id', $user->id)->first();
-            if ($potensi->desa_id !== ($desa->id ?? 0)) {
+            if (!$desa || $potensi->desa_id !== $desa->id) {
                 abort(403);
             }
         }
@@ -185,7 +185,7 @@ class PotensiController extends Controller
 
         if ($user->role !== 'admin_dpmd') {
             $desa = Desa::where('user_id', $user->id)->first();
-            if ($potensi->desa_id !== ($desa->id ?? 0)) {
+            if (!$desa || $potensi->desa_id !== $desa->id) {
                 abort(403);
             }
         }

@@ -54,10 +54,10 @@
                 <div>
                     <label for="foto" class="block text-sm font-semibold text-slate-700 mb-2">Foto / Gambar
                         Utama</label>
-                    <input type="file" name="foto" id="foto"
+                    <input type="file" name="foto" id="foto" onchange="showFileName(this, 'berita-photo-name')"
                         class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
-                    <p class="text-[10px] text-slate-400 mt-2 italic">Biarkan kosong jika tidak ingin mengubah gambar.
-                    </p>
+                    <p class="text-[10px] text-slate-400 mt-2 italic" id="berita-photo-name">Biarkan kosong jika tidak
+                        ingin mengubah gambar.</p>
                     @error('foto') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                 </div>
 

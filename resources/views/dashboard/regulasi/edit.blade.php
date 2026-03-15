@@ -51,10 +51,10 @@
                         <span class="text-xs text-emerald-700 font-medium">File saat ini:
                             <strong>{{ basename($regulasi->file_path) }}</strong></span>
                     </div>
-                    <input type="file" name="file"
+                    <input type="file" name="file" id="file_regulasi" onchange="showFileName(this, 'regulasi-filename')"
                         class="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-emerald-50 focus:border-[#064e3b] outline-none transition-all file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-bold file:bg-[#166534] file:text-white hover:file:bg-[#15803d]">
-                    <p class="mt-2 text-xs text-slate-400 italic font-medium">* Biarkan kosong jika tidak ingin
-                        mengganti file. (Max 10MB)</p>
+                    <p class="mt-2 text-xs text-slate-400 italic font-medium" id="regulasi-filename">* Biarkan kosong
+                        jika tidak ingin mengganti file. (Max 10MB)</p>
                 </div>
 
                 <div>

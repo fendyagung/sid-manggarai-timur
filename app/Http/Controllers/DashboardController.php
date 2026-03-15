@@ -17,26 +17,42 @@ class DashboardController extends Controller
         $user = Auth::user();
         $data = [];
 
-        if ($user->role === 'admin_dpmd') {
-            // Data for DPMD Admin: See all villages and reports
-            $data['total_desa'] = Desa::count();
-            $data['total_laporan'] = Laporan::count();
-            $data['laporan_pending'] = Laporan::where('status', 'pending')->count();
-            $data['laporan_diterima'] = Laporan::where('status', 'diterima')->count();
-            $data['laporan_ditolak'] = Laporan::where('status', 'ditolak')->count();
+        if ($user->role === 'admin_dpmd' || $user->role === 'admin_kecamatan') {
+            // Base query for desas based on role
+            $desaQuery = \App\Models\Desa::query();
+            $laporanQuery = \App\Models\Laporan::query();
+            
+            if ($user->role === 'admin_kecamatan') {
+                $desaQuery->where('kecamatan', $user->kecamatan);
+                // Pluck IDs to filter laporans
+                $desaIds = $desaQuery->pluck('id');
+                $laporanQuery->whereIn('desa_id', $desaIds);
+            }
+
+            // Data for DPMD / Kecamatan Admin
+            $data['total_desa'] = $desaQuery->count();
+            $data['total_laporan'] = $laporanQuery->count();
+            $data['laporan_pending'] = (clone $laporanQuery)->where('status', 'pending')->count();
+            $data['laporan_diterima'] = (clone $laporanQuery)->where('status', 'diterima')->count();
+            $data['laporan_ditolak'] = (clone $laporanQuery)->where('status', 'ditolak')->count();
 
             // Desa yang melapor vs belum melapor (dalam bulan ini)
-            $desaSudahLaporCount = Laporan::whereYear('tanggal_laporan', now()->year)
+            $desaSudahLaporCount = (clone $laporanQuery)->whereYear('tanggal_laporan', now()->year)
                 ->whereMonth('tanggal_laporan', now()->month)
                 ->distinct('desa_id')
                 ->count();
             $data['desa_belum_lapor'] = max(0, $data['total_desa'] - $desaSudahLaporCount);
-            $data['desa_wisata_count'] = Desa::where('is_desa_wisata', true)->count();
+            
+            if ($user->role === 'admin_kecamatan') {
+                $data['desa_wisata_count'] = (clone $desaQuery)->where('is_desa_wisata', true)->count();
+            } else {
+                $data['desa_wisata_count'] = \App\Models\Desa::where('is_desa_wisata', true)->count();
+            }
 
-            $data['recent_laporans'] = Laporan::with('desa')->latest()->take(5)->get();
-            $data['pending_verification'] = Laporan::with('desa')->where('status', 'pending')->latest()->take(3)->get();
+            $data['recent_laporans'] = (clone $laporanQuery)->with('desa')->latest()->take(5)->get();
+            $data['pending_verification'] = (clone $laporanQuery)->with('desa')->where('status', 'pending')->latest()->take(3)->get();
 
-            $data['desas'] = Desa::withCount('laporans')
+            $data['desas'] = (clone $desaQuery)->withCount('laporans')
                 ->orderByRaw("CASE WHEN kecamatan = 'Borong' THEN 0 ELSE 1 END")
                 ->orderBy('kecamatan', 'asc')
                 ->orderByRaw("CASE WHEN nama_desa LIKE 'Kelurahan%' THEN 0 ELSE 1 END")
@@ -81,6 +97,20 @@ class DashboardController extends Controller
         return view('public.laporan-create', compact('desa'));
     }
 
+    public function indexReports()
+    {
+        $user = Auth::user();
+        $desa = Desa::where('user_id', $user->id)->first();
+
+        if (!$desa) {
+            return redirect()->route('dashboard')->with('error', 'Desa Anda belum terdaftar.');
+        }
+
+        $laporans = $desa->laporans()->latest()->paginate(10);
+
+        return view('dashboard.laporan.index', compact('laporans', 'desa'));
+    }
+
     public function storeReport(Request $request)
     {
         $request->validate([
@@ -121,11 +151,17 @@ class DashboardController extends Controller
         $user = Auth::user();
         $laporan = Laporan::with('desa')->findOrFail($id);
 
-        // Security check: If not DPMD, must be the village admin of this report
+        // Security check: If not DPMD, must be the village admin of this report or the kecamatan admin
         if ($user->role !== 'admin_dpmd') {
-            $desa = Desa::where('user_id', $user->id)->first();
-            if (!$desa || $laporan->desa_id !== $desa->id) {
-                abort(403, 'Anda tidak memiliki akses ke laporan ini.');
+            if ($user->role === 'admin_kecamatan') {
+                if ($laporan->desa->kecamatan !== $user->kecamatan) {
+                    abort(403, 'Anda tidak memiliki akses ke laporan di luar kecamatan Anda.');
+                }
+            } else {
+                $desa = Desa::where('user_id', $user->id)->first();
+                if (!$desa || $laporan->desa_id !== $desa->id) {
+                    abort(403, 'Anda tidak memiliki akses ke laporan ini.');
+                }
             }
         }
 
@@ -136,9 +172,9 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
 
-        // Only DPMD should see the detailed monitoring of a village for now
-        if ($user->role !== 'admin_dpmd') {
-            abort(403, 'Akses terbatas untuk Admin DPMD.');
+        // Only DPMD and Admin Kecamatan should see the detailed monitoring of a village
+        if (!in_array($user->role, ['admin_dpmd', 'admin_kecamatan'])) {
+            abort(403, 'Akses terbatas untuk Admin DPMD dan Admin Kecamatan.');
         }
 
         $desa = Desa::with([
@@ -146,17 +182,25 @@ class DashboardController extends Controller
                 $query->latest();
             }
         ])->findOrFail($id);
+        
+        if ($user->role === 'admin_kecamatan' && $desa->kecamatan !== $user->kecamatan) {
+            abort(403, 'Anda tidak memiliki akses ke desa di luar kecamatan Anda.');
+        }
 
         return view('public.desa-detail', compact('desa'));
     }
 
     public function approveLaporan($id)
     {
-        if (Auth::user()->role !== 'admin_dpmd') {
+        $user = Auth::user();
+        if (!in_array($user->role, ['admin_dpmd', 'admin_kecamatan'])) {
             abort(403);
         }
 
-        $laporan = Laporan::findOrFail($id);
+        $laporan = Laporan::with('desa')->findOrFail($id);
+        if ($user->role === 'admin_kecamatan' && $laporan->desa->kecamatan !== $user->kecamatan) {
+            abort(403, 'Anda tidak memiliki hak.');
+        }
         $laporan->update(['status' => 'diterima']);
 
         return redirect()->back()->with('success', 'Laporan berhasil disetujui.');
@@ -164,11 +208,15 @@ class DashboardController extends Controller
 
     public function rejectLaporan(Request $request, $id)
     {
-        if (Auth::user()->role !== 'admin_dpmd') {
+        $user = Auth::user();
+        if (!in_array($user->role, ['admin_dpmd', 'admin_kecamatan'])) {
             abort(403);
         }
 
-        $laporan = Laporan::findOrFail($id);
+        $laporan = Laporan::with('desa')->findOrFail($id);
+        if ($user->role === 'admin_kecamatan' && $laporan->desa->kecamatan !== $user->kecamatan) {
+            abort(403, 'Anda tidak memiliki hak.');
+        }
         $laporan->update([
             'status' => 'ditolak',
             'catatan_admin' => $request->catatan,
@@ -288,10 +336,12 @@ class DashboardController extends Controller
         $gallery = \App\Models\DesaGallery::findOrFail($id);
         $user = Auth::user();
 
-        $desa = Desa::where('user_id', $user->id)->firstOrFail();
-
-        if ($gallery->desa_id !== $desa->id) {
-            abort(403);
+        // If not DPMD, check if user owns the village this gallery belongs to
+        if ($user->role !== 'admin_dpmd') {
+            $desa = Desa::where('user_id', $user->id)->first();
+            if (!$desa || $gallery->desa_id !== $desa->id) {
+                abort(403);
+            }
         }
 
         if ($gallery->type === 'foto') {
@@ -498,6 +548,6 @@ class DashboardController extends Controller
 
         $laporan->delete();
 
-        return redirect()->back()->with('success', 'Laporan berhasil dihapus.');
+        return redirect()->route('dashboard')->with('success', 'Laporan berhasil dihapus.');
     }
 }

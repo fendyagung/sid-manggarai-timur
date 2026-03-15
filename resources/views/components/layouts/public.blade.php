@@ -358,6 +358,22 @@
             revealObserver.observe(el);
         });
     </script>
+    <script>
+        function showFileName(input, targetId) {
+            const display = document.getElementById(targetId);
+            if (input.files && input.files[0]) {
+                display.innerText = 'File Terpilih: ' + input.files[0].name;
+                display.classList.remove('text-slate-500', 'text-slate-400');
+                display.classList.add('text-emerald-600', 'font-black');
+
+                // For reports which use blue theme
+                if (window.location.href.includes('laporan')) {
+                    display.classList.remove('text-emerald-600');
+                    display.classList.add('text-blue-600');
+                }
+            }
+        }
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fslightbox/3.0.9/index.js"></script>
 </body>
 

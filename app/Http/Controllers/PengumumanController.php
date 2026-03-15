@@ -35,8 +35,12 @@ class PengumumanController extends Controller
 
     public function destroy(Pengumuman $pengumuman)
     {
+        if (Auth::user()->role !== 'admin_dpmd') {
+            abort(403);
+        }
+
         $pengumuman->delete();
-        return redirect()->back()->with('success', 'Pengumuman dihapus.');
+        return redirect()->route('pengumuman.index')->with('success', 'Pengumuman dihapus.');
     }
 
     public function toggle(Pengumuman $pengumuman)

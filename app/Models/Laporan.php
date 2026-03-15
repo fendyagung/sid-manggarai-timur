@@ -16,6 +16,7 @@ class Laporan extends Model
         'kategori',
         'keterangan',
         'file_path',
+        'original_name',
         'tanggal_laporan',
         'status',
         'catatan_admin',

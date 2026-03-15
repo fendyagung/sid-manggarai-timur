@@ -223,7 +223,7 @@
             /* ===== LOGIN CARD ===== */
             .right-side {
                 width: 100%;
-                max-width: 440px;
+                max-width: 480px; /* Diperlebar dari 440px agar 3 tab muat tanpa wrap */
             }
 
             .glass-card {
@@ -238,17 +238,18 @@
             .role-tabs {
                 display: flex;
                 background: rgba(0, 0, 0, 0.05);
-                padding: 6px;
+                padding: 4px; /* Dikurangi dari 6px */
                 border-radius: 18px;
                 margin-bottom: 32px;
+                gap: 2px; /* Jarak antar tab */
             }
 
             .tab-btn {
                 flex: 1;
-                padding: 12px;
+                padding: 10px 4px; /* Padding dikurangi agar tidak memotong teks */
                 border: none;
                 border-radius: 14px;
-                font-size: 13px;
+                font-size: 13px; /* Ukuran font disesuaikan agar pas semua */
                 font-weight: 700;
                 cursor: pointer;
                 transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -256,7 +257,7 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                gap: 8px;
+                gap: 4px; /* Jarak icon dan teks dikurangi */
             }
 
             .tab-btn.active-desa {
@@ -269,6 +270,12 @@
                 background: #f59e0b;
                 color: white;
                 box-shadow: 0 10px 15px -3px rgba(245, 158, 11, 0.4);
+            }
+
+            .tab-btn.active-kecamatan {
+                background: #3b82f6; /* Blue for kecamatan */
+                color: white;
+                box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.4);
             }
 
             .card-header {
@@ -345,6 +352,11 @@
                 box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.1);
             }
 
+            .form-input.biru:focus {
+                border-color: #3b82f6;
+                box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+            }
+
             .btn-submit {
                 width: 100%;
                 padding: 16px;
@@ -382,6 +394,16 @@
                 box-shadow: 0 15px 30px -10px rgba(245, 158, 11, 0.4);
             }
 
+            .btn-submit.biru {
+                background: linear-gradient(135deg, #3b82f6, #2563eb);
+                box-shadow: 0 10px 20px -5px rgba(59, 130, 246, 0.3);
+            }
+
+            .btn-submit.biru:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 15px 30px -10px rgba(59, 130, 246, 0.4);
+            }
+
             .footer-links {
                 display: flex;
                 align-items: center;
@@ -412,6 +434,10 @@
 
             .link-alt.emas {
                 color: #f59e0b;
+            }
+
+            .link-alt.biru {
+                color: #3b82f6;
             }
 
             .bottom-note {
@@ -591,6 +617,8 @@
                         <nav class="role-tabs">
                             <button class="tab-btn {{ old('role', 'desa') === 'desa' ? 'active-desa' : '' }}"
                                 id="btn-desa" onclick="switchRole('desa')">🏘️ Admin Desa</button>
+                            <button class="tab-btn {{ old('role') === 'admin_kecamatan' ? 'active-kecamatan' : '' }}" id="btn-kecamatan"
+                                onclick="switchRole('admin_kecamatan')">📍 Admin Kec</button>
                             <button class="tab-btn {{ old('role') === 'dmpd' ? 'active-dmpd' : '' }}" id="btn-dmpd"
                                 onclick="switchRole('dmpd')">🏛️ Admin Dinas</button>
                         </nav>
@@ -612,31 +640,7 @@
                                 @csrf
                                 <input type="hidden" name="role" value="desa">
 
-                                <div class="form-group">
-                                    <label>Wilayah Kecamatan</label>
-                                    <div class="input-box">
-                                        <i>📍</i>
-                                        <select class="form-input" id="select-kecamatan" onchange="loadDesa(this.value)"
-                                            style="padding-left: 44px; appearance: none; cursor: pointer;">
-                                            <option value="">Pilih Kecamatan</option>
-                                            @foreach($kecamatans as $kec)
-                                                <option value="{{ $kec->nama }}">{{ $kec->nama }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Pilih Nama Desa</label>
-                                    <div class="input-box">
-                                        <i>🏘️</i>
-                                        <select class="form-input" id="select-desa" onchange="setKodeDesa(this)"
-                                            style="padding-left: 44px; appearance: none; cursor: pointer;">
-                                            <option value="">Pilih Desa</option>
-                                        </select>
-                                    </div>
-                                </div>
-
+                                <!-- Username field for Admin Desa -->
                                 <div class="form-group">
                                     <label>Username / Kode Desa</label>
                                     <div class="input-box">
@@ -667,6 +671,52 @@
                                 </div>
 
                                 <button type="submit" class="btn-submit hijau">
+                                    Masuk
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- Panel Admin Dinas -->
+                        <div class="form-panel {{ old('role') === 'admin_kecamatan' ? 'show' : '' }}" id="panel-kecamatan">
+                            <div class="card-header">
+                                <h3>Admin Kecamatan</h3>
+                                <p>Akses kontrol Sistem Informasi Desa tingkat Kecamatan</p>
+                            </div>
+
+                            <form action="{{ route('login') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="role" value="admin_kecamatan">
+
+                                <div class="form-group">
+                                    <label>Email atau Username</label>
+                                    <div class="input-box">
+                                        <i>👤</i>
+                                        <input class="form-input biru" type="text" name="login"
+                                            placeholder="kecamatan@dmpd.go.id" value="{{ old('login') }}" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Kata Sandi</label>
+                                    <div class="input-box">
+                                        <i>🔑</i>
+                                        <input class="form-input biru" type="password" name="password" id="pass-kecamatan"
+                                            placeholder="••••••••" required>
+                                        <span
+                                            style="position:absolute; right:16px; top:50%; transform:translateY(-50%); cursor:pointer; opacity:0.5;"
+                                            onclick="togglePass('pass-kecamatan', this)">👁️</span>
+                                    </div>
+                                </div>
+
+                                <div class="footer-links">
+                                    <label class="checkbox-item">
+                                        <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}>
+                                        <span>Aktifkan 8 jam</span>
+                                    </label>
+                                    <a href="{{ route('password.request') }}" class="link-alt biru">Reset Password</a>
+                                </div>
+
+                                <button type="submit" class="btn-submit biru">
                                     Masuk
                                 </button>
                             </form>
@@ -735,25 +785,41 @@
         <script>
             function switchRole(role) {
                 const btnDesa = document.getElementById('btn-desa');
+                const btnKecamatan = document.getElementById('btn-kecamatan');
                 const btnDmpd = document.getElementById('btn-dmpd');
                 const panelDesa = document.getElementById('panel-desa');
+                const panelKecamatan = document.getElementById('panel-kecamatan');
                 const panelDmpd = document.getElementById('panel-dmpd');
                 const regLink = document.getElementById('reg-link');
                 const roleInputs = document.querySelectorAll('input[name="role"]');
 
                 if (role === 'desa') {
                     btnDesa.className = 'tab-btn active-desa';
+                    btnKecamatan.className = 'tab-btn';
                     btnDmpd.className = 'tab-btn';
                     panelDesa.classList.add('show');
+                    panelKecamatan.classList.remove('show');
                     panelDmpd.classList.remove('show');
                     regLink.href = "{{ route('register', ['role' => 'admin_desa']) }}";
                     regLink.style.color = '#10b981';
                     roleInputs.forEach(i => i.value = 'desa');
+                } else if (role === 'admin_kecamatan') {
+                    btnKecamatan.className = 'tab-btn active-kecamatan';
+                    btnDesa.className = 'tab-btn';
+                    btnDmpd.className = 'tab-btn';
+                    panelKecamatan.classList.add('show');
+                    panelDesa.classList.remove('show');
+                    panelDmpd.classList.remove('show');
+                    regLink.href = "{{ route('register', ['role' => 'admin_kecamatan']) }}";
+                    regLink.style.color = '#3b82f6';
+                    roleInputs.forEach(i => i.value = 'admin_kecamatan');
                 } else {
                     btnDmpd.className = 'tab-btn active-dmpd';
                     btnDesa.className = 'tab-btn';
+                    btnKecamatan.className = 'tab-btn';
                     panelDmpd.classList.add('show');
                     panelDesa.classList.remove('show');
+                    panelKecamatan.classList.remove('show');
                     regLink.href = "{{ route('register', ['role' => 'admin_dpmd']) }}";
                     regLink.style.color = '#f59e0b';
                     roleInputs.forEach(i => i.value = 'dmpd');
@@ -768,39 +834,6 @@
                 } else {
                     input.type = 'password';
                     icon.textContent = '👁️';
-                }
-            }
-
-            async function loadDesa(kecamatan) {
-                const selectDesa = document.getElementById('select-desa');
-                selectDesa.innerHTML = '<option value="">Memuat Desa...</option>';
-
-                if (!kecamatan) {
-                    selectDesa.innerHTML = '<option value="">Pilih Desa</option>';
-                    return;
-                }
-
-                try {
-                    const response = await fetch(`/api/desas/${encodeURIComponent(kecamatan)}`);
-                    const desas = await response.json();
-
-                    selectDesa.innerHTML = '<option value="">Pilih Desa</option>';
-                    desas.forEach(desa => {
-                        const option = document.createElement('option');
-                        option.value = desa.kode_desa || desa.nama_desa;
-                        option.textContent = desa.nama_desa;
-                        selectDesa.appendChild(option);
-                    });
-                } catch (error) {
-                    console.error('Error fetching desas:', error);
-                    selectDesa.innerHTML = '<option value="">Gagal memuat data</option>';
-                }
-            }
-
-            function setKodeDesa(select) {
-                const loginInput = document.getElementById('login-desa');
-                if (select.value) {
-                    loginInput.value = select.value;
                 }
             }
         </script>

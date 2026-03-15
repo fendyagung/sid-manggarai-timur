@@ -63,7 +63,23 @@ class DesaController extends Controller
 
     public function potensiWisata()
     {
-        return view('public.potensi-wisata');
+        $potensis = \App\Models\Potensi::with('desa')->latest()->paginate(12);
+        return view('public.potensi-wisata', compact('potensis'));
+    }
+
+    public function showPotensi($id)
+    {
+        $potensi = \App\Models\Potensi::with(['desa', 'galleries'])->findOrFail($id);
+        
+        // Ambil potensi serupa (berdasarkan kategori)
+        $related = \App\Models\Potensi::where('kategori', $potensi->kategori)
+            ->where('id', '!=', $potensi->id)
+            ->with('desa')
+            ->latest()
+            ->take(3)
+            ->get();
+
+        return view('public.potensi-detail', compact('potensi', 'related'));
     }
 
     public function berita()
@@ -142,5 +158,11 @@ class DesaController extends Controller
         $dpmdProfile = \App\Models\DpmdProfile::first();
         $villages = \App\Models\Desa::whereNotNull('video_youtube')->latest()->get();
         return view('public.video-gallery', compact('dpmdProfile', 'villages'));
+    }
+
+    public function showPengumuman($id)
+    {
+        $announcement = \App\Models\Pengumuman::findOrFail($id);
+        return view('public.pengumuman-show', compact('announcement'));
     }
 }

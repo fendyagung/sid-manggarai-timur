@@ -12,28 +12,47 @@ class DesaManagementController extends Controller
 {
     private function checkAdmin()
     {
-        if (Auth::user()->role !== 'admin_dpmd') {
-            abort(403, 'Hanya Admin DPMD yang bisa mengakses menu ini.');
+        $user = Auth::user();
+        if (!in_array($user->role, ['admin_dpmd', 'admin_kecamatan'])) {
+            abort(403, 'Akses ditolak. Anda tidak memiliki izin.');
         }
     }
 
     public function index()
     {
         $this->checkAdmin();
-        $desas = Desa::with('admin')->latest()->paginate(15);
+        $user = Auth::user();
+        
+        $query = Desa::with('admin')->latest();
+        if ($user->role === 'admin_kecamatan') {
+            $query->where('kecamatan', $user->kecamatan);
+        }
+        $desas = $query->paginate(15);
+        
         return view('dashboard.dpmd.desa.index', compact('desas'));
     }
 
     public function create()
     {
         $this->checkAdmin();
-        $kecamatans = Kecamatan::orderBy('nama')->get();
+        $user = Auth::user();
+        if ($user->role === 'admin_kecamatan') {
+            $kecamatans = Kecamatan::where('nama', $user->kecamatan)->get();
+        } else {
+            $kecamatans = Kecamatan::orderBy('nama')->get();
+        }
         return view('dashboard.dpmd.desa.create', compact('kecamatans'));
     }
 
     public function store(Request $request)
     {
         $this->checkAdmin();
+        $user = Auth::user();
+        
+        if ($user->role === 'admin_kecamatan' && $request->kecamatan !== $user->kecamatan) {
+            abort(403, 'Anda hanya dapat menambahkan desa di kecamatan Anda.');
+        }
+
         $request->validate([
             'nama_desa' => 'required|string|max:255',
             'jenis' => 'required|in:desa,kelurahan',
@@ -54,15 +73,35 @@ class DesaManagementController extends Controller
     public function edit($id)
     {
         $this->checkAdmin();
+        $user = Auth::user();
         $desa = Desa::findOrFail($id);
-        $kecamatans = Kecamatan::orderBy('nama')->get();
+        
+        if ($user->role === 'admin_kecamatan' && $desa->kecamatan !== $user->kecamatan) {
+            abort(403, 'Anda tidak dapat mengedit desa di luar kecamatan Anda.');
+        }
+
+        if ($user->role === 'admin_kecamatan') {
+            $kecamatans = Kecamatan::where('nama', $user->kecamatan)->get();
+        } else {
+            $kecamatans = Kecamatan::orderBy('nama')->get();
+        }
         return view('dashboard.dpmd.desa.edit', compact('desa', 'kecamatans'));
     }
 
     public function update(Request $request, $id)
     {
         $this->checkAdmin();
+        $user = Auth::user();
         $desa = Desa::findOrFail($id);
+
+        if ($user->role === 'admin_kecamatan') {
+            if ($desa->kecamatan !== $user->kecamatan) {
+                abort(403, 'Akses ditolak.');
+            }
+            if ($request->kecamatan !== $user->kecamatan) {
+                abort(403, 'Akses ditolak memindahkan kecamatan.');
+            }
+        }
 
         $request->validate([
             'nama_desa' => 'required|string|max:255',
@@ -84,7 +123,12 @@ class DesaManagementController extends Controller
     public function destroy($id)
     {
         $this->checkAdmin();
+        $user = Auth::user();
         $desa = Desa::findOrFail($id);
+
+        if ($user->role === 'admin_kecamatan' && $desa->kecamatan !== $user->kecamatan) {
+            abort(403, 'Akses ditolak.');
+        }
 
         if ($desa->user_id) {
             return back()->with('error', 'Tidak bisa menghapus desa yang sudah memiliki admin.');

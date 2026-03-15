@@ -99,8 +99,43 @@
                         @endif
                     @endif
 
+                    <!-- Potensi & Daya Tarik -->
+                    @if($desa->potensis->isNotEmpty())
+                        <div class="mt-20">
+                            <h3 class="text-2xl font-bold text-slate-800 dark:text-white mb-8 flex items-center gap-3">
+                                <span class="w-2 h-6 bg-amber-500 rounded-full"></span>
+                                Potensi & Daya Tarik Wisata
+                            </h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                @foreach($desa->potensis as $potensi)
+                                    <div
+                                        class="group bg-slate-50 dark:bg-slate-800/50 rounded-[2rem] overflow-hidden border border-slate-100 dark:border-slate-700/50 hover:shadow-xl transition-all">
+                                        @if($potensi->foto_utama)
+                                            <div class="aspect-video overflow-hidden">
+                                                <img src="{{ asset('storage/' . $potensi->foto_utama) }}"
+                                                    alt="{{ $potensi->nama_potensi }}"
+                                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                                            </div>
+                                        @endif
+                                        <div class="p-8">
+                                            <span
+                                                class="inline-block px-3 py-1 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-[10px] font-bold uppercase tracking-widest rounded-lg mb-3">
+                                                {{ $potensi->kategori }}
+                                            </span>
+                                            <h4 class="text-xl font-bold text-slate-800 dark:text-white mb-3">
+                                                {{ $potensi->nama_potensi }}</h4>
+                                            <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                                                {{ $potensi->deskripsi }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+
                     <!-- Statistics & Data -->
-                    <div class="mt-12">
+                    <div class="mt-20">
                         <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
                             <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

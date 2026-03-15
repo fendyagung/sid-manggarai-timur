@@ -30,7 +30,10 @@
                             class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2 transition-colors">Foto
                             Kepala Dinas</label>
                         <input type="file" name="foto_kadis" id="foto_kadis"
+                            onchange="showFileName(this, 'kadis-photo-name')"
                             class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 dark:file:bg-emerald-900/30 file:text-emerald-700 dark:file:text-emerald-400 hover:file:bg-emerald-100 dark:hover:file:bg-emerald-900/50 transition-all outline-none dark:text-slate-300">
+                        <p class="text-[10px] text-slate-400 mt-2 font-bold italic" id="kadis-photo-name">Pilih foto
+                            Kepala Dinas</p>
                     </div>
 
                     <div
@@ -85,8 +88,10 @@
                             class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2 transition-colors">Logo
                             Website (Logo Manggarai Timur)</label>
                         <input type="file" name="logo_website" id="logo_website"
+                            onchange="showFileName(this, 'logo-website-name')"
                             class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 dark:file:bg-emerald-900/30 file:text-emerald-700 dark:file:text-emerald-400 hover:file:bg-emerald-100 dark:hover:file:bg-emerald-900/50 transition-all outline-none dark:text-slate-300">
-                        <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-2 transition-colors">Format:
+                        <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-2 transition-colors"
+                            id="logo-website-name">Format:
                             PNG/JPG. Disarankan logo dengan latar
                             belakang transparan.</p>
                     </div>
@@ -125,6 +130,7 @@
                                 <div
                                     class="relative p-10 border-2 border-dotted border-slate-300 rounded-[2rem] bg-white hover:border-rose-400 transition-all text-center">
                                     <input type="file" name="gallery_photos[]" id="gallery_photos" multiple
+                                        onchange="showFileName(this, 'dpmd-gallery-photos-name')"
                                         class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
                                     <div class="space-y-2">
                                         <svg class="w-12 h-12 mx-auto text-slate-300 group-hover:text-rose-500 transition-colors"
@@ -132,7 +138,8 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                                                 d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
-                                        <p class="text-slate-500 font-bold">Ketuk atau seret foto ke sini</p>
+                                        <p class="text-slate-500 font-bold" id="dpmd-gallery-photos-name">Ketuk atau
+                                            seret foto ke sini</p>
                                         <p class="text-[10px] text-slate-400 px-10">Dapat memilih lebih dari 1 file foto
                                             (Format: JPG, PNG, JPEG. Max 5MB per file)</p>
                                     </div>
@@ -532,8 +539,10 @@
                 <div>
                     <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Foto Profil
                         (Opsional)</label>
-                    <input type="file" name="foto"
+                    <input type="file" name="foto" id="staff_foto" onchange="showFileName(this, 'staff-photo-name')"
                         class="w-full px-6 py-3 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-black file:bg-blue-600 file:text-white hover:file:bg-blue-700 transition-all outline-none dark:text-slate-300">
+                    <p class="text-[10px] text-slate-400 mt-2 font-bold italic px-2" id="staff-photo-name">Belum ada
+                        file dipilih</p>
                 </div>
 
                 <div class="flex items-center gap-3 pt-4">

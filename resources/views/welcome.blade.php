@@ -2,9 +2,12 @@
     $dpmdProfile = \App\Models\DpmdProfile::first();
 
     // Dynamic Stats
-    $totalDesa = $dpmdProfile->stat_total_desa ?? \App\Models\Desa::count();
-    $totalKecamatan = $dpmdProfile->stat_kecamatan ?? \DB::table('kecamatans')->count();
-    $desaWisataCount = $dpmdProfile->stat_desa_wisata ?? \App\Models\Desa::where('is_desa_wisata', true)->count();
+    // Dynamic Stats (Prioritaskan hitungan sistem jika input manual kosong/0)
+    $totalDesa = ($dpmdProfile->stat_total_desa > 0) ? $dpmdProfile->stat_total_desa : \App\Models\Desa::count();
+    $totalKecamatan = ($dpmdProfile->stat_kecamatan > 0) ? $dpmdProfile->stat_kecamatan : \DB::table('kecamatans')->count();
+    $desaWisataCount = ($dpmdProfile->stat_desa_wisata > 0) ? $dpmdProfile->stat_desa_wisata : \App\Models\Desa::where('is_desa_wisata', true)->count();
+    $spotWisataCount = $dpmdProfile->stat_spot_wisata ?? 0;
+    $wisatawanCount = $dpmdProfile->stat_wisatawan ?? '0';
 
     // Kepatuhan (Reports this month)
     $desaSudahLaporCount = \App\Models\Laporan::whereYear('tanggal_laporan', now()->year)
@@ -18,6 +21,12 @@
 
     // Announcements
     $announcements = \App\Models\Pengumuman::where('is_active', true)->latest()->take(4)->get();
+
+    // Latest News (Berita)
+    $latestNews = \App\Models\Berita::with('user')->where('is_published', true)->latest()->take(3)->get();
+
+    // Latest Potentials (Destinasi)
+    $latestPotensi = \App\Models\Potensi::with('desa')->latest()->take(4)->get();
 
     // Report Status Summary (Current Month)
     $laporanSelesai = \App\Models\Laporan::whereYear('tanggal_laporan', now()->year)
@@ -523,7 +532,7 @@
                 </div>
 
                 <!-- Stats Grid -->
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-8 pt-10 border-t border-white/10">
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-8 pt-10 border-t border-white/10">
                     <div class="stat-item">
                         <div class="text-3xl font-black text-amber-400 counter" data-target="{{ $totalDesa }}">0</div>
                         <div class="text-[10px] text-white/80 uppercase tracking-widest font-bold mt-2">
@@ -542,10 +551,21 @@
                             Desa Wisata</div>
                     </div>
                     <div class="stat-item">
-                        <div class="text-3xl font-black text-amber-400"><span class="counter"
-                                data-target="{{ $kepatuhanPercent }}">0</span>%</div>
+                        <div class="text-3xl font-black text-amber-400 counter" data-target="{{ $spotWisataCount }}">0
+                        </div>
                         <div class="text-[10px] text-white/80 uppercase tracking-widest font-bold mt-2">
-                            Kepatuhan</div>
+                            Spot Wisata</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="text-3xl font-black text-amber-400">
+                            @if(is_numeric(str_replace(['.', ','], '', $wisatawanCount)))
+                                <span class="counter" data-target="{{ str_replace(['.', ','], '', $wisatawanCount) }}">0</span>
+                            @else
+                                {{ $wisatawanCount }}
+                            @endif
+                        </div>
+                        <div class="text-[10px] text-white/80 uppercase tracking-widest font-bold mt-2">
+                            Wisatawan</div>
                     </div>
                 </div>
             </div>
@@ -785,7 +805,107 @@
         </div>
     </section>
 
+
+    <!-- SECTION: BERITA TERKINI -->
+    <section class="py-24 bg-white dark:bg-slate-900" id="berita">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12 reveal">
+                <div class="max-w-xl">
+                    <span
+                        class="px-4 py-1.5 bg-emerald-50 text-[#1e293b] text-[11px] font-black uppercase tracking-widest rounded-full border border-emerald-100">📰
+                        Kabar Desa</span>
+                    <h2 class="text-4xl font-black mt-6 font-serif text-slate-900 dark:text-white">Berita & Kabar <span
+                            style="color: #d97706;">Terkini</span></h2>
+                    <p class="text-slate-600 dark:text-slate-400 mt-4">Informasi terbaru seputar kegiatan desa, kebijakan dinas, dan perkembangan pembangunan di Manggarai Timur.</p>
+                </div>
+                <div class="mt-8 md:mt-0">
+                    <a href="{{ route('public.berita') }}"
+                        class="inline-flex items-center gap-2 text-sm font-black text-emerald-600 uppercase tracking-widest hover:underline">Lihat Semua Berita →</a>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                @forelse($latestNews as $news)
+                    <a href="{{ route('public.berita.detail', $news->slug) }}" class="group block reveal">
+                        <div class="bg-white dark:bg-slate-800 rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all border border-slate-100 dark:border-slate-700 h-full flex flex-col">
+                            <div class="relative h-52 overflow-hidden">
+                                @if($news->foto)
+                                    <img src="{{ asset('storage/' . $news->foto) }}"
+                                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                                        alt="{{ $news->judul }}">
+                                @else
+                                    <div class="w-full h-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-4xl">📰</div>
+                                @endif
+                                <div class="absolute top-4 left-4">
+                                    <span class="bg-white/90 backdrop-blur-sm text-[10px] font-bold py-1 px-3 rounded-full text-slate-800 uppercase shadow-sm">{{ $news->kategori }}</span>
+                                </div>
+                            </div>
+                            <div class="p-6 flex-grow">
+                                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{{ $news->created_at->isoFormat('D MMMM Y') }}</span>
+                                <h3 class="text-lg font-bold mt-2 mb-3 text-slate-900 dark:text-white group-hover:text-emerald-600 transition-colors line-clamp-2">{{ $news->judul }}</h3>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed line-clamp-3">
+                                    {{ Str::limit(strip_tags($news->isi), 100) }}
+                                </p>
+                            </div>
+                            <div class="px-6 py-4 border-t border-slate-50 dark:border-slate-700 flex items-center justify-between">
+                                <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Oleh {{ $news->user->name }}</span>
+                                <span class="text-[9px] font-black text-emerald-600 uppercase tracking-widest">Baca Selengkapnya</span>
+                            </div>
+                        </div>
+                    </a>
+                @empty
+                    <div class="col-span-full py-10 text-center opacity-50 italic">Belum ada berita terbaru.</div>
+                @endforelse
+            </div>
+        </div>
+    </section>
+
+
+    <!-- SECTION: POTENSI WISATA -->
+    <section class="py-24 bg-white dark:bg-slate-900" id="potensi">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12 reveal">
+                <div class="max-w-xl">
+                    <span
+                        class="px-4 py-1.5 bg-amber-50 text-[#1e293b] text-[11px] font-black uppercase tracking-widest rounded-full border border-amber-100">🌟
+                        Eksplorasi</span>
+                    <h2 class="text-4xl font-black mt-6 font-serif text-slate-900 dark:text-white">Potensi & Destinasi <span
+                            style="color: #10b981;">Favorit</span></h2>
+                    <p class="text-slate-600 dark:text-slate-400 mt-4">Temukan berbagai keunikan, kerajinan, kuliner, dan keindahan alam yang tersebar di desa-desa Manggarai Timur.</p>
+                </div>
+                <div class="mt-8 md:mt-0">
+                    <a href="{{ route('public.potensi-wisata') }}"
+                        class="inline-flex items-center gap-2 text-sm font-black text-amber-600 uppercase tracking-widest hover:underline">Lihat Semua Potensi →</a>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                @forelse($latestPotensi as $item)
+                    <div class="group reveal relative h-[400px] rounded-[2rem] overflow-hidden shadow-lg border border-slate-100 dark:border-slate-800">
+                        @if($item->foto_utama)
+                            <img src="{{ asset('storage/' . $item->foto_utama) }}"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
+                                alt="{{ $item->nama_potensi }}">
+                        @else
+                            <div class="w-full h-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-4xl">🏝️</div>
+                        @endif
+                        <div class="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-black/90 via-black/40 to-transparent">
+                            <span class="px-3 py-1 bg-amber-500 text-white text-[9px] font-black uppercase tracking-widest rounded-full mb-3 inline-block shadow-lg">{{ $item->kategori }}</span>
+                            <h3 class="text-xl font-bold text-white mb-2">{{ $item->nama_potensi }}</h3>
+                            <div class="flex items-center gap-2 text-white/70 text-xs">
+                                📍 <span class="font-bold">{{ $item->desa->nama_desa ?? 'Manggarai Timur' }}</span>
+                            </div>
+                        </div>
+                    </div>
+                @empty
+                    <div class="col-span-full py-10 text-center opacity-50 italic">Belum ada potensi desa yang ditambahkan.</div>
+                @endforelse
+            </div>
+        </div>
+    </section>
+
     <!-- SECTION: PENGUMUMAN -->
+
     <section class="py-24 bg-white dark:bg-slate-900" id="pengumuman">
         <div class="max-w-7xl mx-auto px-6">
             <div class="mb-16 reveal">
@@ -799,7 +919,7 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 reveal">
                 @forelse($announcements as $an)
-                    <div class="peng-card">
+                    <a href="{{ route('public.pengumuman.detail', $an->id) }}" class="peng-card block">
                         <div
                             class="w-12 h-12 rounded-xl {{ $an->tipe === 'penting' ? 'bg-red-50 dark:bg-red-900/30 text-red-500 dark:text-red-400' : 'bg-blue-50 dark:bg-blue-900/30 text-blue-500 dark:text-blue-400' }} flex items-center justify-center text-xl flex-shrink-0">
                             {{ $an->tipe === 'penting' ? '🚨' : 'ℹ️' }}
@@ -812,11 +932,12 @@
                                 {{ Str::limit(strip_tags($an->isi), 100) }}
                             </p>
                             <div
-                                class="mt-4 text-[10px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-widest">
-                                {{ $an->created_at->isoFormat('D MMMM Y') }}
+                                class="mt-4 text-[10px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-widest flex justify-between items-center">
+                                <span>{{ $an->created_at->isoFormat('D MMMM Y') }}</span>
+                                <span class="text-emerald-600 dark:text-emerald-400 font-black">BACA SELENGKAPNYA →</span>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 @empty
                     <div class="col-span-full py-10 text-center opacity-50 italic">Tidak ada pengumuman terbaru.</div>
                 @endforelse

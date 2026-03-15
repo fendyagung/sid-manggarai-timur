@@ -14,6 +14,7 @@ class Regulasi extends Model
         'judul',
         'kategori',
         'file_path',
+        'original_name',
         'deskripsi',
         'user_id',
     ];

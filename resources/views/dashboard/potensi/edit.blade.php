@@ -95,8 +95,9 @@
                         @endif
                         <div
                             class="relative group border-2 border-dashed border-slate-200 dark:border-slate-600 rounded-2xl p-8 text-center hover:border-emerald-500 transition-all">
-                            <input type="file" name="foto_utama"
-                                class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" accept="image/*">
+                            <input type="file" name="foto_utama" id="foto_utama"
+                                class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" accept="image/*"
+                                onchange="showFileName(this, 'filename-display')">
                             <div class="space-y-2">
                                 <svg class="w-12 h-12 text-slate-400 mx-auto" fill="none" stroke="currentColor"
                                     viewBox="0 0 24 24">
@@ -104,7 +105,8 @@
                                         d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
                                         stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
                                 </svg>
-                                <p class="text-slate-500 dark:text-slate-400">Klik untuk ganti foto utama</p>
+                                <p class="text-slate-500 dark:text-slate-400" id="filename-display">Klik untuk ganti
+                                    foto utama</p>
                             </div>
                         </div>
                     </div>
@@ -136,17 +138,22 @@
                         @endif
 
                         <div id="photo-inputs" class="space-y-4">
-                            <div class="flex items-center gap-4">
-                                <input type="file" name="gallery_photos[]"
-                                    class="flex-1 px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-600 dark:bg-slate-700 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 transition-all">
-                                <button type="button" onclick="addPhotoInput()"
-                                    class="p-3 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 rounded-xl hover:bg-emerald-100 transition-all">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 4v16m8-8H4" />
-                                    </svg>
-                                </button>
+                            <div class="flex flex-col gap-2">
+                                <div class="flex items-center gap-4">
+                                    <input type="file" name="gallery_photos[]"
+                                        onchange="showFileName(this, 'gallery-name-0')"
+                                        class="flex-1 px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-600 dark:bg-slate-700 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 transition-all">
+                                    <button type="button" onclick="addPhotoInput()"
+                                        class="p-3 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 rounded-xl hover:bg-emerald-100 transition-all">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 4v16m8-8H4" />
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div id="gallery-name-0" class="text-[10px] text-slate-400 font-bold px-2">Belum ada
+                                    file dipilih</div>
                             </div>
                         </div>
                     </div>
@@ -173,25 +180,42 @@
     </form>
 
     <script>
+        function showFileName(input, targetId) {
+            const display = document.getElementById(targetId);
+            if (input.files && input.files[0]) {
+                display.innerText = 'File Terpilih: ' + input.files[0].name;
+                display.classList.remove('text-slate-500');
+                display.classList.add('text-emerald-600', 'font-black');
+            }
+        }
+
+        let galleryCounter = 1;
         function addPhotoInput() {
             const container = document.getElementById('photo-inputs');
             const div = document.createElement('div');
-            div.className = 'flex items-center gap-4 animate-fadeIn';
+            div.className = 'flex flex-col gap-2 animate-fadeIn';
+            const currentId = `gallery-name-${galleryCounter}`;
             div.innerHTML = `
-                <input type="file" name="gallery_photos[]" class="flex-1 px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-600 dark:bg-slate-700 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 transition-all">
-                <button type="button" onclick="this.parentElement.remove()" class="p-3 bg-rose-50 text-rose-600 rounded-xl hover:bg-rose-100 transition-all">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
+                <div class="flex items-center gap-4">
+                    <input type="file" name="gallery_photos[]" 
+                        onchange="showFileName(this, '${currentId}')"
+                        class="flex-1 px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-600 dark:bg-slate-700 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 transition-all">
+                    <button type="button" onclick="this.parentElement.parentElement.remove()" class="p-3 bg-rose-50 text-rose-600 rounded-xl hover:bg-rose-100 transition-all">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <div id="${currentId}" class="text-[10px] text-slate-400 font-bold px-2">Belum ada file dipilih</div>
             `;
             container.appendChild(div);
+            galleryCounter++;
         }
 
         function deleteGalleryPhoto(id) {
             if (confirm('Hapus foto dari galeri?')) {
                 const form = document.getElementById('delete-gallery-form');
-                form.action = `/dashboard/potensi/gallery/${id}`;
+                form.action = `{{ url('dashboard/potensi/gallery') }}/${id}`;
                 form.submit();
             }
         }

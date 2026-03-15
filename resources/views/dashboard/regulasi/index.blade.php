@@ -51,10 +51,10 @@
                             <label for="file"
                                 class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">File
                                 Dokumen</label>
-                            <input type="file" name="file" id="file" required
+                            <input type="file" name="file" id="file_regulasi" required
+                                onchange="showFileName(this, 'regulasi-filename')"
                                 class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-emerald-500 outline-none text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 dark:bg-slate-900 dark:text-slate-300">
-                            <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-2">PDF, DOCX, XLS, PPT, ZIP (Max
-                                10MB)</p>
+                            <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-2" id="regulasi-filename">PDF, DOCX, XLS, PPT, ZIP (Max 10MB)</p>
                         </div>
 
                         <div class="md:col-span-2">

@@ -4,16 +4,15 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class DaftarDesaSeeder extends Seeder
 {
     public function run(): void
     {
         $villages = [
-            // Borong (15 Desa, 3 Kelurahan)
-            ['kecamatan' => 'Borong', 'nama' => 'Kota Ndora', 'type' => 'Kelurahan'],
-            ['kecamatan' => 'Borong', 'nama' => 'Rana Loba', 'type' => 'Kelurahan'],
-            ['kecamatan' => 'Borong', 'nama' => 'Satar Peot', 'type' => 'Kelurahan'],
+            // Borong (15 Desa)
             ['kecamatan' => 'Borong', 'nama' => 'Balus Permai', 'type' => 'Desa'],
             ['kecamatan' => 'Borong', 'nama' => 'Bangka Kantar', 'type' => 'Desa'],
             ['kecamatan' => 'Borong', 'nama' => 'Benteng Raja', 'type' => 'Desa'],
@@ -30,31 +29,28 @@ class DaftarDesaSeeder extends Seeder
             ['kecamatan' => 'Borong', 'nama' => 'Rana Masak', 'type' => 'Desa'],
             ['kecamatan' => 'Borong', 'nama' => 'Waling', 'type' => 'Desa'],
 
-            // Lamba Leda Selatan (Poco Ranaka) (21 Desa, 3 Kelurahan)
-            ['kecamatan' => 'Lamba Leda Selatan (Poco Ranaka)', 'nama' => 'Bangka Leleng', 'type' => 'Kelurahan'],
-            ['kecamatan' => 'Lamba Leda Selatan (Poco Ranaka)', 'nama' => 'Mandosawu', 'type' => 'Kelurahan'],
-            ['kecamatan' => 'Lamba Leda Selatan (Poco Ranaka)', 'nama' => 'Nggalak Leleng', 'type' => 'Kelurahan'],
-            ['kecamatan' => 'Lamba Leda Selatan (Poco Ranaka)', 'nama' => 'Bangka Kuleng', 'type' => 'Desa'],
-            ['kecamatan' => 'Lamba Leda Selatan (Poco Ranaka)', 'nama' => 'Bangka Pau', 'type' => 'Desa'],
-            ['kecamatan' => 'Lamba Leda Selatan (Poco Ranaka)', 'nama' => 'Bea Waek', 'type' => 'Desa'],
-            ['kecamatan' => 'Lamba Leda Selatan (Poco Ranaka)', 'nama' => 'Compang Laho', 'type' => 'Desa'],
-            ['kecamatan' => 'Lamba Leda Selatan (Poco Ranaka)', 'nama' => 'Compang Wesang', 'type' => 'Desa'],
-            ['kecamatan' => 'Lamba Leda Selatan (Poco Ranaka)', 'nama' => 'Compang Weluk', 'type' => 'Desa'],
-            ['kecamatan' => 'Lamba Leda Selatan (Poco Ranaka)', 'nama' => 'Deno', 'type' => 'Desa'],
-            ['kecamatan' => 'Lamba Leda Selatan (Poco Ranaka)', 'nama' => 'Golo Lobos', 'type' => 'Desa'],
-            ['kecamatan' => 'Lamba Leda Selatan (Poco Ranaka)', 'nama' => 'Golo Ndari', 'type' => 'Desa'],
-            ['kecamatan' => 'Lamba Leda Selatan (Poco Ranaka)', 'nama' => 'Golo Nderu', 'type' => 'Desa'],
-            ['kecamatan' => 'Lamba Leda Selatan (Poco Ranaka)', 'nama' => 'Golo Rengket', 'type' => 'Desa'],
-            ['kecamatan' => 'Lamba Leda Selatan (Poco Ranaka)', 'nama' => 'Golo Wune', 'type' => 'Desa'],
-            ['kecamatan' => 'Lamba Leda Selatan (Poco Ranaka)', 'nama' => 'Gurung Turi', 'type' => 'Desa'],
-            ['kecamatan' => 'Lamba Leda Selatan (Poco Ranaka)', 'nama' => 'Lenang', 'type' => 'Desa'],
-            ['kecamatan' => 'Lamba Leda Selatan (Poco Ranaka)', 'nama' => 'Lento', 'type' => 'Desa'],
-            ['kecamatan' => 'Lamba Leda Selatan (Poco Ranaka)', 'nama' => 'Leong', 'type' => 'Desa'],
-            ['kecamatan' => 'Lamba Leda Selatan (Poco Ranaka)', 'nama' => 'Melo', 'type' => 'Desa'],
-            ['kecamatan' => 'Lamba Leda Selatan (Poco Ranaka)', 'nama' => 'Poco Lia', 'type' => 'Desa'],
-            ['kecamatan' => 'Lamba Leda Selatan (Poco Ranaka)', 'nama' => 'Pocong', 'type' => 'Desa'],
-            ['kecamatan' => 'Lamba Leda Selatan (Poco Ranaka)', 'nama' => 'Satar Tesem', 'type' => 'Desa'],
-            ['kecamatan' => 'Lamba Leda Selatan (Poco Ranaka)', 'nama' => 'Watu Lanur', 'type' => 'Desa'],
+            // Lamba Leda Selatan (21 Desa)
+            ['kecamatan' => 'Lamba Leda Selatan', 'nama' => 'Bangka Kuleng', 'type' => 'Desa'],
+            ['kecamatan' => 'Lamba Leda Selatan', 'nama' => 'Bangka Pau', 'type' => 'Desa'],
+            ['kecamatan' => 'Lamba Leda Selatan', 'nama' => 'Bea Waek', 'type' => 'Desa'],
+            ['kecamatan' => 'Lamba Leda Selatan', 'nama' => 'Compang Laho', 'type' => 'Desa'],
+            ['kecamatan' => 'Lamba Leda Selatan', 'nama' => 'Compang Wesang', 'type' => 'Desa'],
+            ['kecamatan' => 'Lamba Leda Selatan', 'nama' => 'Compang Weluk', 'type' => 'Desa'],
+            ['kecamatan' => 'Lamba Leda Selatan', 'nama' => 'Deno', 'type' => 'Desa'],
+            ['kecamatan' => 'Lamba Leda Selatan', 'nama' => 'Golo Lobos', 'type' => 'Desa'],
+            ['kecamatan' => 'Lamba Leda Selatan', 'nama' => 'Golo Ndari', 'type' => 'Desa'],
+            ['kecamatan' => 'Lamba Leda Selatan', 'nama' => 'Golo Nderu', 'type' => 'Desa'],
+            ['kecamatan' => 'Lamba Leda Selatan', 'nama' => 'Golo Rengket', 'type' => 'Desa'],
+            ['kecamatan' => 'Lamba Leda Selatan', 'nama' => 'Golo Wune', 'type' => 'Desa'],
+            ['kecamatan' => 'Lamba Leda Selatan', 'nama' => 'Gurung Turi', 'type' => 'Desa'],
+            ['kecamatan' => 'Lamba Leda Selatan', 'nama' => 'Lenang', 'type' => 'Desa'],
+            ['kecamatan' => 'Lamba Leda Selatan', 'nama' => 'Lento', 'type' => 'Desa'],
+            ['kecamatan' => 'Lamba Leda Selatan', 'nama' => 'Leong', 'type' => 'Desa'],
+            ['kecamatan' => 'Lamba Leda Selatan', 'nama' => 'Melo', 'type' => 'Desa'],
+            ['kecamatan' => 'Lamba Leda Selatan', 'nama' => 'Poco Lia', 'type' => 'Desa'],
+            ['kecamatan' => 'Lamba Leda Selatan', 'nama' => 'Pocong', 'type' => 'Desa'],
+            ['kecamatan' => 'Lamba Leda Selatan', 'nama' => 'Satar Tesem', 'type' => 'Desa'],
+            ['kecamatan' => 'Lamba Leda Selatan', 'nama' => 'Watu Lanur', 'type' => 'Desa'],
 
             // Lamba Leda (13 Desa)
             ['kecamatan' => 'Lamba Leda', 'nama' => 'Compang Deru', 'type' => 'Desa'],
@@ -84,30 +80,25 @@ class DaftarDesaSeeder extends Seeder
             ['kecamatan' => 'Lamba Leda Utara', 'nama' => 'Satar Punda', 'type' => 'Desa'],
             ['kecamatan' => 'Lamba Leda Utara', 'nama' => 'Satar Punda Barat', 'type' => 'Desa'],
 
-            // Sambi Rampas (14 Desa, 6 Kelurahan)
-            ['kecamatan' => 'Sambi Rampas', 'nama' => 'Golo Wangkung', 'type' => 'Kelurahan'],
-            ['kecamatan' => 'Sambi Rampas', 'nama' => 'Golo Wangkung Barat', 'type' => 'Kelurahan'],
-            ['kecamatan' => 'Sambi Rampas', 'nama' => 'Golo Wangkung Utara', 'type' => 'Kelurahan'],
-            ['kecamatan' => 'Sambi Rampas', 'nama' => 'Nanga Baras', 'type' => 'Kelurahan'],
-            ['kecamatan' => 'Sambi Rampas', 'nama' => 'Pota', 'type' => 'Kelurahan'],
-            ['kecamatan' => 'Sambi Rampas', 'nama' => 'Ulung Baras', 'type' => 'Kelurahan'],
-            ['kecamatan' => 'Sambi Rampas', 'nama' => 'Buti', 'type' => 'Desa'],
-            ['kecamatan' => 'Sambi Rampas', 'nama' => 'Compang Congkar', 'type' => 'Desa'],
-            ['kecamatan' => 'Sambi Rampas', 'nama' => 'Compang Lawi', 'type' => 'Desa'],
-            ['kecamatan' => 'Sambi Rampas', 'nama' => 'Golo Ngawan', 'type' => 'Desa'],
-            ['kecamatan' => 'Sambi Rampas', 'nama' => 'Golo Pari', 'type' => 'Desa'],
+            // Sambi Rampas (6 Desa)
             ['kecamatan' => 'Sambi Rampas', 'nama' => 'Kembang Mekar', 'type' => 'Desa'],
             ['kecamatan' => 'Sambi Rampas', 'nama' => 'Lada Mese', 'type' => 'Desa'],
             ['kecamatan' => 'Sambi Rampas', 'nama' => 'Nampar Sepang', 'type' => 'Desa'],
             ['kecamatan' => 'Sambi Rampas', 'nama' => 'Nanga Mbaling', 'type' => 'Desa'],
             ['kecamatan' => 'Sambi Rampas', 'nama' => 'Nanga Mbaur', 'type' => 'Desa'],
-            ['kecamatan' => 'Sambi Rampas', 'nama' => 'Rana Mese', 'type' => 'Desa'],
-            ['kecamatan' => 'Sambi Rampas', 'nama' => 'Satar Nawang', 'type' => 'Desa'],
-            ['kecamatan' => 'Sambi Rampas', 'nama' => 'Wea', 'type' => 'Desa'],
             ['kecamatan' => 'Sambi Rampas', 'nama' => 'Wela Lada', 'type' => 'Desa'],
 
-            // Elar (14 Desa, 1 Kelurahan)
-            ['kecamatan' => 'Elar', 'nama' => 'Tiwu Kondo', 'type' => 'Kelurahan'],
+            // Congkar (8 Desa)
+            ['kecamatan' => 'Congkar', 'nama' => 'Buti', 'type' => 'Desa'],
+            ['kecamatan' => 'Congkar', 'nama' => 'Golo Ngawan', 'type' => 'Desa'],
+            ['kecamatan' => 'Congkar', 'nama' => 'Satar Nawang', 'type' => 'Desa'],
+            ['kecamatan' => 'Congkar', 'nama' => 'Rana Mese', 'type' => 'Desa'],
+            ['kecamatan' => 'Congkar', 'nama' => 'Compang Congkar', 'type' => 'Desa'],
+            ['kecamatan' => 'Congkar', 'nama' => 'Compang Lawi', 'type' => 'Desa'],
+            ['kecamatan' => 'Congkar', 'nama' => 'Golo Pari', 'type' => 'Desa'],
+            ['kecamatan' => 'Congkar', 'nama' => 'Wea', 'type' => 'Desa'],
+
+            // Elar (14 Desa)
             ['kecamatan' => 'Elar', 'nama' => 'Biting', 'type' => 'Desa'],
             ['kecamatan' => 'Elar', 'nama' => 'Compang Soba', 'type' => 'Desa'],
             ['kecamatan' => 'Elar', 'nama' => 'Compang Teo', 'type' => 'Desa'],
@@ -123,10 +114,7 @@ class DaftarDesaSeeder extends Seeder
             ['kecamatan' => 'Elar', 'nama' => 'Sisir', 'type' => 'Desa'],
             ['kecamatan' => 'Elar', 'nama' => 'Wae Lokom', 'type' => 'Desa'],
 
-            // Kota Komba (19 Desa, 3 Kelurahan)
-            ['kecamatan' => 'Kota Komba', 'nama' => 'Rongga Koe', 'type' => 'Kelurahan'],
-            ['kecamatan' => 'Kota Komba', 'nama' => 'Tanah Rata', 'type' => 'Kelurahan'],
-            ['kecamatan' => 'Kota Komba', 'nama' => 'Watu Nggene', 'type' => 'Kelurahan'],
+            // Kota Komba (19 Desa)
             ['kecamatan' => 'Kota Komba', 'nama' => 'Bamo', 'type' => 'Desa'],
             ['kecamatan' => 'Kota Komba', 'nama' => 'Golo Meni', 'type' => 'Desa'],
             ['kecamatan' => 'Kota Komba', 'nama' => 'Golo Ndele', 'type' => 'Desa'],
@@ -170,28 +158,27 @@ class DaftarDesaSeeder extends Seeder
             ['kecamatan' => 'Rana Mese', 'nama' => 'Wae Nggori', 'type' => 'Desa'],
             ['kecamatan' => 'Rana Mese', 'nama' => 'Watu Mori', 'type' => 'Desa'],
 
-            // Lamba Leda Timur (Poco Ranaka Timur) (18 Desa)
-            ['kecamatan' => 'Lamba Leda Timur (Poco Ranaka Timur)', 'nama' => 'Arus', 'type' => 'Desa'],
-            ['kecamatan' => 'Lamba Leda Timur (Poco Ranaka Timur)', 'nama' => 'Bangka Arus', 'type' => 'Desa'],
-            ['kecamatan' => 'Lamba Leda Timur (Poco Ranaka Timur)', 'nama' => 'Benteng Rampas', 'type' => 'Desa'],
-            ['kecamatan' => 'Lamba Leda Timur (Poco Ranaka Timur)', 'nama' => 'Benteng Wunis', 'type' => 'Desa'],
-            ['kecamatan' => 'Lamba Leda Timur (Poco Ranaka Timur)', 'nama' => 'Colol', 'type' => 'Desa'],
-            ['kecamatan' => 'Lamba Leda Timur (Poco Ranaka Timur)', 'nama' => 'Compang Raci', 'type' => 'Desa'],
-            ['kecamatan' => 'Lamba Leda Timur (Poco Ranaka Timur)', 'nama' => 'Compang Wunis', 'type' => 'Desa'],
-            ['kecamatan' => 'Lamba Leda Timur (Poco Ranaka Timur)', 'nama' => 'Golo Lero', 'type' => 'Desa'],
-            ['kecamatan' => 'Lamba Leda Timur (Poco Ranaka Timur)', 'nama' => 'Ngkiong Dora', 'type' => 'Desa'],
-            ['kecamatan' => 'Lamba Leda Timur (Poco Ranaka Timur)', 'nama' => 'Rende Nao', 'type' => 'Desa'],
-            ['kecamatan' => 'Lamba Leda Timur (Poco Ranaka Timur)', 'nama' => 'Rengkam', 'type' => 'Desa'],
-            ['kecamatan' => 'Lamba Leda Timur (Poco Ranaka Timur)', 'nama' => 'Tango Molas', 'type' => 'Desa'],
-            ['kecamatan' => 'Lamba Leda Timur (Poco Ranaka Timur)', 'nama' => 'Ulu Wae', 'type' => 'Desa'],
-            ['kecamatan' => 'Lamba Leda Timur (Poco Ranaka Timur)', 'nama' => 'Urung Dora', 'type' => 'Desa'],
-            ['kecamatan' => 'Lamba Leda Timur (Poco Ranaka Timur)', 'nama' => 'Wangkung Weli', 'type' => 'Desa'],
-            ['kecamatan' => 'Lamba Leda Timur (Poco Ranaka Timur)', 'nama' => 'Watu Arus', 'type' => 'Desa'],
-            ['kecamatan' => 'Lamba Leda Timur (Poco Ranaka Timur)', 'nama' => 'Wejang Mali', 'type' => 'Desa'],
-            ['kecamatan' => 'Lamba Leda Timur (Poco Ranaka Timur)', 'nama' => 'Wejang Mawe', 'type' => 'Desa'],
+            // Lamba Leda Timur (18 Desa)
+            ['kecamatan' => 'Lamba Leda Timur', 'nama' => 'Arus', 'type' => 'Desa'],
+            ['kecamatan' => 'Lamba Leda Timur', 'nama' => 'Bangka Arus', 'type' => 'Desa'],
+            ['kecamatan' => 'Lamba Leda Timur', 'nama' => 'Benteng Rampas', 'type' => 'Desa'],
+            ['kecamatan' => 'Lamba Leda Timur', 'nama' => 'Benteng Wunis', 'type' => 'Desa'],
+            ['kecamatan' => 'Lamba Leda Timur', 'nama' => 'Colol', 'type' => 'Desa'],
+            ['kecamatan' => 'Lamba Leda Timur', 'nama' => 'Compang Raci', 'type' => 'Desa'],
+            ['kecamatan' => 'Lamba Leda Timur', 'nama' => 'Compang Wunis', 'type' => 'Desa'],
+            ['kecamatan' => 'Lamba Leda Timur', 'nama' => 'Golo Lero', 'type' => 'Desa'],
+            ['kecamatan' => 'Lamba Leda Timur', 'nama' => 'Ngkiong Dora', 'type' => 'Desa'],
+            ['kecamatan' => 'Lamba Leda Timur', 'nama' => 'Rende Nao', 'type' => 'Desa'],
+            ['kecamatan' => 'Lamba Leda Timur', 'nama' => 'Rengkam', 'type' => 'Desa'],
+            ['kecamatan' => 'Lamba Leda Timur', 'nama' => 'Tango Molas', 'type' => 'Desa'],
+            ['kecamatan' => 'Lamba Leda Timur', 'nama' => 'Ulu Wae', 'type' => 'Desa'],
+            ['kecamatan' => 'Lamba Leda Timur', 'nama' => 'Urung Dora', 'type' => 'Desa'],
+            ['kecamatan' => 'Lamba Leda Timur', 'nama' => 'Wangkar Weli', 'type' => 'Desa'],
+            ['kecamatan' => 'Lamba Leda Timur', 'nama' => 'Watu Arus', 'type' => 'Desa'],
+            ['kecamatan' => 'Lamba Leda Timur', 'nama' => 'Wejang Mali', 'type' => 'Desa'],
+            ['kecamatan' => 'Lamba Leda Timur', 'nama' => 'Wejang Mawe', 'type' => 'Desa'],
 
-            // Elar Selatan (13 Desa, 1 Kelurahan)
-            ['kecamatan' => 'Elar Selatan', 'nama' => 'Lempang Paji', 'type' => 'Kelurahan'],
+            // Elar Selatan (13 Desa)
             ['kecamatan' => 'Elar Selatan', 'nama' => 'Benteng Pau', 'type' => 'Desa'],
             ['kecamatan' => 'Elar Selatan', 'nama' => 'Gising', 'type' => 'Desa'],
             ['kecamatan' => 'Elar Selatan', 'nama' => 'Golo Linus', 'type' => 'Desa'],
@@ -208,11 +195,27 @@ class DaftarDesaSeeder extends Seeder
         ];
 
         foreach ($villages as $v) {
-            $fullName = $v['type'] . ' ' . $v['nama'];
+            $email = strtolower(str_replace(' ', '', $v['nama'] . '.' . $v['kecamatan'])) . '@desa.com';
+            
+            // Create or update the User account for the village
+            $user = User::updateOrCreate(
+                ['email' => $email],
+                [
+                    'name' => 'Admin ' . $v['type'] . ' ' . $v['nama'],
+                    'password' => Hash::make('password'),
+                    'role' => 'admin_desa',
+                    'kecamatan' => $v['kecamatan']
+                ]
+            );
 
+            // Update or insert the Desa record with the user_id
             DB::table('desas')->updateOrInsert(
-                ['nama_desa' => $fullName, 'kecamatan' => $v['kecamatan']],
-                ['created_at' => now(), 'updated_at' => now()]
+                ['nama_desa' => $v['nama'], 'kecamatan' => $v['kecamatan']],
+                [
+                    'user_id' => $user->id,
+                    'created_at' => now(), 
+                    'updated_at' => now()
+                ]
             );
         }
     }

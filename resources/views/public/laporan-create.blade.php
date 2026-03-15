@@ -50,7 +50,7 @@
 
                     <!-- Form Section -->
                     <form action="{{ route('dashboard.laporan.simpan') }}" method="POST" enctype="multipart/form-data"
-                        class="p-8 space-y-6 lg:col-span-2">
+                        class="p-8 space-y-6 lg:col-span-2 laporan-form">
                         @csrf
 
                         <div>
@@ -102,11 +102,12 @@
                                         <label for="lampiran"
                                             class="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none">
                                             <span>Unggah file</span>
-                                            <input id="lampiran" name="lampiran" type="file" class="sr-only">
+                                            <input id="lampiran" name="lampiran" type="file" class="sr-only"
+                                                onchange="showFileName(this, 'laporan-filename')">
                                         </label>
                                         <p class="pl-1">atau seret dan lepas</p>
                                     </div>
-                                    <p class="text-xs text-slate-500">
+                                    <p class="text-xs text-slate-500" id="laporan-filename">
                                         PDF, PNG, JPG, DOCX sampai 10MB
                                     </p>
                                 </div>

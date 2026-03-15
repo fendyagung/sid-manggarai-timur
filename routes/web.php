@@ -23,6 +23,7 @@ Route::get('/reset-password/{token}', [App\Http\Controllers\Auth\ResetPasswordCo
 Route::post('/reset-password', [App\Http\Controllers\Auth\ResetPasswordController::class, 'store'])->name('password.store');
 
 Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');
+Route::get('/dashboard/laporan', [App\Http\Controllers\DashboardController::class, 'indexReports'])->middleware(['auth'])->name('dashboard.laporan.index');
 Route::get('/dashboard/laporan/buat', [App\Http\Controllers\DashboardController::class, 'createReport'])->middleware(['auth'])->name('dashboard.laporan.buat');
 Route::delete('/dashboard/laporan/{id}', [App\Http\Controllers\DashboardController::class, 'destroyLaporan'])->middleware(['auth'])->name('dashboard.laporan.destroy');
 Route::post('/dashboard/laporan/simpan', [App\Http\Controllers\DashboardController::class, 'storeReport'])->middleware(['auth'])->name('dashboard.laporan.simpan');
@@ -95,12 +96,14 @@ Route::prefix('jelajah')->group(function () {
 });
 
 Route::get('/potensi-wisata', [App\Http\Controllers\Public\DesaController::class, 'potensiWisata'])->name('public.potensi-wisata');
+Route::get('/potensi-wisata/{id}', [App\Http\Controllers\Public\DesaController::class, 'showPotensi'])->name('public.potensi-wisata.detail');
 Route::get('/layanan/kontak', [App\Http\Controllers\Public\DesaController::class, 'kontak'])->name('public.kontak');
 Route::post('/layanan/kontak/submit', [App\Http\Controllers\Public\DesaController::class, 'submitKontak'])->name('public.kontak.submit');
 Route::get('/berita', [App\Http\Controllers\Public\DesaController::class, 'berita'])->name('public.berita');
 Route::get('/berita/{slug}', [App\Http\Controllers\Public\DesaController::class, 'showBerita'])->name('public.berita.detail');
 Route::get('/profil', [App\Http\Controllers\Public\DesaController::class, 'profil'])->name('public.profil');
 Route::get('/laporan-desa', [App\Http\Controllers\Public\DesaController::class, 'laporanDesa'])->name('public.laporan-desa');
+Route::get('/pengumuman/{id}', [App\Http\Controllers\Public\DesaController::class, 'showPengumuman'])->name('public.pengumuman.detail');
 
 Route::prefix('layanan')->group(function () {
     Route::get('/panduan', [App\Http\Controllers\Public\DesaController::class, 'panduan'])->name('public.panduan');

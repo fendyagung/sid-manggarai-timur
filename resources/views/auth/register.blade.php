@@ -184,20 +184,50 @@
             color: #94a3b8;
         }
 
-        .bottom-link a { color: #10b981; font-weight: 700; text-decoration: none; }
+        .bottom-link a {
+            color: #10b981;
+            font-weight: 700;
+            text-decoration: none;
+        }
 
         /* DARK MODE */
         .dark .auth-container {
             background: radial-gradient(circle at 0% 0%, #064e3b 0%, transparent 50%),
-                        radial-gradient(circle at 100% 100%, #1e3a8a 0%, transparent 50%);
+                radial-gradient(circle at 100% 100%, #1e3a8a 0%, transparent 50%);
         }
-        .dark .glass-card { background: rgba(15, 23, 42, 0.7); border-color: rgba(255, 255, 255, 0.05); }
-        .dark .card-header h2 { color: #f8fafc; }
-        .dark .form-input { background: #0f172a; border-color: #1e293b; color: #f1f5f9; }
-        .dark .role-badge { background: rgba(255, 255, 255, 0.05); color: #94a3b8; }
-        .dark .bottom-link { border-top-color: #1e293b; }
-        .dark .info-box { background: #1a1a1a; border-color: #333; }
-        .dark .info-box p { color: #fbbf24; }
+
+        .dark .glass-card {
+            background: rgba(15, 23, 42, 0.7);
+            border-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .dark .card-header h2 {
+            color: #f8fafc;
+        }
+
+        .dark .form-input {
+            background: #0f172a;
+            border-color: #1e293b;
+            color: #f1f5f9;
+        }
+
+        .dark .role-badge {
+            background: rgba(255, 255, 255, 0.05);
+            color: #94a3b8;
+        }
+
+        .dark .bottom-link {
+            border-top-color: #1e293b;
+        }
+
+        .dark .info-box {
+            background: #1a1a1a;
+            border-color: #333;
+        }
+
+        .dark .info-box p {
+            color: #fbbf24;
+        }
     </style>
 
     <div class="auth-container">
@@ -209,6 +239,8 @@
                 <h2>
                     @if($role === 'admin_dpmd')
                         🏛️ Akun Instansi
+                    @elseif($role === 'admin_kecamatan')
+                        📍 Akun Kecamatan
                     @else
                         🏘️ Akun Desa
                     @endif
@@ -237,8 +269,14 @@
 
                     <div class="role-badge">
                         <span>Level Akses:</span>
-                        <strong style="color: {{ $role === 'admin_dpmd' ? '#f59e0b' : '#10b981' }}">
-                            {{ $role === 'admin_dpmd' ? 'Admin Dinas' : 'Admin Desa' }}
+                        <strong style="color: {{ $role === 'admin_dpmd' ? '#f59e0b' : ($role === 'admin_kecamatan' ? '#3b82f6' : '#10b981') }}">
+                            @if($role === 'admin_dpmd')
+                                Admin Dinas
+                            @elseif($role === 'admin_kecamatan')
+                                Admin Kecamatan
+                            @else
+                                Admin Desa
+                            @endif
                         </strong>
                     </div>
 
@@ -262,18 +300,41 @@
                         </div>
                     </div>
 
-                    <!-- Desa Selector (Only for Admin Desa) -->
-                    @if($role !== 'admin_dpmd')
+                    <!-- Kecamatan & Desa Selector -->
+                    @if($role === 'admin_kecamatan')
+                        <div class="form-group">
+                            <label>Pilih Kecamatan</label>
+                            <div class="input-box">
+                                <select name="kecamatan" class="form-input" required
+                                    style="appearance: none; cursor: pointer;">
+                                    <option value="">-- Pilih Kecamatan --</option>
+                                    @foreach($kecamatans as $kec)
+                                        <option value="{{ $kec->nama }}">{{ $kec->nama }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <x-input-error :messages="$errors->get('kecamatan')" class="mt-1" />
+                        </div>
+                    @elseif($role === 'admin_desa')
+                        <div class="form-group">
+                            <label>Wilayah Kecamatan</label>
+                            <div class="input-box">
+                                <select id="select-kecamatan" class="form-input" onchange="loadDesa(this.value)"
+                                    style="appearance: none; cursor: pointer;">
+                                    <option value="">-- Pilih Kecamatan --</option>
+                                    @foreach($kecamatans as $kec)
+                                        <option value="{{ $kec->nama }}">{{ $kec->nama }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
                         <div class="form-group">
                             <label>Pilih Desa</label>
                             <div class="input-box">
-                                <select name="desa_id" class="form-input" required style="appearance: none; cursor: pointer;">
-                                    <option value="">-- Pilih Desa Anda --</option>
-                                    @foreach($availableDesas as $desa)
-                                        <option value="{{ $desa->id }}" {{ old('desa_id') == $desa->id ? 'selected' : '' }}>
-                                            {{ $desa->nama_desa }} ({{ $desa->kecamatan }})
-                                        </option>
-                                    @endforeach
+                                <select name="desa_id" id="select-desa" class="form-input" required
+                                    style="appearance: none; cursor: pointer;">
+                                    <option value="">-- Pilih Desa --</option>
                                 </select>
                             </div>
                             <x-input-error :messages="$errors->get('desa_id')" class="mt-1" />
@@ -300,7 +361,7 @@
                     </div>
 
                     <button type="submit" class="btn-submit"
-                        style="background: {{ $role === 'admin_dpmd' ? 'linear-gradient(135deg, #f59e0b, #d97706)' : 'linear-gradient(135deg, #10b981, #059669)' }}; box-shadow: 0 10px 20px -5px {{ $role === 'admin_dpmd' ? 'rgba(245, 158, 11, 0.3)' : 'rgba(16, 185, 129, 0.3)' }};">
+                        style="background: {{ $role === 'admin_dpmd' ? 'linear-gradient(135deg, #f59e0b, #d97706)' : ($role === 'admin_kecamatan' ? 'linear-gradient(135deg, #3b82f6, #2563eb)' : 'linear-gradient(135deg, #10b981, #059669)') }}; box-shadow: 0 10px 20px -5px {{ $role === 'admin_dpmd' ? 'rgba(245, 158, 11, 0.3)' : ($role === 'admin_kecamatan' ? 'rgba(59, 130, 246, 0.3)' : 'rgba(16, 185, 129, 0.3)') }};">
                         Buat Akun Sekarang ⚡
                     </button>
                 </form>
@@ -311,4 +372,33 @@
             </div>
         </div>
     </div>
+
+    <script>
+        async function loadDesa(kecamatan) {
+            const selectDesa = document.getElementById('select-desa');
+            selectDesa.innerHTML = '<option value="">Memuat Desa...</option>';
+
+            if (!kecamatan) {
+                selectDesa.innerHTML = '<option value="">-- Pilih Desa --</option>';
+                return;
+            }
+
+            try {
+                // Use the existing API route
+                const response = await fetch(`/api/desas/${encodeURIComponent(kecamatan)}`);
+                const desas = await response.json();
+
+                selectDesa.innerHTML = '<option value="">-- Pilih Desa --</option>';
+                desas.forEach(desa => {
+                    const option = document.createElement('option');
+                    option.value = desa.id; // Using ID for form submission
+                    option.textContent = desa.nama_desa;
+                    selectDesa.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error fetching desas:', error);
+                selectDesa.innerHTML = '<option value="">Gagal memuat data</option>';
+            }
+        }
+    </script>
 </x-layouts.public>

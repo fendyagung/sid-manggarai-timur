@@ -20,8 +20,8 @@ class KecamatanSeeder extends Seeder
             'Kota Komba',
             'Kota Komba Utara',
             'Lamba Leda',
-            'Lamba Leda Selatan (Poco Ranaka)',
-            'Lamba Leda Timur (Poco Ranaka Timur)',
+            'Lamba Leda Selatan',
+            'Lamba Leda Timur',
             'Lamba Leda Utara',
             'Rana Mese',
             'Sambi Rampas',
@@ -31,6 +31,17 @@ class KecamatanSeeder extends Seeder
             DB::table('kecamatans')->updateOrInsert(
                 ['nama' => $kecamatan],
                 ['created_at' => now(), 'updated_at' => now()]
+            );
+
+            // Create Admin Kecamatan Account
+            \App\Models\User::updateOrCreate(
+                ['email' => strtolower(str_replace(' ', '', $kecamatan)) . '@kecamatan.com'],
+                [
+                    'name' => 'Admin Kec. ' . $kecamatan,
+                    'password' => \Hash::make('password'),
+                    'role' => 'admin_kecamatan',
+                    'kecamatan' => $kecamatan
+                ]
             );
         }
     }

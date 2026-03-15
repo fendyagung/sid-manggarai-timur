@@ -2,6 +2,7 @@
     $user = Auth::user();
     $isDesa = $user->role === 'admin_desa';
     $isDpmd = $user->role === 'admin_dpmd';
+    $isKecamatan = $user->role === 'admin_kecamatan';
 @endphp
 
 <x-layouts.admin>
@@ -323,7 +324,7 @@
                     <div>
                         <div class="card-title">📋 Laporan Terbaru</div>
                         <p class="text-xs text-slate-500">Status 5 laporan terakhir</p>
-                    </div><a href="{{ route('dashboard.dokumen.index') }}"
+                    </div><a href="{{ route('dashboard.laporan.index') }}"
                         class="text-xs font-bold text-emerald-700 hover:text-emerald-800 hover:underline">Semua →</a>
                 </div>
                 <div class="overflow-x-auto">
@@ -364,23 +365,31 @@
         </div>
 
     @else
-        <!-- DPMD VIEW (New High-Fidelity Mockup) -->
+        <!-- DPMD / KECAMATAN VIEW (New High-Fidelity Mockup) -->
         <div class="welcome-banner mb-8 animate-fade-in"
             style="background: linear-gradient(135deg, #022c22 0%, #064e3b 100%);">
             <div class="wb-text">
-                <h2 class="text-2xl font-black font-serif mb-1">Selamat Datang, Admin DMPD! 🏛️</h2>
+                <h2 class="text-2xl font-black font-serif mb-1">
+                    Selamat Datang, {{ $isKecamatan ? 'Admin Kecamatan ' . $user->kecamatan : 'Admin DMPD' }}! 🏛️
+                </h2>
                 <p class="text-sm text-white/70 max-w-xl">Saat ini terdapat <strong
                         style="color:var(--emas-muda)">{{ $data['laporan_pending'] }} laporan menunggu verifikasi</strong>.
-                    Segera tindaklanjuti agar data kabupaten tetap akurat dan terkini.</p>
+                    Segera tindaklanjuti agar data {{ $isKecamatan ? 'kecamatan' : 'kabupaten' }} tetap akurat dan terkini.</p>
                 <div class="flex flex-wrap gap-4 mt-6">
+                    <a href="{{ route('dashboard.dokumen.create') }}"
+                        class="px-6 py-3 bg-emerald-500 text-white font-bold rounded-xl text-sm hover:bg-emerald-600 transition-all shadow-lg shadow-emerald-900/20 flex items-center gap-2">
+                        <span>📤</span> Kirim Berkas (Privat)
+                    </a>
                     <a href="#verif-queue"
-                        class="px-6 py-3 bg-gradient-to-r from-amber-500 to-orange-600 text-white font-bold rounded-xl text-sm hover:shadow-xl transition-all shadow-lg shadow-amber-900/20 flex items-center gap-2">
+                        class="px-6 py-3 bg-amber-500 text-white font-bold rounded-xl text-sm hover:bg-amber-600 transition-all flex items-center gap-2 shadow-lg shadow-amber-900/10">
                         <span>✅</span> Verifikasi Laporan
                     </a>
+                    @if($isDpmd)
                     <a href="{{ route('dashboard.regulasi.index') }}"
                         class="px-6 py-3 bg-white/10 border border-white/20 text-white font-bold rounded-xl text-sm hover:bg-white/20 transition-all flex items-center gap-2">
-                        <span>📁</span> Kelola Regulasi
+                        <span>📜</span> Kelola Regulasi (Publik)
                     </a>
+                    @endif
                 </div>
             </div>
             <div class="hidden md:block text-7xl opacity-40">🏛️</div>
@@ -451,7 +460,8 @@
                             <div class="flex justify-between items-start mb-2">
                                 <div>
                                     <h4 class="text-sm font-bold text-slate-800 dark:text-slate-100">
-                                        {{ optional($lp->desa)->nama_desa ?? 'Desa Tidak Diketahui' }}</h4>
+                                        {{ optional($lp->desa)->nama_desa ?? 'Desa Tidak Diketahui' }}
+                                    </h4>
                                     <p class="text-[10px] text-slate-500 dark:text-slate-400">📍
                                         {{ optional($lp->desa)->kecamatan ?? '-' }} •
                                         {{ $lp->created_at->format('d M H:i') }}

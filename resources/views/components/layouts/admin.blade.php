@@ -432,15 +432,22 @@
             })
             ->count();
 
-        if ($user->role === 'admin_dpmd') {
-            $unreadCount = \App\Models\Dokumen::where('is_read', false)
-                ->where(function ($q) {
+        if ($user->role === 'admin_dpmd' || $user->role === 'admin_kecamatan') {
+            $unreadQuery = \App\Models\Dokumen::where('is_read', false)
+                ->where('sender_id', '!=', Auth::id());
+                
+            if ($user->role === 'admin_dpmd') {
+                $unreadQuery->where(function ($q) {
                     $q->whereHas('receiverUser', function ($inner) {
                         $inner->where('role', 'admin_dpmd');
                     })->orWhere('receiver_user_id', Auth::id());
-                })
-                ->where('sender_id', '!=', Auth::id())
-                ->count();
+                });
+            } else {
+                // Admin Kecamatan: see docs sent to them directly, or perhaps docs from their desa.
+                // For simplicity, docs explicitly sent to this user
+                $unreadQuery->where('receiver_user_id', Auth::id());
+            }
+            $unreadCount = $unreadQuery->count();
         } else {
             $unreadCount = \App\Models\Dokumen::where('is_read', false)
                 ->where('receiver_desa_id', $desa->id ?? 0)
@@ -462,15 +469,15 @@
             </div>
             <div class="s-logo-text">
                 <h2>SID Manggarai Timur</h2>
-                <p>Admin {{ $user->role === 'admin_dpmd' ? 'DPMD' : 'Desa' }} Panel</p>
+                <p>Admin {{ $user->role === 'admin_dpmd' ? 'DPMD' : ($user->role === 'admin_kecamatan' ? 'Kecamatan' : 'Desa') }} Panel</p>
             </div>
         </div>
 
         <div class="desa-profile">
             <div class="dp-label">Akun Masuk sebagai</div>
             <div class="dp-name">{{ $desa->nama_desa ?? $user->name }}</div>
-            <div class="dp-kec">📍 {{ $desa ? 'Kec. ' . $desa->kecamatan : 'Pusat Pemerintahan' }}</div>
-            <div class="dp-badge">{{ $user->role === 'admin_dpmd' ? '🏢 Admin DPMD' : '🏘️ Admin Desa' }}</div>
+            <div class="dp-kec">📍 {{ $desa ? 'Kec. ' . $desa->kecamatan : ($user->role === 'admin_kecamatan' ? 'Kec. ' . $user->kecamatan : 'Pusat Pemerintahan') }}</div>
+            <div class="dp-badge">{{ $user->role === 'admin_dpmd' ? '🏢 Admin DPMD' : ($user->role === 'admin_kecamatan' ? '🏢 Admin Kecamatan' : '🏘️ Admin Desa') }}</div>
         </div>
 
         <nav class="sidebar-nav">
@@ -512,16 +519,18 @@
                 <span class="ni-icon">🏞️</span> Potensi Wisata
             </a>
 
-            @if($user->role === 'admin_dpmd')
+            @if($user->role === 'admin_dpmd' || $user->role === 'admin_kecamatan')
                 <div class="nav-section-label" style="margin-top:8px;">Master Data</div>
                 <a href="{{ route('dashboard.dpmd.desa.index') }}"
                     class="nav-item {{ Request::is('dashboard/dpmd/desa*') ? 'active' : '' }}">
-                    <span class="ni-icon">🏘️</span> Data Seluruh Desa
+                    <span class="ni-icon">🏘️</span> Data {{ $user->role === 'admin_kecamatan' ? 'Desa Kecamatan' : 'Seluruh Desa' }}
                 </a>
-                <a href="{{ route('pengumuman.index') }}"
-                    class="nav-item {{ Request::is('dashboard/pengumuman*') ? 'active' : '' }}">
-                    <span class="ni-icon">📢</span> Broadcast Info
-                </a>
+                @if($user->role === 'admin_dpmd')
+                    <a href="{{ route('pengumuman.index') }}"
+                        class="nav-item {{ Request::is('dashboard/pengumuman*') ? 'active' : '' }}">
+                        <span class="ni-icon">📢</span> Broadcast Info
+                    </a>
+                @endif
             @endif
 
             <div class="nav-section-label" style="margin-top:8px;">Akun</div>
@@ -530,7 +539,7 @@
                     class="nav-item {{ Request::is('dashboard/profil-desa/edit') ? 'active' : '' }}">
                     <span class="ni-icon">⚙️</span> Pengaturan Desa
                 </a>
-            @else
+            @elseif($user->role === 'admin_dpmd')
                 <a href="{{ route('dashboard.dpmd.edit-profil') }}"
                     class="nav-item {{ Request::is('dashboard/dpmd/edit-profil') ? 'active' : '' }}">
                     <span class="ni-icon">⚙️</span> Pengaturan Profil
@@ -621,6 +630,22 @@
         </div>
     </div>
 
+    <script>
+        function showFileName(input, targetId) {
+            const display = document.getElementById(targetId);
+            if (input.files && input.files[0]) {
+                display.innerText = 'File Terpilih: ' + input.files[0].name;
+                display.classList.remove('text-slate-500', 'text-slate-400');
+                display.classList.add('text-emerald-600', 'font-black');
+
+                // For reports which use blue theme
+                if (display.closest('.laporan-form')) {
+                    display.classList.remove('text-emerald-600');
+                    display.classList.add('text-blue-600');
+                }
+            }
+        }
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fslightbox/3.0.9/index.js"></script>
 </body>
 

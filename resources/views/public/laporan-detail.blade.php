@@ -50,7 +50,7 @@
                         </div>
                     </div>
 
-                    @if(Auth::user()->role === 'admin_dpmd' && $laporan->desa)
+                    @if(in_array(Auth::user()->role, ['admin_dpmd', 'admin_kecamatan']) && $laporan->desa)
                         <div class="mb-8">
                             <a href="{{ route('dashboard.desa.detail', $laporan->desa->id) }}"
                                 class="flex items-center justify-center gap-3 p-4 bg-gradient-to-r from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 border-2 border-blue-200 rounded-2xl transition-all group">
@@ -128,25 +128,44 @@
                         @endif
                     </div>
 
-                    @if(Auth::user()->role === 'admin_dpmd' && $laporan->status === 'pending')
-                        <!-- Actions for DPMD -->
-                        <div class="pt-6 border-t border-slate-100 flex flex-wrap gap-4">
-                            <form action="{{ route('dashboard.laporan.approve', $laporan->id) }}" method="POST">
-                                @csrf
-                                <button type="submit"
-                                    class="px-8 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-lg shadow-emerald-500/20 transition-all transform hover:-translate-y-1">
-                                    Terima Laporan
-                                </button>
-                            </form>
+                    @if(in_array(Auth::user()->role, ['admin_dpmd', 'admin_kecamatan']))
+                        <!-- Actions for DPMD & Kecamatan -->
+                        <div class="pt-6 border-t border-slate-100 flex flex-wrap items-center gap-4">
+                            @if($laporan->status === 'pending')
+                                <form action="{{ route('dashboard.laporan.approve', $laporan->id) }}" method="POST">
+                                    @csrf
+                                    <button type="submit"
+                                        class="px-8 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-lg shadow-emerald-500/20 transition-all transform hover:-translate-y-1">
+                                        Terima Laporan
+                                    </button>
+                                </form>
 
-                            <form action="{{ route('dashboard.laporan.reject', $laporan->id) }}" method="POST"
-                                class="flex items-center gap-2">
+                                <form action="{{ route('dashboard.laporan.reject', $laporan->id) }}" method="POST"
+                                    class="flex items-center gap-2">
+                                    @csrf
+                                    <input type="text" name="catatan" placeholder="Alasan penolakan..."
+                                        class="px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-red-500 outline-none text-sm w-64">
+                                    <button type="submit"
+                                        class="px-8 py-3 bg-orange-600 hover:bg-orange-700 text-white font-bold rounded-xl shadow-lg shadow-orange-500/20 transition-all transform hover:-translate-y-1">
+                                        Tolak
+                                    </button>
+                                </form>
+                            @endif
+
+                            <!-- Always show delete for Admin -->
+                            <form action="{{ route('dashboard.laporan.destroy', $laporan->id) }}" method="POST"
+                                onsubmit="return confirm('Apakah Anda yakin ingin menghapus laporan ini? Tindakan ini tidak dapat dibatalkan.');"
+                                class="ml-auto">
                                 @csrf
-                                <input type="text" name="catatan" placeholder="Alasan penolakan..."
-                                    class="px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-red-500 outline-none text-sm w-64">
+                                @method('DELETE')
                                 <button type="submit"
-                                    class="px-8 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl shadow-lg shadow-red-500/20 transition-all transform hover:-translate-y-1">
-                                    Tolak
+                                    class="px-6 py-3 bg-red-50 text-red-600 hover:bg-red-100 font-bold rounded-xl transition-all border border-red-100 flex items-center gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                                        stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                    </svg>
+                                    Hapus Laporan
                                 </button>
                             </form>
                         </div>

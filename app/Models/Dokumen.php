@@ -9,6 +9,7 @@ class Dokumen extends Model
     protected $fillable = [
         'judul',
         'file_path',
+        'original_name',
         'keterangan',
         'sender_id',
         'receiver_desa_id',

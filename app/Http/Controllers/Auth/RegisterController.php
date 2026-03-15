@@ -19,8 +19,9 @@ class RegisterController extends Controller
         $role = $request->query('role', 'admin_desa');
         $dpmdAdminExists = User::where('role', 'admin_dpmd')->exists();
         $availableDesas = \App\Models\Desa::whereNull('user_id')->get();
+        $kecamatans = \App\Models\Kecamatan::orderBy('nama')->get();
 
-        return view('auth.register', compact('dpmdAdminExists', 'availableDesas', 'role'));
+        return view('auth.register', compact('dpmdAdminExists', 'availableDesas', 'role', 'kecamatans'));
     }
 
     /**
@@ -34,13 +35,19 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'role' => ['required', 'in:admin_dpmd,admin_desa'],
+            'role' => ['required', 'in:admin_dpmd,admin_desa,admin_kecamatan'],
             'desa_id' => ['required_if:role,admin_desa', 'nullable', 'exists:desas,id'],
+            'kecamatan' => ['required_if:role,admin_kecamatan', 'nullable', 'string', 'max:255'],
         ]);
 
         // Prevent multiple Admin Dinas
         if ($request->role === 'admin_dpmd' && User::where('role', 'admin_dpmd')->exists()) {
             return back()->withErrors(['role' => 'Akun Admin Dinas sudah ada. Hanya diperbolehkan satu akun Admin Dinas.']);
+        }
+
+        // Prevent multiple Admin for the same Kecamatan
+        if ($request->role === 'admin_kecamatan' && User::where('role', 'admin_kecamatan')->where('kecamatan', $request->kecamatan)->exists()) {
+            return back()->withErrors(['kecamatan' => 'Akun Admin untuk Kecamatan ini sudah ada.']);
         }
 
 
@@ -58,6 +65,7 @@ class RegisterController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => $request->role,
+            'kecamatan' => $request->role === 'admin_kecamatan' ? $request->kecamatan : null,
         ];
 
         // Auto-set username based on role
@@ -68,6 +76,8 @@ class RegisterController extends Controller
             }
         } elseif ($request->role === 'admin_dpmd') {
             $userData['username'] = 'admin_dpmd';
+        } elseif ($request->role === 'admin_kecamatan') {
+            $userData['username'] = 'admin_' . strtolower(str_replace(' ', '_', $request->kecamatan));
         }
 
         $user = User::create($userData);

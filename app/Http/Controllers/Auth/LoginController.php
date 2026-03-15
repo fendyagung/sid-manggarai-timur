@@ -13,8 +13,7 @@ class LoginController extends Controller
      */
     public function showLoginForm()
     {
-        $kecamatans = \App\Models\Kecamatan::orderBy('nama')->get();
-        return view('auth.login', compact('kecamatans'));
+        return view('auth.login');
     }
 
     /**
@@ -36,6 +35,30 @@ class LoginController extends Controller
         ];
 
         if (Auth::attempt($authCredentials, $request->boolean('remember'))) {
+            $user = Auth::user();
+
+            // Validate requested role against actual user role
+            $requestedRole = $request->input('role'); // 'desa', 'admin_kecamatan', or 'dmpd'
+            $actualRole = $user->role; // 'admin_desa', 'admin_kecamatan', or 'admin_dpmd'
+
+            $isDesaMismatch = ($requestedRole === 'desa' && $actualRole !== 'admin_desa');
+            $isKecamatanMismatch = ($requestedRole === 'admin_kecamatan' && $actualRole !== 'admin_kecamatan');
+            $isDmpdMismatch = ($requestedRole === 'dmpd' && $actualRole !== 'admin_dpmd');
+
+            if ($isDesaMismatch || $isKecamatanMismatch || $isDmpdMismatch) {
+                Auth::logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+
+                $targetLabel = 'Admin Dinas';
+                if ($requestedRole === 'desa') $targetLabel = 'Admin Desa';
+                if ($requestedRole === 'admin_kecamatan') $targetLabel = 'Admin Kecamatan';
+                
+                return back()->withErrors([
+                    'login' => "Maaf, akun Anda tidak terdaftar sebagai $targetLabel. Silakan login pada tab yang sesuai.",
+                ])->onlyInput('login', 'role');
+            }
+
             $request->session()->regenerate();
 
             return redirect()->intended('dashboard');
