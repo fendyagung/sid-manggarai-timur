@@ -24,7 +24,43 @@
 
     @php
         $user = Auth::user();
-        $desa = $user->role === 'admin_desa' ? \App\Models\Desa::where('user_id', $user->id)->first() : null;
+        if ($user) {
+            $userId = $user->id;
+            $role = $user->role;
+            $desa = $role === 'admin_desa' ? \App\Models\Desa::where('user_id', $userId)->first() : null;
+            $profile = \App\Models\DpmdProfile::first();
+
+            // Count logic
+            $newRegulasiCount = 0;
+            if ($role === 'admin_desa') {
+                $newRegulasiCount = \App\Models\Regulasi::where('created_at', '>=', now()->subDays(7))
+                    ->whereDoesntHave('downloads', function ($query) use ($userId) {
+                        $query->where('user_id', $userId);
+                    })
+                    ->count();
+            }
+
+            $unreadCount = 0;
+            if ($role === 'admin_dpmd' || $role === 'admin_kecamatan') {
+                $unreadQuery = \App\Models\Dokumen::where('is_read', false)
+                    ->where('sender_id', '!=', $userId);
+                    
+                if ($role === 'admin_dpmd') {
+                    $unreadQuery->where(function ($q) use ($userId) {
+                        $q->whereHas('receiverUser', function ($inner) {
+                            $inner->where('role', 'admin_dpmd');
+                        })->orWhere('receiver_user_id', $userId);
+                    });
+                } else {
+                    $unreadQuery->where('receiver_user_id', $userId);
+                }
+                $unreadCount = $unreadQuery->count();
+            } else {
+                $unreadCount = \App\Models\Dokumen::where('is_read', false)
+                    ->where('receiver_desa_id', $desa->id ?? 0)
+                    ->count();
+            }
+        }
     @endphp
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -252,6 +288,72 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            transition: margin-left 0.3s ease;
+        }
+
+        /* MOBILE RESPONSIVENESS */
+        .mobile-toggle {
+            display: none;
+            width: 40px;
+            height: 40px;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            background: var(--abu);
+            border-radius: 10px;
+            cursor: pointer;
+            margin-right: 12px;
+            color: var(--teks);
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            z-index: 95;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                z-index: 100;
+            }
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            .main {
+                margin-left: 0;
+            }
+            .mobile-toggle {
+                display: flex;
+            }
+            .sidebar-overlay.active {
+                display: block;
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .topbar-left h1 {
+                font-size: 16px;
+            }
+            .topbar-left p {
+                display: none;
+            }
+            .topbar-right .user-chip span {
+                display: none;
+            }
+            .topbar-right .user-chip {
+                padding: 6px;
+            }
+            .content {
+                padding: 16px;
+            }
         }
 
         /* TOPBAR */
@@ -423,42 +525,12 @@
 
 <body>
 
-    @php
-        // Count logic from old layout
-        $userId = Auth::id();
-        $newRegulasiCount = \App\Models\Regulasi::where('created_at', '>=', now()->subDays(7))
-            ->whereDoesntHave('downloads', function ($query) use ($userId) {
-                $query->where('user_id', $userId);
-            })
-            ->count();
 
-        if ($user->role === 'admin_dpmd' || $user->role === 'admin_kecamatan') {
-            $unreadQuery = \App\Models\Dokumen::where('is_read', false)
-                ->where('sender_id', '!=', Auth::id());
-                
-            if ($user->role === 'admin_dpmd') {
-                $unreadQuery->where(function ($q) {
-                    $q->whereHas('receiverUser', function ($inner) {
-                        $inner->where('role', 'admin_dpmd');
-                    })->orWhere('receiver_user_id', Auth::id());
-                });
-            } else {
-                // Admin Kecamatan: see docs sent to them directly, or perhaps docs from their desa.
-                // For simplicity, docs explicitly sent to this user
-                $unreadQuery->where('receiver_user_id', Auth::id());
-            }
-            $unreadCount = $unreadQuery->count();
-        } else {
-            $unreadCount = \App\Models\Dokumen::where('is_read', false)
-                ->where('receiver_desa_id', $desa->id ?? 0)
-                ->count();
-        }
-    @endphp
-
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
     <!-- SIDEBAR -->
     <aside class="sidebar">
         <div class="sidebar-logo">
-            @php $profile = \App\Models\DpmdProfile::first(); @endphp
+
             <div class="s-logo-icon">
                 @if($profile && $profile->logo_website)
                     <img src="{{ asset('storage/' . $profile->logo_website) }}" alt="Logo"
@@ -495,10 +567,15 @@
 
             <a href="{{ route('dashboard.dokumen.index') }}"
                 class="nav-item {{ Request::is('dashboard/dokumen*') ? 'active' : '' }}">
-                <span class="ni-icon">📂</span> Kotak Berkas
+                <span class="ni-icon">📂</span> Kotak Masuk Dokumen
                 @if($unreadCount > 0)
                     <span class="ni-badge">{{ $unreadCount }}</span>
                 @endif
+            </a>
+
+            <a href="{{ route('dashboard.arsip.index') }}"
+                class="nav-item {{ Request::is('dashboard/arsip*') ? 'active' : '' }}">
+                <span class="ni-icon">🗄️</span> Arsip Pribadi
             </a>
 
             <a href="{{ route('dashboard.regulasi.index') }}"
@@ -566,14 +643,17 @@
         <!-- TOPBAR -->
         <div class="topbar">
             <div class="topbar-left flex items-center h-full">
-                <div class="mr-16">
+                <div class="mobile-toggle" id="sidebarToggle">
+                    ☰
+                </div>
+                <div class="mr-6 md:mr-16">
                     <h1>{{ $title ?? 'Dashboard' }}</h1>
                     <p>{{ now()->isoFormat('dddd, D MMMM Y') }}</p>
                 </div>
 
                 <!-- Navigation Links from Public Layout -->
                 <div
-                    class="flex items-center gap-3 border-l border-slate-200 dark:border-slate-700 pl-10 h-full mr-4 overflow-x-auto no-scrollbar">
+                    class="hidden md:flex items-center gap-3 border-l border-slate-200 dark:border-slate-700 pl-10 h-full mr-4 overflow-x-auto no-scrollbar">
                     @php
                         $navItems = [
                             ['label' => 'BERANDA', 'route' => url('/'), 'pattern' => '/'],
@@ -631,6 +711,34 @@
     </div>
 
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggle = document.getElementById('sidebarToggle');
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+
+            if (toggle && sidebar && overlay) {
+                toggle.addEventListener('click', () => {
+                    sidebar.classList.toggle('active');
+                    overlay.classList.toggle('active');
+                });
+
+                overlay.addEventListener('click', () => {
+                    sidebar.classList.remove('active');
+                    overlay.classList.remove('active');
+                });
+
+                // Auto-close on link click (for SPA-like feel or small screens)
+                sidebar.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        if (window.innerWidth <= 1024) {
+                            sidebar.classList.remove('active');
+                            overlay.classList.remove('active');
+                        }
+                    });
+                });
+            }
+        });
+
         function showFileName(input, targetId) {
             const display = document.getElementById(targetId);
             if (input.files && input.files[0]) {

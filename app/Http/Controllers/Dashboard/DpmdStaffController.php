@@ -16,7 +16,6 @@ class DpmdStaffController extends Controller
             'nama' => 'required|string|max:255',
             'jabatan' => 'required|string|max:255',
             'urutan' => 'nullable|integer',
-            'foto' => 'nullable|image|max:2048',
         ]);
 
         $profile = DpmdProfile::first();
@@ -29,10 +28,6 @@ class DpmdStaffController extends Controller
 
         if (!$request->urutan) {
             $data['urutan'] = DpmdStaff::count() + 1;
-        }
-
-        if ($request->hasFile('foto')) {
-            $data['foto'] = $request->file('foto')->store('dpmd/staff', 'public');
         }
 
         DpmdStaff::create($data);
@@ -48,17 +43,9 @@ class DpmdStaffController extends Controller
             'nama' => 'required|string|max:255',
             'jabatan' => 'required|string|max:255',
             'urutan' => 'nullable|integer',
-            'foto' => 'nullable|image|max:2048',
         ]);
 
         $data = $request->only(['nama', 'jabatan', 'urutan']);
-
-        if ($request->hasFile('foto')) {
-            if ($staff->foto) {
-                Storage::disk('public')->delete($staff->foto);
-            }
-            $data['foto'] = $request->file('foto')->store('dpmd/staff', 'public');
-        }
 
         $staff->update($data);
 
@@ -68,9 +55,6 @@ class DpmdStaffController extends Controller
     public function destroy($id)
     {
         $staff = DpmdStaff::findOrFail($id);
-        if ($staff->foto) {
-            Storage::disk('public')->delete($staff->foto);
-        }
         $staff->delete();
 
         return redirect()->back()->with('success', 'Staf berhasil dihapus.');

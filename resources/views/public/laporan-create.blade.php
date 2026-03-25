@@ -108,7 +108,7 @@
                                         <p class="pl-1">atau seret dan lepas</p>
                                     </div>
                                     <p class="text-xs text-slate-500" id="laporan-filename">
-                                        PDF, PNG, JPG, DOCX sampai 10MB
+                                        PDF, PNG, JPG, DOCX, XLSX sampai 10MB
                                     </p>
                                 </div>
                             </div>

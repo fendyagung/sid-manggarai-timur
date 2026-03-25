@@ -112,6 +112,13 @@ Route::prefix('layanan')->group(function () {
     Route::get('/bank-data', [App\Http\Controllers\RegulasiController::class, 'publicIndex'])->name('public.bank-data');
 });
 
+Route::middleware(['auth'])->prefix('dashboard/arsip')->name('dashboard.arsip.')->group(function () {
+    Route::get('/', [App\Http\Controllers\Dashboard\ArsipController::class, 'index'])->name('index');
+    Route::post('/store', [App\Http\Controllers\Dashboard\ArsipController::class, 'store'])->name('store');
+    Route::get('/{id}/download', [App\Http\Controllers\Dashboard\ArsipController::class, 'download'])->name('download');
+    Route::delete('/{id}', [App\Http\Controllers\Dashboard\ArsipController::class, 'destroy'])->name('destroy');
+});
+
 Route::middleware(['auth'])->prefix('dashboard/dokumen')->name('dashboard.dokumen.')->group(function () {
     Route::get('/', [App\Http\Controllers\Dashboard\DokumenController::class, 'index'])->name('index');
     Route::get('/create', [App\Http\Controllers\Dashboard\DokumenController::class, 'create'])->name('create');

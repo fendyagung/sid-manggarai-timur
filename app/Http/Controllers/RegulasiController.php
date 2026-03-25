@@ -25,7 +25,7 @@ class RegulasiController extends Controller
     {
         $request->validate([
             'judul' => 'required|string|max:255',
-            'kategori' => 'required|string|in:Format Laporan,Peraturan Daerah,Template Surat,Materi Sosialisasi,Lainnya',
+            'kategori' => 'required|string|in:Format Laporan,Peraturan Daerah,Template Surat,Materi Sosialisasi,Dokumen Penting,Lainnya',
             'deskripsi' => 'nullable|string',
             'file' => 'required|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,zip,rar|max:10240', // Max 10MB
         ]);
@@ -69,7 +69,7 @@ class RegulasiController extends Controller
 
         $request->validate([
             'judul' => 'required|string|max:255',
-            'kategori' => 'required|string|in:Format Laporan,Peraturan Daerah,Template Surat,Materi Sosialisasi,Lainnya',
+            'kategori' => 'required|string|in:Format Laporan,Peraturan Daerah,Template Surat,Materi Sosialisasi,Dokumen Penting,Lainnya',
             'deskripsi' => 'nullable|string',
             'file' => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,zip,rar|max:10240',
         ]);

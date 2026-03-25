@@ -36,6 +36,7 @@
                         <option value="Template Surat" {{ $regulasi->kategori == 'Template Surat' ? 'selected' : '' }}>
                             Template Surat Admin</option>
                         <option value="Materi Sosialisasi" {{ $regulasi->kategori == 'Materi Sosialisasi' ? 'selected' : '' }}>Materi Sosialisasi</option>
+                        <option value="Dokumen Penting" {{ $regulasi->kategori == 'Dokumen Penting' ? 'selected' : '' }}>Dokumen Penting</option>
                         <option value="Lainnya" {{ $regulasi->kategori == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
                     </select>
                 </div>

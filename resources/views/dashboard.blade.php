@@ -309,13 +309,18 @@
                 <div class="sc-num">{{ \App\Models\Potensi::where('desa_id', $data['desa_id'] ?? 0)->count() }}</div>
                 <div class="text-xs text-slate-500 dark:text-slate-400 mt-1">Potensi Desa</div>
             </div>
-            <div class="stat-card animate-fade-in" style="animation-delay: 0.3s">
+            <a href="{{ route('dashboard.regulasi.index') }}" class="stat-card animate-fade-in block hover:no-underline" style="animation-delay: 0.3s">
                 <div class="flex items-center gap-2">
-                    <div class="h-3 w-3 bg-emerald-500 rounded-full animate-pulse"></div>
-                    <div class="sc-num !text-2xl">Online</div>
+                    @if(($data['new_regulasi_count'] ?? 0) > 0)
+                        <div class="h-3 w-3 bg-red-500 rounded-full animate-pulse"></div>
+                        <div class="sc-num text-red-600">{{ $data['new_regulasi_count'] }}</div>
+                    @else
+                        <div class="h-3 w-3 bg-emerald-500 rounded-full"></div>
+                        <div class="sc-num text-emerald-600">0</div>
+                    @endif
                 </div>
-                <div class="text-xs text-slate-500 dark:text-slate-400 mt-1">Sistem Aktif</div>
-            </div>
+                <div class="text-xs text-slate-500 dark:text-slate-400 mt-1">Surat & Regulasi Baru</div>
+            </a>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
@@ -384,12 +389,14 @@
                         class="px-6 py-3 bg-amber-500 text-white font-bold rounded-xl text-sm hover:bg-amber-600 transition-all flex items-center gap-2 shadow-lg shadow-amber-900/10">
                         <span>✅</span> Verifikasi Laporan
                     </a>
-                    @if($isDpmd)
                     <a href="{{ route('dashboard.regulasi.index') }}"
                         class="px-6 py-3 bg-white/10 border border-white/20 text-white font-bold rounded-xl text-sm hover:bg-white/20 transition-all flex items-center gap-2">
-                        <span>📜</span> Kelola Regulasi (Publik)
+                        <span>📜</span> {{ $isDpmd ? 'Kelola' : 'Lihat' }} Surat & Regulasi
                     </a>
-                    @endif
+                    <a href="{{ route('dashboard.arsip.index') }}"
+                        class="px-6 py-3 bg-blue-500/20 border border-blue-400/30 text-white font-bold rounded-xl text-sm hover:bg-blue-500/40 transition-all flex items-center gap-2">
+                        <span>🗄️</span> Arsip Pribadi
+                    </a>
                 </div>
             </div>
             <div class="hidden md:block text-7xl opacity-40">🏛️</div>

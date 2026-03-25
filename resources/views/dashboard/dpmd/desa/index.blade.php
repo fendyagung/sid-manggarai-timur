@@ -33,7 +33,12 @@
                     @forelse($desas as $desa)
                         <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-700/30 transition-colors">
                             <td class="px-6 py-4 font-mono text-xs text-slate-400">{{ $desa->kode_desa ?? '-' }}</td>
-                            <td class="px-6 py-4 font-bold text-slate-700 dark:text-slate-200">{{ $desa->nama_desa }}</td>
+                            <td class="px-6 py-4 font-bold text-slate-700 dark:text-slate-200">
+                                <span class="text-[10px] font-black {{ $desa->jenis === 'kelurahan' ? 'text-amber-600 bg-amber-50' : 'text-slate-400 bg-slate-50' }} px-1.5 py-0.5 rounded mr-1">
+                                    {{ strtoupper($desa->jenis ?? 'desa') }}
+                                </span>
+                                {{ $desa->nama_desa }}
+                            </td>
                             <td class="px-6 py-4 text-slate-500 dark:text-slate-400">{{ $desa->kecamatan }}</td>
                             <td class="px-6 py-4">
                                 @if($desa->admin)

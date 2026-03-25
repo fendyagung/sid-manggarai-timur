@@ -43,6 +43,7 @@
                                 <option value="Format Laporan">Format Laporan</option>
                                 <option value="Template Surat">Template Surat Admin</option>
                                 <option value="Materi Sosialisasi">Materi Sosialisasi</option>
+                                <option value="Dokumen Penting">Dokumen Penting</option>
                                 <option value="Lainnya">Lainnya</option>
                             </select>
                         </div>
@@ -106,6 +107,7 @@
                                                                     {{ $reg->kategori == 'Format Laporan' ? 'bg-blue-100 text-blue-700' : '' }}
                                                                     {{ $reg->kategori == 'Template Surat' ? 'bg-amber-100 text-amber-700' : '' }}
                                                                     {{ $reg->kategori == 'Materi Sosialisasi' ? 'bg-emerald-100 text-emerald-700' : '' }}
+                                                                    {{ $reg->kategori == 'Dokumen Penting' ? 'bg-rose-100 text-rose-700' : '' }}
                                                                     {{ $reg->kategori == 'Lainnya' ? 'bg-slate-100 text-slate-700' : '' }}">
                                         {{ $reg->kategori }}
                                     </span>

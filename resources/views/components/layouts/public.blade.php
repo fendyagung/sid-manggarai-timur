@@ -144,6 +144,11 @@
                                 id="nav-laporan">
                                 LAPORAN DESA
                             </a>
+                            <a href="{{ route('public.bank-data') }}"
+                                class="px-3 py-1.5 mx-0.5 flex items-center font-bold text-[11px] whitespace-nowrap transition-all duration-300 {{ Request::is('layanan/bank-data') ? 'bg-white/15 text-white rounded-lg' : 'text-white/80 hover:text-white hover:bg-white/10 rounded-lg' }}"
+                                id="nav-regulasi">
+                                REGULASI
+                            </a>
                             <a href="{{ route('public.berita') }}"
                                 class="px-3 py-1.5 mx-0.5 flex items-center font-bold text-[11px] whitespace-nowrap transition-all duration-300 {{ Request::is('berita') ? 'bg-white/15 text-white rounded-lg' : 'text-white/80 hover:text-white hover:bg-white/10 rounded-lg' }}"
                                 id="nav-berita">
@@ -267,12 +272,8 @@
                     <div>
                         <h3 class="font-bold text-lg mb-4">Layanan</h3>
                         <ul class="space-y-3 text-slate-300 text-sm">
-                            <li><a href="{{ route('login') }}" class="hover:text-amber-500 transition-colors">Login Admin
-                                    Desa</a></li>
-                            <li><a href="{{ route('login') }}" class="hover:text-amber-500 transition-colors">Login Admin
-                                    DPMD</a></li>
-                            <li><a href="{{ route('public.panduan') }}"
-                                    class="hover:text-amber-500 transition-colors">Panduan Pelaporan</a></li>
+                            <li><a href="{{ route('public.bank-data') }}" class="hover:text-amber-500 transition-colors">Bank Data & Regulasi</a></li>
+                            <li><a href="{{ route('public.panduan') }}" class="hover:text-amber-500 transition-colors">Panduan Pelaporan</a></li>
                             <li><a href="{{ route('public.kontak') }}" class="hover:text-amber-500 transition-colors">Kontak
                                     Bantuan</a></li>
                         </ul>

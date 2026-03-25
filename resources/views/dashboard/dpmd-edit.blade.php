@@ -17,26 +17,14 @@
                     Informasi Kepala Dinas & Sambutan
                 </h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
-                    <div>
+                    <div class="md:col-span-2">
                         <label for="nama_kadis"
                             class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2 transition-colors">Nama
                             Kepala Dinas</label>
                         <input type="text" name="nama_kadis" id="nama_kadis"
                             value="{{ old('nama_kadis', $profile->nama_kadis) }}"
                             class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-emerald-500 outline-none dark:text-white transition-all">
-                    </div>
-                    <div>
-                        <label for="foto_kadis"
-                            class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2 transition-colors">Foto
-                            Kepala Dinas</label>
-                        <input type="file" name="foto_kadis" id="foto_kadis"
-                            onchange="showFileName(this, 'kadis-photo-name')"
-                            class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 dark:file:bg-emerald-900/30 file:text-emerald-700 dark:file:text-emerald-400 hover:file:bg-emerald-100 dark:hover:file:bg-emerald-900/50 transition-all outline-none dark:text-slate-300">
-                        <p class="text-[10px] text-slate-400 mt-2 font-bold italic" id="kadis-photo-name">Pilih foto
-                            Kepala Dinas</p>
-                    </div>
-
-                    <div class="md:col-span-2">
+                    </div>                    <div class="md:col-span-2">
                         <label for="foto_struktur"
                             class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2 transition-colors">Foto Bagan Struktur Organisasi (Opsional)</label>
                         <input type="file" name="foto_struktur" id="foto_struktur"
@@ -334,15 +322,8 @@
                         <div
                             class="group relative bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-700 rounded-3xl p-6 transition-all hover:shadow-xl hover:-translate-y-1">
                             <div class="flex items-start gap-4">
-                                <div class="w-16 h-16 rounded-2xl overflow-hidden bg-white shadow-sm flex-shrink-0">
-                                    @if($staff->foto)
-                                        <img src="{{ asset('storage/' . $staff->foto) }}" class="w-full h-full object-cover">
-                                    @else
-                                        <div
-                                            class="w-full h-full flex items-center justify-center text-2xl bg-blue-50 text-blue-300">
-                                            👤
-                                        </div>
-                                    @endif
+                                <div class="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-900/30 flex items-center justify-center text-xl shadow-sm flex-shrink-0">
+                                    👤
                                 </div>
                                 <div class="flex-1 min-w-0">
                                     <h4 class="font-bold text-slate-800 dark:text-white truncate">{{ $staff->nama }}</h4>
@@ -435,6 +416,7 @@
 
             document.getElementById('staff-nama').value = '';
             document.getElementById('staff-jabatan').value = '';
+
             document.getElementById('staff-urutan').value = '';
 
             modal.classList.remove('hidden');
@@ -461,6 +443,7 @@
 
             document.getElementById('staff-nama').value = staff.nama;
             document.getElementById('staff-jabatan').value = staff.jabatan;
+
             document.getElementById('staff-urutan').value = staff.urutan;
 
             modal.classList.remove('hidden');
@@ -542,6 +525,8 @@
                         placeholder="Contoh: Sekretaris Dinas">
                 </div>
 
+
+
                 <div>
                     <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Urutan Tampil
                         (Opsional)</label>
@@ -550,14 +535,7 @@
                         placeholder="Contoh: 1">
                 </div>
 
-                <div>
-                    <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Foto Profil
-                        (Opsional)</label>
-                    <input type="file" name="foto" id="staff_foto" onchange="showFileName(this, 'staff-photo-name')"
-                        class="w-full px-6 py-3 rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-black file:bg-blue-600 file:text-white hover:file:bg-blue-700 transition-all outline-none dark:text-slate-300">
-                    <p class="text-[10px] text-slate-400 mt-2 font-bold italic px-2" id="staff-photo-name">Belum ada
-                        file dipilih</p>
-                </div>
+
 
                 <div class="flex items-center gap-3 pt-4">
                     <button type="submit"

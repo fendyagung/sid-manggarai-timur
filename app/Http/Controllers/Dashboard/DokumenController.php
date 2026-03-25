@@ -68,8 +68,13 @@ class DokumenController extends Controller
         } else {
             // For village admins
             $dpmdAdmins = User::where('role', 'admin_dpmd')->get();
+            
+            // Get kecamatan from Desa model if possible, fallback to user's kecamatan field
+            $desa = Desa::where('user_id', $user->id)->first();
+            $kecamatanName = $desa ? $desa->kecamatan : $user->kecamatan;
+
             $kecamatanAdmins = User::where('role', 'admin_kecamatan')
-                ->where('kecamatan', $user->kecamatan)
+                ->where('kecamatan', $kecamatanName)
                 ->get();
             return view('dashboard.dokumen.create', compact('dpmdAdmins', 'kecamatanAdmins'));
         }

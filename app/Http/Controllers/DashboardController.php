@@ -52,6 +52,8 @@ class DashboardController extends Controller
             $data['recent_laporans'] = (clone $laporanQuery)->with('desa')->latest()->take(5)->get();
             $data['pending_verification'] = (clone $laporanQuery)->with('desa')->where('status', 'pending')->latest()->take(3)->get();
 
+            $data['total_regulasi'] = \App\Models\Regulasi::count();
+
             $data['desas'] = (clone $desaQuery)->withCount('laporans')
                 ->orderByRaw("CASE WHEN kecamatan = 'Borong' THEN 0 ELSE 1 END")
                 ->orderBy('kecamatan', 'asc')
@@ -69,6 +71,13 @@ class DashboardController extends Controller
                 $data['laporan_diterima'] = $desa->laporans()->where('status', 'diterima')->count();
                 $data['recent_laporans'] = $desa->laporans()->latest()->take(5)->get();
                 $data['potensis'] = $desa->potensis()->latest()->take(2)->get();
+                
+                // Count unread regulations for this village
+                $data['new_regulasi_count'] = \App\Models\Regulasi::where('created_at', '>=', now()->subDays(30))
+                    ->whereDoesntHave('downloads', function ($query) use ($user) {
+                        $query->where('user_id', $user->id);
+                    })
+                    ->count();
             } else {
                 $data['desa_id'] = 0;
                 $data['desa_nama'] = 'Desa Belum Terdaftar';
@@ -118,7 +127,7 @@ class DashboardController extends Controller
             'kategori' => 'required|in:keuangan,penduduk,kejadian,lainnya',
             'keterangan' => 'nullable|string',
             'tanggal_laporan' => 'required|date',
-            'lampiran' => 'nullable|file|mimes:pdf,jpg,jpeg,png,docx|max:10240',
+            'lampiran' => 'nullable|file|mimes:pdf,jpg,jpeg,png,docx,xls,xlsx|max:10240',
         ]);
 
         $user = Auth::user();
@@ -376,7 +385,6 @@ class DashboardController extends Controller
 
         $request->validate([
             'nama_kadis' => 'nullable|string|max:255',
-            'foto_kadis' => 'nullable|image|max:5120',
             'foto_struktur' => 'nullable|image|max:5120',
             'logo_website' => 'nullable|image|max:2048',
             'sambutan_judul' => 'nullable|string|max:255',
@@ -402,10 +410,6 @@ class DashboardController extends Controller
 
 
         $data = $request->except(['gallery_photos', 'gallery_videos']);
-
-        if ($request->hasFile('foto_kadis')) {
-            $data['foto_kadis'] = $request->file('foto_kadis')->store('dpmd-profile', 'public');
-        }
 
         if ($request->hasFile('foto_struktur')) {
             $data['foto_struktur'] = $request->file('foto_struktur')->store('dpmd-profile', 'public');
