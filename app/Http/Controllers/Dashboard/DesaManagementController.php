@@ -23,11 +23,11 @@ class DesaManagementController extends Controller
         $this->checkAdmin();
         $user = Auth::user();
         
-        $query = Desa::with('admin')->latest();
+        $query = Desa::with('admin')->orderBy('kecamatan')->orderBy('nama_desa');
         if ($user->role === 'admin_kecamatan') {
             $query->where('kecamatan', $user->kecamatan);
         }
-        $desas = $query->paginate(15);
+        $desas = $query->paginate(30);
         
         return view('dashboard.dpmd.desa.index', compact('desas'));
     }
