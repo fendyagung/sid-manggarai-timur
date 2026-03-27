@@ -282,10 +282,10 @@
 
                     <!-- Name -->
                     <div class="form-group">
-                        <label>Nama Lengkap</label>
+                        <label>Nama Pengguna / Instansi</label>
                         <div class="input-box">
                             <input type="text" name="name" class="form-input" required autofocus value="{{ old('name') }}"
-                                placeholder="Contoh: Bpk. Albert">
+                                placeholder="@if($role === 'admin_dpmd') Contoh: Admin Dinas PMD @elseif($role === 'admin_kecamatan') Contoh: Admin Kecamatan Borong @else Contoh: Admin Desa Balus Permai @endif">
                             <x-input-error :messages="$errors->get('name')" class="mt-1" />
                         </div>
                     </div>

@@ -20,7 +20,11 @@
     $featuredDesas = \App\Models\Desa::with('potensis')->where('is_desa_wisata', true)->latest()->take(6)->get();
 
     // Announcements
-    $announcements = \App\Models\Pengumuman::where('is_active', true)->latest()->take(4)->get();
+    $announcements = \App\Models\Pengumuman::where('is_active', true)
+        ->where('show_on_public', true)
+        ->latest()
+        ->take(4)
+        ->get();
 
     // Latest News (Berita)
     $latestNews = \App\Models\Berita::with('user')->where('is_published', true)->latest()->take(3)->get();
@@ -676,7 +680,7 @@
                         ['icon' => '📊', 'title' => 'Dashboard Analitik', 'desc' => 'Pantau tingkat kepatuhan pelaporan per kecamatan dengan visualisasi yang informatif.', 'color' => 'bg-blue-50'],
                         ['icon' => '🏞️', 'title' => 'Promosi Wisata', 'desc' => 'Daftarkan potensi wisata desa untuk dipromosikan kepada publik dan wisatawan.', 'color' => 'bg-emerald-50'],
                         ['icon' => '🗺️', 'title' => 'Peta Sebaran', 'desc' => 'Tampilkan lokasi dan status semua desa dalam peta interaktif Kabupaten Manggarai Timur.', 'color' => 'bg-indigo-50'],
-                        ['icon' => '📢', 'title' => 'Broadcast Info', 'desc' => 'DMPD bisa kirim pengumuman dan notifikasi langsung kepada seluruh admin desa.', 'color' => 'bg-orange-50'],
+                        ['icon' => '📢', 'title' => 'Berita Utama', 'desc' => 'DMPD bisa kirim berita utama dan pengumuman langsung kepada seluruh admin desa.', 'color' => 'bg-orange-50'],
                     ];
                 @endphp
                 @foreach($features as $f)
@@ -813,14 +817,14 @@
                 <div class="max-w-xl">
                     <span
                         class="px-4 py-1.5 bg-emerald-50 text-[#1e293b] text-[11px] font-black uppercase tracking-widest rounded-full border border-emerald-100">📰
-                        Kabar Desa</span>
-                    <h2 class="text-4xl font-black mt-6 font-serif text-slate-900 dark:text-white">Berita & Kabar <span
+                        Publikasi Kegiatan</span>
+                    <h2 class="text-4xl font-black mt-6 font-serif text-slate-900 dark:text-white">Kegiatan & Kabar <span
                             style="color: #d97706;">Terkini</span></h2>
                     <p class="text-slate-600 dark:text-slate-400 mt-4">Informasi terbaru seputar kegiatan desa, kebijakan dinas, dan perkembangan pembangunan di Manggarai Timur.</p>
                 </div>
                 <div class="mt-8 md:mt-0">
                     <a href="{{ route('public.berita') }}"
-                        class="inline-flex items-center gap-2 text-sm font-black text-emerald-600 uppercase tracking-widest hover:underline">Lihat Semua Berita →</a>
+                        class="inline-flex items-center gap-2 text-sm font-black text-emerald-600 uppercase tracking-widest hover:underline">Lihat Semua Kegiatan →</a>
                 </div>
             </div>
 
@@ -911,7 +915,7 @@
             <div class="mb-16 reveal">
                 <span
                     class="px-4 py-1.5 bg-amber-50 dark:bg-amber-900/20 text-[#d97706] dark:text-amber-500 text-[11px] font-black uppercase tracking-widest rounded-full border border-amber-100 dark:border-amber-800">📢
-                    Pengumuman</span>
+                    Berita Utama</span>
                 <h2 class="text-4xl font-black mt-6 font-serif text-slate-900 dark:text-white">Informasi Terbaru Dari
                     <span style="color: #d97706;">DMPD</span>
                 </h2>

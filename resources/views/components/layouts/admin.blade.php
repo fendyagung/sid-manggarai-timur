@@ -589,7 +589,7 @@
             <div class="nav-section-label" style="margin-top:8px;">Konten Publik</div>
             <a href="{{ route('dashboard.beritas.index') }}"
                 class="nav-item {{ Request::is('dashboard/beritas*') ? 'active' : '' }}">
-                <span class="ni-icon">📰</span> Kelola Berita
+                <span class="ni-icon">📰</span> Publikasi Kegiatan
             </a>
             <a href="{{ route('dashboard.potensi.index') }}"
                 class="nav-item {{ Request::is('dashboard/potensi*') ? 'active' : '' }}">
@@ -605,7 +605,7 @@
                 @if($user->role === 'admin_dpmd')
                     <a href="{{ route('pengumuman.index') }}"
                         class="nav-item {{ Request::is('dashboard/pengumuman*') ? 'active' : '' }}">
-                        <span class="ni-icon">📢</span> Broadcast Info
+                        <span class="ni-icon">📢</span> Berita Utama
                     </a>
                 @endif
             @endif
@@ -661,7 +661,7 @@
                             ['label' => 'WISATA', 'route' => route('public.desa-wisata'), 'pattern' => 'jelajah/desa-wisata'],
                             ['label' => 'KOMODITI', 'route' => route('public.komoditi'), 'pattern' => 'jelajah/komoditi'],
                             ['label' => 'LAPORAN', 'route' => route('public.laporan-desa'), 'pattern' => 'laporan-desa'],
-                            ['label' => 'BERITA', 'route' => route('public.berita'), 'pattern' => 'berita'],
+                            ['label' => 'KEGIATAN', 'route' => route('public.berita'), 'pattern' => 'berita'],
                             ['label' => 'KONTAK', 'route' => route('public.kontak'), 'pattern' => 'layanan/kontak'],
                         ];
                     @endphp

@@ -17,6 +17,10 @@ class Pengumuman extends Model
         'isi',
         'tipe',
         'is_active',
+        'show_on_dashboard',
+        'show_on_public',
+        'file_path',
+        'original_name',
         'user_id',
     ];
 

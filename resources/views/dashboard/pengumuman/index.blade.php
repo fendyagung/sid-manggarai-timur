@@ -2,8 +2,8 @@
     <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-100">
         <div class="p-8 bg-[#022c22] text-white flex justify-between items-center">
             <div>
-                <h1 class="text-2xl font-bold">Broadcast Pengumuman</h1>
-                <p class="text-emerald-100/80">Kirimkan informasi penting ke seluruh Admin Desa di Manggarai Timur.</p>
+                <h1 class="text-2xl font-bold">Kelola Berita Utama</h1>
+                <p class="text-emerald-100/80">Kirimkan berita utama atau pengumuman penting ke seluruh Admin Desa di Manggarai Timur.</p>
             </div>
         </div>
 
@@ -17,15 +17,15 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
                     </svg>
-                    Buat Pengumuman Baru
+                    Buat Berita Utama Baru
                 </h3>
-                <form action="{{ route('pengumuman.store') }}" method="POST" class="space-y-6">
+                <form action="{{ route('pengumuman.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
                     @csrf
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div class="md:col-span-2">
                             <label for="judul"
                                 class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Judul
-                                Pengumuman</label>
+                                Pengumuman / Berita</label>
                             <input type="text" name="judul" id="judul" required
                                 class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-emerald-500 outline-none dark:text-white"
                                 placeholder="Contoh: Batas Akhir Pelaporan Triwulan 1">
@@ -43,12 +43,32 @@
                         </div>
                     </div>
 
+                    <div class="flex flex-wrap gap-8 items-center bg-white dark:bg-slate-800/50 p-4 rounded-xl border border-slate-100 dark:border-slate-700">
+                        <label class="flex items-center gap-3 cursor-pointer group">
+                            <input type="checkbox" name="show_on_dashboard" value="1" checked
+                                class="w-5 h-5 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover:text-emerald-600 transition-colors">Tampilkan di Dashboard (Pop-up Admin)</span>
+                        </label>
+                        <label class="flex items-center gap-3 cursor-pointer group">
+                            <input type="checkbox" name="show_on_public" value="1" checked
+                                class="w-5 h-5 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500">
+                            <span class="text-sm font-bold text-slate-700 dark:text-slate-300 group-hover:text-emerald-600 transition-colors">Tampilkan di Halaman Depan (Publik)</span>
+                        </label>
+                    </div>
+
                     <div>
                         <label for="isi" class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Isi
                             Pesan</label>
                         <textarea name="isi" id="isi" rows="3" required
                             class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-emerald-500 outline-none dark:text-white"
                             placeholder="Tuliskan detail pengumuman di sini..."></textarea>
+                    </div>
+
+                    <div>
+                        <label for="lampiran" class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Lampiran PDF (Wajib untuk Halaman Depan)</label>
+                        <input type="file" name="lampiran" id="lampiran" accept="application/pdf"
+                            class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-emerald-500 outline-none dark:text-white">
+                        <p class="text-[10px] text-slate-400 mt-2 italic">*Hanya file PDF, maksimal 10MB</p>
                     </div>
 
                     <div class="flex justify-end">
@@ -58,14 +78,14 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                             </svg>
-                            Kirim Broadcast
+                            Kirim Berita Utama
                         </button>
                     </div>
                 </form>
             </div>
 
             <!-- List -->
-            <h3 class="font-bold text-slate-800 dark:text-white mb-6 text-lg transition-colors">Riwayat Pengumuman</h3>
+            <h3 class="font-bold text-slate-800 dark:text-white mb-6 text-lg transition-colors">Riwayat Berita Utama</h3>
             <div class="space-y-4">
                 @forelse($pengumumans as $umum)
                     <div
@@ -91,9 +111,21 @@
                                 </h4>
                                 <p class="text-sm text-slate-600 dark:text-slate-300 mt-1 mb-2 transition-colors">
                                     {{ $umum->isi }}</p>
-                                <p class="text-xs text-slate-400 dark:text-slate-500 transition-colors">
-                                    {{ $umum->created_at->format('d M Y H:i') }} • Oleh Admin
-                                    DPMD</p>
+                                <p class="text-xs text-slate-400 dark:text-slate-500 transition-colors flex items-center gap-3">
+                                    <span>{{ $umum->created_at->format('d M Y H:i') }}</span>
+                                    <span class="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
+                                    <span class="flex items-center gap-1">
+                                        @if($umum->show_on_dashboard)
+                                            <span class="text-emerald-600 font-bold">💻 Dashboard</span>
+                                        @endif
+                                        @if($umum->show_on_dashboard && $umum->show_on_public)
+                                            <span class="text-slate-300">|</span>
+                                        @endif
+                                        @if($umum->show_on_public)
+                                            <span class="text-blue-600 font-bold">🌐 Beranda</span>
+                                        @endif
+                                    </span>
+                                </p>
                             </div>
                         </div>
                         <div class="flex items-center gap-2">

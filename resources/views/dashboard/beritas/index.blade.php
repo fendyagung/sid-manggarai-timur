@@ -3,15 +3,15 @@
         class="bg-white dark:bg-slate-800 rounded-3xl shadow-xl overflow-hidden border border-slate-100 dark:border-slate-700 mb-8 transition-colors">
         <div class="p-8 bg-emerald-900 text-white flex justify-between items-center">
             <div>
-                <h1 class="text-2xl font-bold">Manajemen Berita & Kegiatan</h1>
-                <p class="text-emerald-100/80">Kelola semua artikel berita yang tampil di halaman publik.</p>
+                <h1 class="text-2xl font-bold">Publikasi Kegiatan</h1>
+                <p class="text-emerald-100/80">Publikasikan foto dan berita kegiatan dari Desa, Kecamatan, maupun DPMD.</p>
             </div>
             <a href="{{ route('dashboard.beritas.create') }}"
                 class="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-400 rounded-xl transition-all shadow-lg shadow-emerald-900/20 font-bold flex items-center gap-2">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                 </svg>
-                Tulis Berita Baru
+                <span>+</span> Buat Publikasi Baru
             </a>
         </div>
 
@@ -22,7 +22,7 @@
                         class="bg-slate-50 dark:bg-slate-700/50 border-b border-slate-100 dark:border-slate-700 text-slate-500 dark:text-slate-400 font-bold uppercase text-xs">
                         <tr>
                             <th class="px-8 py-4">Gambar</th>
-                            <th class="px-8 py-4">Judul Berita</th>
+                            <th class="px-6 py-4">Judul Kegiatan</th>
                             @if(Auth::user()->role === 'admin_dpmd')
                                 <th class="px-8 py-4">Penulis</th>
                             @endif

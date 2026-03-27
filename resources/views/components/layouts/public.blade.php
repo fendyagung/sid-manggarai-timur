@@ -111,7 +111,7 @@
                                         class="text-[10px] font-black text-white/80 hover:text-amber-400 transition-all tracking-[0.2em] uppercase">Desa
                                         Wisata</a>
                                     <a href="#pengumuman"
-                                        class="text-[10px] font-black text-white/80 hover:text-amber-400 transition-all tracking-[0.2em] uppercase">Pengumuman</a>
+                                        class="text-[10px] font-black text-white/80 hover:text-amber-400 transition-all tracking-[0.2em] uppercase">Berita Utama</a>
                                     <a href="#cara"
                                         class="text-[10px] font-black text-white/80 hover:text-amber-400 transition-all tracking-[0.2em] uppercase">Cara
                                         Kerja</a>
@@ -152,7 +152,7 @@
                             <a href="{{ route('public.berita') }}"
                                 class="px-3 py-1.5 mx-0.5 flex items-center font-bold text-[11px] whitespace-nowrap transition-all duration-300 {{ Request::is('berita') ? 'bg-white/15 text-white rounded-lg' : 'text-white/80 hover:text-white hover:bg-white/10 rounded-lg' }}"
                                 id="nav-berita">
-                                BERITA
+                                KEGIATAN
                             </a>
                             <a href="{{ route('public.kontak') }}"
                                 class="px-3 py-1.5 mx-0.5 flex items-center font-bold text-[11px] whitespace-nowrap transition-all duration-300 {{ Request::is('layanan/kontak') ? 'bg-white/15 text-white rounded-lg' : 'text-white/80 hover:text-white hover:bg-white/10 rounded-lg' }}"

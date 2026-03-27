@@ -1,7 +1,7 @@
 <x-layouts.admin>
     <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-100">
         <div class="p-8 bg-[#064e3b] text-white">
-            <h1 class="text-2xl font-bold">Edit Berita</h1>
+            <h1 class="text-2xl font-bold">Edit Publikasi Kegiatan</h1>
             <p class="text-emerald-100/80">Perbarui informasi berita atau kegiatan yang telah dipublikasikan.</p>
         </div>
 
@@ -11,7 +11,7 @@
 
             <div class="space-y-6">
                 <div>
-                    <label for="judul" class="block text-sm font-semibold text-slate-700 mb-2">Judul Berita</label>
+                    <label class="block text-sm font-semibold text-slate-700 mb-2">Judul Kegiatan</label>
                     <input type="text" name="judul" id="judul" value="{{ old('judul', $berita->judul) }}" required
                         class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
                         placeholder="Ketik judul berita yang menarik...">
@@ -44,7 +44,7 @@
                             </option>
                             <option value="0" {{ old('is_published', $berita->is_published) == '0' ? 'selected' : '' }}>
                                 Simpan
-                                sebagai Draft
+                                <span>💾</span> Perbarui Publikasi Kegiatan
                             </option>
                         </select>
                         @error('is_published') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror

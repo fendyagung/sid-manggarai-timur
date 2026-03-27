@@ -588,30 +588,7 @@
             </header>
 
             <main class="login-container">
-                <!-- Left Side: Immersive Hero -->
-                <div class="left-side">
-                    <span class="hero-badge">✨ Platform Digital Terpadu</span>
-                    <h1 class="hero-title">Wujudkan Desa<br><span>Mandiri & Digital</span></h1>
-                    <p class="hero-desc">
-                        Platform resmi Dinas PMD Kabupaten Manggarai Timur untuk tata kelola laporan desa,
-                        monitoring pembangunan, dan promosi potensi wisata lokal.
-                    </p>
-
-                    <div class="feature-pill">
-                        <span>📊</span>
-                        <font>Dashboard Monitoring Real-time</font>
-                    </div>
-                    <div class="feature-pill">
-                        <span>🏞️</span>
-                        <font>Etalase Wisata & Komoditi Desa</font>
-                    </div>
-                    <div class="feature-pill">
-                        <span>🔒</span>
-                        <font>Keamanan Data & Pelaporan Terpadu</font>
-                    </div>
-                </div>
-
-                <!-- Right Side: Login Form -->
+                <!-- Login Card (Centered) -->
                 <div class="right-side">
                     <div class="glass-card">
                         <nav class="role-tabs">
@@ -662,11 +639,7 @@
                                     </div>
                                 </div>
 
-                                <div class="footer-links">
-                                    <label class="checkbox-item">
-                                        <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}>
-                                        <span>Ingat Sesi</span>
-                                    </label>
+                                <div class="footer-links" style="justify-content: flex-end;">
                                     <a href="{{ route('password.request') }}" class="link-alt">Lupa Sandi?</a>
                                 </div>
 
@@ -708,11 +681,7 @@
                                     </div>
                                 </div>
 
-                                <div class="footer-links">
-                                    <label class="checkbox-item">
-                                        <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}>
-                                        <span>Aktifkan 8 jam</span>
-                                    </label>
+                                <div class="footer-links" style="justify-content: flex-end;">
                                     <a href="{{ route('password.request') }}" class="link-alt biru">Reset Password</a>
                                 </div>
 
@@ -754,11 +723,7 @@
                                     </div>
                                 </div>
 
-                                <div class="footer-links">
-                                    <label class="checkbox-item">
-                                        <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}>
-                                        <span>Aktifkan 8 jam</span>
-                                    </label>
+                                <div class="footer-links" style="justify-content: flex-end;">
                                     <a href="{{ route('password.request') }}" class="link-alt emas">Reset Password</a>
                                 </div>
 

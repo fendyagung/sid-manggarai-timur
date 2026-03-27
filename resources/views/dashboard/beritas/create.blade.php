@@ -1,8 +1,8 @@
 <x-layouts.admin>
     <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-100">
         <div class="p-8 bg-[#064e3b] text-white">
-            <h1 class="text-2xl font-bold">Tulis Berita Baru</h1>
-            <p class="text-emerald-100/80">Publikasikan informasi kegiatan atau pengumuman desa kepada publik.
+            <h1 class="text-2xl font-bold">Publikasi Kegiatan Baru</h1>
+            <p class="text-emerald-100/80">Unggah foto dan tulis deskripsi kegiatan dari Desa, Kecamatan, maupun DPMD.
             </p>
         </div>
 
@@ -12,7 +12,7 @@
 
             <div class="space-y-6">
                 <div>
-                    <label for="judul" class="block text-sm font-semibold text-slate-700 mb-2">Judul Berita</label>
+                    <label for="judul" class="block text-sm font-semibold text-slate-700 mb-2">Judul Kegiatan</label>
                     <input type="text" name="judul" id="judul" value="{{ old('judul') }}" required
                         class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
                         placeholder="Ketik judul berita yang menarik...">
@@ -58,8 +58,7 @@
                 </div>
 
                 <div>
-                    <label for="isi" class="block text-sm font-semibold text-slate-700 mb-2">Isi Berita
-                        Lengkap</label>
+                    <label for="isi" class="block text-sm font-semibold text-slate-700 mb-2">Isi Berita / Keterangan Kegiatan</label>
                     <textarea name="isi" id="isi" rows="12" required
                         class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
                         placeholder="Tuliskan detail berita atau kegiatan di sini...">{{ old('isi') }}</textarea>

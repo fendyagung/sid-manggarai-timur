@@ -89,7 +89,10 @@ class DashboardController extends Controller
         }
 
         // Fetch latest active announcement
-        $data['pengumuman'] = \App\Models\Pengumuman::where('is_active', true)->latest()->first();
+        $data['pengumuman'] = \App\Models\Pengumuman::where('is_active', true)
+            ->where('show_on_dashboard', true)
+            ->latest()
+            ->first();
 
         return view('dashboard', compact('data'));
     }

@@ -587,6 +587,70 @@
         </div>
     @endif
 
+    @if(isset($data['pengumuman']) && $data['pengumuman'])
+        <!-- BROADCAST MODAL -->
+        <div id="broadcastModal" class="fixed inset-0 z-[1000] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-300">
+            <div class="bg-white dark:bg-slate-900 w-full max-w-2xl rounded-[30px] shadow-2xl overflow-hidden transform scale-95 transition-all duration-300" id="modalContent">
+                <div class="px-8 py-6 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center">
+                    <h3 class="text-xl font-black text-slate-800 dark:text-white flex items-center gap-2">
+                        <span class="text-2xl">📢</span> Berita
+                    </h3>
+                    <button onclick="closeBroadcastModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="p-8">
+                    <div class="bg-blue-50 dark:bg-blue-900/20 rounded-2xl p-6 mb-6 border border-blue-100 dark:border-blue-800/50">
+                        <h4 class="text-lg font-bold text-blue-900 dark:text-blue-300 mb-2">{{ $data['pengumuman']->judul }}</h4>
+                        <div class="flex items-center gap-2 text-blue-700/70 dark:text-blue-400/70 text-xs mb-4">
+                            <span>📅</span> {{ $data['pengumuman']->created_at->format('d/m/Y') }}
+                        </div>
+                        <div class="text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-line">
+                            {{ $data['pengumuman']->isi }}
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-end">
+                        <button onclick="closeBroadcastModal()" class="px-8 py-3 bg-slate-800 dark:bg-slate-700 text-white font-bold rounded-xl hover:bg-slate-900 dark:hover:bg-slate-600 transition-all">
+                            Tutup
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function openBroadcastModal() {
+                const modal = document.getElementById('broadcastModal');
+                const content = document.getElementById('modalContent');
+                
+                // Only show if not dismissed in this session
+                if (!sessionStorage.getItem('broadcast_dismissed')) {
+                    modal.classList.remove('opacity-0', 'pointer-events-none');
+                    content.classList.remove('scale-95');
+                    content.classList.add('scale-100');
+                }
+            }
+
+            function closeBroadcastModal() {
+                const modal = document.getElementById('broadcastModal');
+                const content = document.getElementById('modalContent');
+                
+                modal.classList.add('opacity-0', 'pointer-events-none');
+                content.classList.remove('scale-100');
+                content.classList.add('scale-95');
+                
+                // Save to session storage so it doesn't reappear until next login/session
+                sessionStorage.setItem('broadcast_dismissed', 'true');
+            }
+
+            // Trigger open after a slight delay for better UX
+            setTimeout(openBroadcastModal, 500);
+        </script>
+    @endif
+
     <script>
         document.getElementById('desaSearch')?.addEventListener('input', function (e) {
             const val = e.target.value.toLowerCase();
@@ -596,3 +660,4 @@
         });
     </script>
 </x-layouts.admin>
+```

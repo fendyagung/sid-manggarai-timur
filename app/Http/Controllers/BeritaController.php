@@ -44,7 +44,7 @@ class BeritaController extends Controller
 
         Berita::create($data);
 
-        return redirect()->route('dashboard.beritas.index')->with('success', 'Berita berhasil diterbitkan!');
+        return redirect()->route('dashboard.beritas.index')->with('success', 'Kegiatan berhasil dipublikasikan!');
     }
 
     public function edit($id)
@@ -86,7 +86,7 @@ class BeritaController extends Controller
 
         $berita->update($data);
 
-        return redirect()->route('dashboard.beritas.index')->with('success', 'Berita berhasil diperbarui!');
+        return redirect()->route('dashboard.beritas.index')->with('success', 'Publikasi Kegiatan berhasil diperbarui!');
     }
 
     public function destroy($id)
@@ -103,6 +103,6 @@ class BeritaController extends Controller
 
         $berita->delete();
 
-        return redirect()->route('dashboard.beritas.index')->with('success', 'Berita telah dihapus.');
+        return redirect()->route('dashboard.beritas.index')->with('success', 'Publikasi Kegiatan telah dihapus.');
     }
 }
