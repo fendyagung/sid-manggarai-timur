@@ -1,24 +1,7 @@
 <x-layouts.public>
-    <!-- Hero Section -->
-    <div class="relative h-[60vh] min-h-[400px] flex items-end overflow-hidden">
-        @if($desa->foto_profil)
-            <img src="{{ asset('storage/' . $desa->foto_profil) }}" alt="{{ $desa->nama_desa }}"
-                class="absolute inset-0 w-full h-full object-cover">
-        @elseif($desa->potensis->isNotEmpty() && $desa->potensis->first()->foto_utama)
-            <img src="{{ asset('storage/' . $desa->potensis->first()->foto_utama) }}" alt="{{ $desa->nama_desa }}"
-                class="absolute inset-0 w-full h-full object-cover">
-        @else
-            <div class="absolute inset-0 bg-slate-200 flex items-center justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-slate-300" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-            </div>
-        @endif
-        <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/20 to-transparent"></div>
-
-        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 w-full">
+    <!-- Simple Header (No Banner Photo) -->
+    <section class="pt-32 pb-16 bg-[#064e3b] text-white relative">
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
             <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
                 <div>
                     <span
@@ -50,14 +33,13 @@
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
     <!-- Content -->
     <div class="py-16 bg-white dark:bg-slate-900 transition-colors">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-16">
+            <div class="max-w-4xl mx-auto">
                 <!-- Main Desc -->
-                <div class="lg:col-span-2">
                     <h2 class="text-3xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-3">
                         <span class="w-2 h-8 bg-emerald-500 rounded-full"></span>
                         Tentang Desa
@@ -219,28 +201,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <!-- Sidebar / CTA -->
-                <div class="lg:col-span-1">
-                    <div
-                        class="bg-slate-900 rounded-[2.5rem] p-10 text-white sticky top-28 shadow-2xl overflow-hidden relative">
-                        <div class="relative z-10">
-                            <h3 class="text-2xl font-bold mb-4">Ingin Berkunjung?</h3>
-                            <p class="text-slate-400 mb-8 leading-relaxed text-sm">
-                                Temukan pengalaman tak terlupakan di Manggarai Timur. Hubungi pusat informasi pariwisata
-                                untuk panduan lebih lanjut.
-                            </p>
-                            <a href="{{ route('public.kontak') }}"
-                                class="w-full flex items-center justify-center py-4 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-2xl transition-all shadow-lg shadow-emerald-500/20">
-                                Tanya Admin
-                            </a>
-                        </div>
-                        <!-- Decoration -->
-                        <div class="absolute -top-12 -right-12 w-40 h-40 bg-emerald-500/10 rounded-full blur-3xl"></div>
-                        <div class="absolute -bottom-12 -left-12 w-40 h-40 bg-blue-500/10 rounded-full blur-3xl"></div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>

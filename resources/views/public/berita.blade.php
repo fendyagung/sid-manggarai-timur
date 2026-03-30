@@ -92,8 +92,8 @@
                                 <h3
                                     class="text-xl font-bold text-slate-800 mb-4 group-hover:text-emerald-600 transition-colors">
                                     {{ $item->judul }}</h3>
-                                <p class="text-slate-500 text-sm leading-relaxed line-clamp-3">
-                                    {{ Str::limit(strip_tags($item->isi), 120) }}</p>
+                                <p class="text-slate-500 text-sm leading-relaxed line-clamp-6">
+                                    {{ strip_tags($item->isi) }}</p>
                             </div>
                             <div
                                 class="px-8 py-4 bg-slate-50 border-t border-slate-50 text-[10px] font-bold text-slate-400 uppercase tracking-widest">

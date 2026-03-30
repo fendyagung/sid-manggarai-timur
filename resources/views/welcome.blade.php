@@ -20,7 +20,7 @@
     $kepatuhanPercent = $totalDesa > 0 ? round(($desaSudahLaporCount / $totalDesa) * 100) : 0;
 
     // Featured Villages
-    $featuredDesas = \App\Models\Desa::with('potensis')->where('is_desa_wisata', true)->latest()->take(6)->get();
+    $featuredDesas = \App\Models\Desa::withCount('potensis')->where('is_desa_wisata', true)->latest()->take(6)->get();
 
     // Announcements
     $announcements = \App\Models\Pengumuman::where('is_active', true)
@@ -661,9 +661,9 @@
     </section>
 
     <!-- SECTION: FITUR -->
-    <section class="py-24 bg-white dark:bg-slate-900" id="fitur">
+    <section class="py-12 bg-white dark:bg-slate-900" id="fitur">
         <div class="max-w-7xl mx-auto px-6">
-            <div class="mb-16 reveal">
+            <div class="mb-12 reveal">
                 <span
                     class="px-4 py-1.5 bg-blue-50 text-[#1e293b] text-[11px] font-black uppercase tracking-widest rounded-full border border-blue-100">⚙️
                     Fitur Sistem</span>
@@ -700,10 +700,10 @@
         </div>
     </section>
 
-    <section class="py-24 dark:bg-slate-900/50" style="background: linear-gradient(to bottom right, #fdfbf7, #f3f4f1);"
+    <section class="py-12 dark:bg-slate-900/50" style="background: linear-gradient(to bottom right, #fdfbf7, #f3f4f1);"
         id="cara">
         <div class="max-w-7xl mx-auto px-6">
-            <div class="text-center mb-16 reveal">
+            <div class="text-center mb-12 reveal">
                 <span
                     class="px-4 py-1.5 bg-emerald-100 text-emerald-800 text-[11px] font-black uppercase tracking-widest rounded-full border border-emerald-200">⚡
                     Cara Kerja</span>
@@ -737,77 +737,6 @@
                         <p class="text-slate-500 dark:text-slate-400 text-xs leading-relaxed">{{ $s['desc'] }}</p>
                     </div>
                 @endforeach
-            </div>
-        </div>
-    </section>
-
-    <!-- SECTION: DESA WISATA -->
-    <section class="py-24 bg-[#fdf8f0] dark:bg-slate-900/50" id="wisata">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="text-center mb-16 reveal">
-                <span
-                    class="px-4 py-1.5 bg-blue-50 dark:bg-blue-900/20 text-[#1e293b] dark:text-blue-300 text-[11px] font-black uppercase tracking-widest rounded-full border border-blue-100 dark:border-blue-800">🏞️
-                    Desa Wisata</span>
-                <h2 class="text-4xl font-black mt-6 font-serif text-slate-900 dark:text-white">Potensi Wisata <span
-                        style="color: #d97706;">Manggarai
-                        Timur</span></h2>
-                <p class="text-slate-600 dark:text-slate-400 mt-4 max-w-2xl mx-auto">Flores menyimpan kekayaan alam dan
-                    budaya yang luar
-                    biasa. Berikut destinasi unggulan yang bisa Anda jelajahi.</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                @forelse($featuredDesas as $desa)
-                    <a href="{{ route('public.desa.profil', $desa->id) }}" class="wisata-card block reveal">
-                        <div class="wisata-hero relative h-48 overflow-hidden">
-                            @if($desa->foto_profil)
-                                <img src="{{ asset('storage/' . $desa->foto_profil) }}"
-                                    class="w-full h-full object-cover transition-transform duration-700 hover:scale-110"
-                                    alt="{{ $desa->nama_desa }}">
-                            @elseif($desa->potensis->isNotEmpty() && $desa->potensis->first()->foto_utama)
-                                <img src="{{ asset('storage/' . $desa->potensis->first()->foto_utama) }}"
-                                    class="w-full h-full object-cover transition-transform duration-700 hover:scale-110"
-                                    alt="{{ $desa->nama_desa }}">
-                            @else
-                                <div class="w-full h-full bg-[#064e3b]/10 flex items-center justify-center text-4xl">🏞️</div>
-                            @endif
-                            <div class="absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/60 to-transparent">
-                                <span
-                                    class="px-3 py-1 bg-white/20 backdrop-blur-sm text-white text-[10px] font-black uppercase tracking-widest rounded-full">⭐
-                                    Unggulan</span>
-                            </div>
-                        </div>
-                        <div class="p-6">
-                            <h3 class="text-lg font-black font-serif text-slate-900 dark:text-white">{{ $desa->nama_desa }}
-                            </h3>
-                            <div class="text-xs text-slate-500 dark:text-slate-400 mt-2 mb-4 flex items-center gap-2">📍
-                                Kec.
-                                {{ $desa->kecamatan }}
-                            </div>
-                            <div class="flex flex-wrap gap-2">
-                                @forelse($desa->potensis->unique('kategori')->take(2) as $p)
-                                    <span
-                                        class="px-2 py-1 bg-white dark:bg-slate-800 text-[9px] font-bold text-slate-400 dark:text-slate-500 rounded-full border border-slate-100 dark:border-slate-700 uppercase">
-                                        {{ $p->kategori }}
-                                    </span>
-                                @empty
-                                    <span
-                                        class="px-2 py-1 bg-white dark:bg-slate-800 text-[9px] font-bold text-slate-400 dark:text-slate-500 rounded-full border border-slate-100 dark:border-slate-700">🌿
-                                        EKOWISATA</span>
-                                @endforelse
-                            </div>
-                        </div>
-                    </a>
-                @empty
-                    <div class="col-span-full py-20 text-center opacity-50 italic">Belum ada desa wisata yang terdaftar.
-                    </div>
-                @endforelse
-            </div>
-
-            <div class="text-center mt-12 reveal">
-                <a href="{{ route('public.desa-wisata') }}"
-                    class="inline-flex items-center gap-2 text-sm font-black text-[#064e3b] uppercase tracking-widest hover:underline">Lihat
-                    Semua Desa Wisata →</a>
             </div>
         </div>
     </section>
@@ -876,9 +805,9 @@
                     <span
                         class="px-4 py-1.5 bg-amber-50 text-[#1e293b] text-[11px] font-black uppercase tracking-widest rounded-full border border-amber-100">🌟
                         Eksplorasi</span>
-                    <h2 class="text-4xl font-black mt-6 font-serif text-slate-900 dark:text-white">Potensi & Destinasi <span
-                            style="color: #10b981;">Favorit</span></h2>
-                    <p class="text-slate-600 dark:text-slate-400 mt-4">Temukan berbagai keunikan, kerajinan, kuliner, dan keindahan alam yang tersebar di desa-desa Manggarai Timur.</p>
+                    <h2 class="text-4xl font-black mt-6 font-serif text-slate-900 dark:text-white">Pesona & Potensi <span
+                            style="color: #10b981;">Unggulan</span></h2>
+                    <p class="text-slate-600 dark:text-slate-400 mt-4">Pilihan terbaik berbagai keunikan budaya, kerajinan lokal, hingga surga keindahan alam yang menakjubkan di desa-desa Manggarai Timur.</p>
                 </div>
                 <div class="mt-8 md:mt-0">
                     <a href="{{ route('public.potensi-wisata') }}"
@@ -888,22 +817,33 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 @forelse($latestPotensi as $item)
-                    <div class="group reveal relative h-[400px] rounded-[2rem] overflow-hidden shadow-lg border border-slate-100 dark:border-slate-800">
-                        @if($item->foto_utama)
-                            <img src="{{ asset('storage/' . $item->foto_utama) }}"
-                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
-                                alt="{{ $item->nama_potensi }}">
-                        @else
-                            <div class="w-full h-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-4xl">🏝️</div>
-                        @endif
-                        <div class="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-black/90 via-black/40 to-transparent">
-                            <span class="px-3 py-1 bg-amber-500 text-white text-[9px] font-black uppercase tracking-widest rounded-full mb-3 inline-block shadow-lg">{{ $item->kategori }}</span>
-                            <h3 class="text-xl font-bold text-white mb-2">{{ $item->nama_potensi }}</h3>
-                            <div class="flex items-center gap-2 text-white/70 text-xs">
-                                📍 <span class="font-bold">{{ $item->desa->nama_desa ?? 'Manggarai Timur' }}</span>
+                    <a href="{{ route('public.potensi-wisata.detail', $item->id) }}" class="group block reveal bg-white dark:bg-slate-800 rounded-[2rem] overflow-hidden shadow-lg border border-slate-100 dark:border-slate-700 hover:shadow-2xl transition-all flex flex-col h-full">
+                        <div class="relative h-56 overflow-hidden">
+                            @if($item->foto_utama)
+                                <img src="{{ asset('storage/' . $item->foto_utama) }}"
+                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                                    alt="{{ $item->nama_potensi }}">
+                            @else
+                                <div class="w-full h-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-4xl">🏝️</div>
+                            @endif
+                            <div class="absolute top-4 left-4">
+                                <span class="px-3 py-1 bg-amber-500 text-white text-[9px] font-black uppercase tracking-widest rounded-full shadow-lg">{{ $item->kategori }}</span>
                             </div>
                         </div>
-                    </div>
+                        <div class="p-6 flex flex-col flex-1">
+                            <h3 class="text-lg font-black font-serif text-slate-900 dark:text-white mb-2 group-hover:text-amber-600 transition-colors">{{ $item->nama_potensi }}</h3>
+                            <div class="flex items-center gap-2 text-slate-500 dark:text-slate-400 text-xs mb-3">
+                                📍 <span class="font-bold">Desa {{ $item->desa->nama_desa ?? 'Manggarai Timur' }}</span>
+                            </div>
+                            <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed line-clamp-3">
+                                {{ strip_tags($item->deskripsi) }}
+                            </p>
+                            <div class="mt-4 pt-4 border-t border-slate-100 dark:border-slate-700 flex justify-between items-center text-xs font-bold text-amber-600 uppercase tracking-widest mt-auto">
+                                <span>Selengkapnya</span>
+                                <span>&rarr;</span>
+                            </div>
+                        </div>
+                    </a>
                 @empty
                     <div class="col-span-full py-10 text-center opacity-50 italic">Belum ada potensi desa yang ditambahkan.</div>
                 @endforelse

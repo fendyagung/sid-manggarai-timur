@@ -55,6 +55,16 @@
                             </td>
                             <td class="px-6 py-4 text-right">
                                 <div class="flex justify-end gap-2">
+                                    @if($desa->user_id && $desa->admin && Auth::user()->role === 'admin_dpmd')
+                                        <button type="button" 
+                                            onclick="resetAdminPassword({{ $desa->id }}, '{{ $desa->nama_desa }}', '{{ $desa->admin->name }}')"
+                                            class="p-2 text-amber-600 hover:bg-amber-50 dark:hover:bg-emerald-500/10 rounded-lg transition-all"
+                                            title="Reset Kata Sandi Admin">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+                                            </svg>
+                                        </button>
+                                    @endif
                                     <a href="{{ route('dashboard.dpmd.desa.edit', $desa->id) }}"
                                         class="p-2 text-[#166534] hover:bg-emerald-50 dark:hover:bg-emerald-500/10 rounded-lg transition-all"
                                         title="Edit Desa">
@@ -97,4 +107,30 @@
             {{ $desas->links() }}
         </div>
     </div>
+
+    {{-- Form Hidden untuk Reset Password --}}
+    <form id="resetPasswordForm" method="POST" action="" class="hidden" style="display: none;">
+        @csrf
+        <input type="hidden" name="password" id="newPasswordInput">
+    </form>
+
+    <script>
+        function resetAdminPassword(id, namaDesa, namaAdmin) {
+            const newPassword = prompt(`Masukkan kata sandi baru untuk Admin ${namaDesa} (${namaAdmin}):\n(Minimal 8 karakter)`);
+            
+            if (newPassword === null) return; // User cancel
+            
+            if (newPassword.length < 8) {
+                alert('Kata sandi harus minimal 8 karakter!');
+                return;
+            }
+            
+            if (confirm(`Apakah Anda yakin ingin mereset kata sandi ${namaAdmin} menjadi: "${newPassword}"?`)) {
+                const form = document.getElementById('resetPasswordForm');
+                form.action = `/dashboard/dpmd/desa/${id}/reset-password`;
+                document.getElementById('newPasswordInput').value = newPassword;
+                form.submit();
+            }
+        }
+    </script>
 </x-layouts.admin>

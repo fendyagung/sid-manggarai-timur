@@ -60,7 +60,7 @@
                                     class="text-2xl font-bold text-slate-800 mb-3 group-hover:text-emerald-600 transition-colors">
                                     {{ $potensi->nama_potensi }}
                                 </h3>
-                                <p class="text-slate-600 text-sm leading-relaxed mb-6 line-clamp-3 flex-grow">
+                                <p class="text-slate-600 text-sm leading-relaxed mb-6 flex-1">
                                     {{ $potensi->deskripsi }}
                                 </p>
                                 <div class="pt-6 border-t border-slate-50 mt-auto">

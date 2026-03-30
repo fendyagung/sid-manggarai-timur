@@ -37,7 +37,7 @@
                             @if(Auth::user()->role !== 'admin_dpmd' && isset($dpmdAdmins) && $dpmdAdmins->count() > 0)
                                 <optgroup label="Tujuan: Dinas (DPMD)">
                                     @foreach($dpmdAdmins as $admin)
-                                        <option value="{{ $admin->id }}" {{ Auth::user()->role === 'admin_desa' ? 'selected' : '' }} class="font-bold text-emerald-700 bg-emerald-50">Dinas PMD ({{ $admin->name }})</option>
+                                        <option value="u-{{ $admin->id }}" {{ Auth::user()->role === 'admin_desa' ? 'selected' : '' }} class="font-bold text-emerald-700 bg-emerald-50">Dinas PMD ({{ $admin->name }})</option>
                                     @endforeach
                                 </optgroup>
                             @endif
@@ -45,7 +45,7 @@
                             @if(Auth::user()->role === 'admin_desa' && isset($kecamatanAdmins) && $kecamatanAdmins->count() > 0)
                                 <optgroup label="Tujuan: Admin Kecamatan">
                                     @foreach($kecamatanAdmins as $admin)
-                                        <option value="{{ $admin->id }}" class="font-bold text-blue-700 bg-blue-50">Admin Kecamatan {{ $admin->kecamatan }} ({{ $admin->name }})</option>
+                                        <option value="u-{{ $admin->id }}" class="font-bold text-blue-700 bg-blue-50">Admin Kecamatan {{ $admin->kecamatan }} ({{ $admin->name }})</option>
                                     @endforeach
                                 </optgroup>
                             @endif
@@ -54,7 +54,7 @@
                                 @if(Auth::user()->role === 'admin_dpmd' && isset($kecamatanAdmins) && $kecamatanAdmins->count() > 0)
                                     <optgroup label="Tujuan: Admin Kecamatan (12 Kecamatan)">
                                         @foreach($kecamatanAdmins as $admin)
-                                            <option value="{{ $admin->id }}" class="font-bold text-blue-700 bg-blue-50">Admin Kecamatan ({{ $admin->kecamatan ?? 'Umum' }})</option>
+                                            <option value="u-{{ $admin->id }}" class="font-bold text-blue-700 bg-blue-50">Admin Kecamatan ({{ $admin->kecamatan ?? 'Umum' }})</option>
                                         @endforeach
                                     </optgroup>
                                 @endif
@@ -62,7 +62,7 @@
                                 <optgroup label="Tujuan: Admin Desa">
                                     <option value="all" class="font-bold text-[#d97706] tracking-wide bg-amber-50">✨ KIRIM KE SEMUA DESA {{ Auth::user()->role === 'admin_kecamatan' ? 'DI KECAMATAN INI' : '(BROADCAST)' }}</option>
                                     @foreach($desas as $desa)
-                                        <option value="{{ $desa->id }}">{{ $desa->nama_desa }}</option>
+                                        <option value="d-{{ $desa->id }}">{{ $desa->nama_desa }}</option>
                                     @endforeach
                                 </optgroup>
                             @endif

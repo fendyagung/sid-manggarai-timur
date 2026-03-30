@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\Desa;
 use App\Models\Kecamatan;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class DesaManagementController extends Controller
 {
@@ -136,5 +138,29 @@ class DesaManagementController extends Controller
 
         $desa->delete();
         return redirect()->route('dashboard.dpmd.desa.index')->with('success', 'Desa berhasil dihapus!');
+    }
+
+    public function resetPassword(Request $request, $id)
+    {
+        $user = Auth::user();
+        if ($user->role !== 'admin_dpmd') {
+            abort(403, 'Hanya Admin Dinas PMD yang dapat mereset kata sandi.');
+        }
+
+        $desa = Desa::findOrFail($id);
+
+        if (!$desa->user_id || !$desa->admin) {
+            return back()->with('error', 'Desa ini belum memiliki admin.');
+        }
+
+        $request->validate([
+            'password' => 'required|string|min:8',
+        ]);
+
+        $user = $desa->admin;
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        return back()->with('success', "Kata sandi untuk admin desa {$desa->nama_desa} ({$user->name}) berhasil diperbarui.");
     }
 }

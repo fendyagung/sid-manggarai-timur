@@ -627,6 +627,10 @@
                     class="nav-item {{ Request::is('dashboard/dpmd/edit-profil') ? 'active' : '' }}">
                     <span class="ni-icon">⚙️</span> Pengaturan Profil
                 </a>
+                <a href="{{ route('dashboard.dpmd.keamanan') }}"
+                    class="nav-item {{ Request::is('dashboard/dpmd/keamanan') ? 'active' : '' }}">
+                    <span class="ni-icon">🔑</span> Keamanan Akun
+                </a>
             @endif
         </nav>
 

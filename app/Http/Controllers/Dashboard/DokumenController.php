@@ -127,15 +127,25 @@ class DokumenController extends Controller
 
         if ($user->role === 'admin_dpmd' || $user->role === 'admin_kecamatan') {
             // Admin sending to a specific desa (or user)
-            // A quick check if receiver_id is a User ID or Desa ID based on the create view context
-            // But usually DPMD sends to Desa ID, and Admin Kecamatan sends to Desa ID OR DPMD User ID.
-            if (\App\Models\User::find($request->receiver_id)) {
-                $data['receiver_user_id'] = $request->receiver_id;
+            if (strpos($request->receiver_id, 'u-') === 0) {
+                $data['receiver_user_id'] = str_replace('u-', '', $request->receiver_id);
+            } elseif (strpos($request->receiver_id, 'd-') === 0) {
+                $data['receiver_desa_id'] = str_replace('d-', '', $request->receiver_id);
             } else {
-                $data['receiver_desa_id'] = $request->receiver_id;
+                // Fallback for any legacy or unexpected values
+                if (\App\Models\User::find($request->receiver_id)) {
+                    $data['receiver_user_id'] = $request->receiver_id;
+                } else {
+                    $data['receiver_desa_id'] = $request->receiver_id;
+                }
             }
         } else {
-            $data['receiver_user_id'] = $request->receiver_id;
+            // For village admins, they usually send to DPMD or Kecamatan (Users)
+            if (strpos($request->receiver_id, 'u-') === 0) {
+                $data['receiver_user_id'] = str_replace('u-', '', $request->receiver_id);
+            } else {
+                $data['receiver_user_id'] = $request->receiver_id;
+            }
         }
 
         Dokumen::create($data);

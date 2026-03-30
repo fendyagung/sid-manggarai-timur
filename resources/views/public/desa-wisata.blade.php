@@ -41,20 +41,20 @@
                         <div
                             class="group bg-white rounded-[2rem] overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-slate-100">
                             <div class="relative h-72 overflow-hidden">
-                                @if($desa->foto_profil)
-                                    <img src="{{ asset('storage/' . $desa->foto_profil) }}" alt="{{ $desa->nama_desa }}"
-                                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-                                @elseif($desa->potensis->isNotEmpty() && $desa->potensis->first()->foto_utama)
+                                @if($desa->potensis->isNotEmpty() && $desa->potensis->first()->foto_utama)
                                     <img src="{{ asset('storage/' . $desa->potensis->first()->foto_utama) }}"
                                         alt="{{ $desa->nama_desa }}"
                                         class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                                @elseif($desa->foto_profil)
+                                    <img src="{{ asset('storage/' . $desa->foto_profil) }}" alt="{{ $desa->nama_desa }}"
+                                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                                 @else
-                                    <div class="w-full h-full bg-slate-200 flex items-center justify-center text-slate-400">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16" fill="none" viewBox="0 0 24 24"
-                                            stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                        </svg>
+                                    <!-- Beautiful Gradient Fallback for Cards -->
+                                    <div class="w-full h-full bg-gradient-to-br from-emerald-800 to-[#064e3b] relative">
+                                        <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 20px 20px;"></div>
+                                        <div class="absolute inset-0 flex items-center justify-center">
+                                            <span class="text-white/30 font-black text-2xl uppercase tracking-widest">{{ substr($desa->nama_desa, 0, 1) }}</span>
+                                        </div>
                                     </div>
                                 @endif
                                 <div
@@ -66,13 +66,10 @@
                                 </div>
                             </div>
                             <div class="p-8">
-                                <div class="flex items-center text-sm text-emerald-600 font-bold mb-3 uppercase tracking-wider">
-                                    <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
-                                        </path>
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                <div class="flex items-center text-sm text-red-600 font-bold mb-3 uppercase tracking-wider">
+                                    <svg width="16" height="16" style="width: 16px; height: 16px; min-width: 16px;" class="mr-1.5 flex-shrink-0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill="#ea4335" d="M12 2C8.14 2 5 5.14 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.86-3.14-7-7-7z"/>
+                                        <circle fill="#b31412" cx="12" cy="9" r="3"/>
                                     </svg>
                                     {{ $desa->kecamatan }}
                                 </div>
@@ -80,8 +77,8 @@
                                     class="text-2xl font-bold text-slate-800 mb-3 group-hover:text-emerald-600 transition-colors">
                                     {{ $desa->nama_desa }}
                                 </h3>
-                                <p class="text-slate-600 text-sm leading-relaxed mb-6 line-clamp-3">
-                                    {{ $desa->deskripsi ?? 'Nikmati keindahan dan kearifan lokal di ' . $desa->nama_desa . '.' }}
+                                <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-6 flex-1 line-clamp-6">
+                                    {{ strip_tags($desa->sejarah ?? 'Jelajahi pesona dan keunikan desa kami.') }}
                                 </p>
                                 <div class="pt-6 border-t border-slate-50 flex items-center justify-between">
                                     <a href="{{ route('public.desa.profil', $desa->id) }}"

@@ -127,10 +127,18 @@
                         </h3>
                         <p class="text-sm text-slate-500 mt-1">Ke:
                             <span class="font-bold italic dark:text-slate-300 transition-colors">
-                                @if(Auth::user()->role === 'admin_dpmd')
-                                    {{ $doc->receiverDesa?->nama_desa ?? 'Penerima' }}
+                                @if($doc->receiverDesa)
+                                    Village: {{ $doc->receiverDesa->nama_desa }}
+                                @elseif($doc->receiverUser)
+                                    @if($doc->receiverUser->role === 'admin_kecamatan')
+                                        Kecamatan {{ $doc->receiverUser->kecamatan }}
+                                    @elseif($doc->receiverUser->role === 'admin_dpmd')
+                                        Dinas (DPMD)
+                                    @else
+                                        {{ $doc->receiverUser->name }}
+                                    @endif
                                 @else
-                                    Admin (DPMD) Manggarai Timur
+                                    Penerima
                                 @endif
                             </span>
                         </p>

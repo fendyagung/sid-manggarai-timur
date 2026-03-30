@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use App\Mail\PesanReplyMail;
+use Illuminate\Support\Str;
 
 class DashboardController extends Controller
 {
@@ -562,5 +563,33 @@ class DashboardController extends Controller
         $laporan->delete();
 
         return redirect()->route('dashboard')->with('success', 'Laporan berhasil dihapus.');
+    }
+
+    public function viewRecoveryCodes()
+    {
+        if (Auth::user()->role !== 'admin_dpmd') {
+            abort(403);
+        }
+
+        $user = Auth::user();
+        return view('dashboard.dpmd.security', compact('user'));
+    }
+
+    public function generateRecoveryCodes()
+    {
+        if (Auth::user()->role !== 'admin_dpmd') {
+            abort(403);
+        }
+
+        $user = Auth::user();
+        $codes = [];
+        for ($i = 0; $i < 10; $i++) {
+            $codes[] = strtoupper(Str::random(4) . '-' . Str::random(4));
+        }
+
+        $user->recovery_codes = $codes;
+        $user->save();
+
+        return redirect()->back()->with('success', '10 Kode Pemulihan baru berhasil dibuat. Silakan simpan di tempat aman.');
     }
 }

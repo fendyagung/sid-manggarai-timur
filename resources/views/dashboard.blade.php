@@ -626,12 +626,10 @@
                 const modal = document.getElementById('broadcastModal');
                 const content = document.getElementById('modalContent');
                 
-                // Only show if not dismissed in this session
-                if (!sessionStorage.getItem('broadcast_dismissed')) {
-                    modal.classList.remove('opacity-0', 'pointer-events-none');
-                    content.classList.remove('scale-95');
-                    content.classList.add('scale-100');
-                }
+                // Always show the modal when visiting the dashboard page as requested
+                modal.classList.remove('opacity-0', 'pointer-events-none');
+                content.classList.remove('scale-95');
+                content.classList.add('scale-100');
             }
 
             function closeBroadcastModal() {
@@ -641,9 +639,6 @@
                 modal.classList.add('opacity-0', 'pointer-events-none');
                 content.classList.remove('scale-100');
                 content.classList.add('scale-95');
-                
-                // Save to session storage so it doesn't reappear until next login/session
-                sessionStorage.setItem('broadcast_dismissed', 'true');
             }
 
             // Trigger open after a slight delay for better UX

@@ -16,13 +16,13 @@
         </div>
 
         <!-- Stats Card (Optional but looks premium) -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="bg-white dark:bg-slate-800 p-6 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm">
                 <div class="flex items-center gap-4">
                     <div class="w-12 h-12 bg-blue-50 dark:bg-blue-900/20 rounded-2xl flex items-center justify-center text-xl">🗺️</div>
                     <div>
                         <p class="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase tracking-wider">Total Kecamatan</p>
-                        <p class="text-2xl font-black text-slate-800 dark:text-white">{{ $kecamatans->count() }}</p>
+                        <p class="text-2xl font-black text-slate-800 dark:text-white">{{ count($kecamatans) }}</p>
                     </div>
                 </div>
             </div>
@@ -45,6 +45,7 @@
                         <tr class="bg-slate-50 dark:bg-slate-900/50 border-bottom border-slate-200 dark:border-slate-700">
                             <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">No</th>
                             <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Nama Kecamatan</th>
+                            <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Admin Kecamatan</th>
                             <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Jumlah Desa</th>
                             <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-right">Aksi</th>
                         </tr>
@@ -57,12 +58,30 @@
                                 <span class="text-sm font-bold text-slate-800 dark:text-white">{{ $kec->nama }}</span>
                             </td>
                             <td class="px-6 py-4">
-                                <span class="px-3 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full text-xs font-black">
+                                @if($kec->admin)
+                                    <div class="flex items-center gap-2">
+                                        <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                                        <span class="text-sm font-bold text-blue-600 dark:text-blue-400">{{ $kec->admin->name }}</span>
+                                    </div>
+                                @else
+                                    <span class="px-2 py-0.5 bg-slate-100 dark:bg-slate-700 text-slate-400 text-[10px] font-black rounded uppercase">Belum ada Admin</span>
+                                @endif
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="px-3 py-1 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 rounded-full text-xs font-black">
                                     {{ $kec->desas_count }} Desa
                                 </span>
                             </td>
                             <td class="px-6 py-4 text-right">
                                 <div class="flex justify-end gap-2">
+                                    @if($kec->admin)
+                                        <button type="button" 
+                                            onclick="resetKecamatanPassword({{ $kec->id }}, '{{ $kec->nama }}', '{{ $kec->admin->name }}')"
+                                            class="p-2 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 rounded-lg transition-all" 
+                                            title="Reset Kata Sandi Admin Kecamatan">
+                                            🔑
+                                        </button>
+                                    @endif
                                     <button onclick="openEditModal({{ $kec->id }}, '{{ $kec->nama }}')" class="p-2 bg-amber-50 dark:bg-amber-900/20 text-amber-600 hover:bg-amber-100 dark:hover:bg-amber-900/40 rounded-lg transition-all" title="Edit">
                                         ✏️
                                     </button>
@@ -132,7 +151,7 @@
     <!-- Modal Hapus -->
     <div id="modal-hapus" class="fixed inset-0 z-[100] hidden">
         <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeModal('modal-hapus')"></div>
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-sm p-8 bg-white dark:bg-slate-800 rounded-3xl shadow-2xl border border-white/20 text-center">
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-sm p-8 bg-white dark:bg-slate-800 rounded-3xl shadow-2xl border border-white/20 text-center">
             <div class="w-20 h-20 bg-red-100 dark:bg-red-900/20 rounded-full flex items-center justify-center text-4xl mx-auto mb-6">⚠️</div>
             <h3 class="text-xl font-black text-slate-800 dark:text-white mb-2">Hapus Kecamatan?</h3>
             <p class="text-slate-500 dark:text-slate-400 text-sm mb-8">Kecamatan <span id="hapus-nama" class="font-bold text-red-600"></span> akan dihapus permanen dari sistem.</p>
@@ -172,5 +191,29 @@
             document.getElementById('hapus-nama').textContent = nama;
             openModal('modal-hapus');
         }
+
+        function resetKecamatanPassword(id, namaKec, namaAdmin) {
+            const newPassword = prompt(`Masukkan kata sandi baru untuk Admin Kecamatan ${namaKec} (${namaAdmin}):\n(Minimal 8 karakter)`);
+            
+            if (newPassword === null) return;
+            
+            if (newPassword.length < 8) {
+                alert('Kata sandi harus minimal 8 karakter!');
+                return;
+            }
+            
+            if (confirm(`Apakah Anda yakin ingin mereset kata sandi ${namaAdmin} menjadi: "${newPassword}"?`)) {
+                const form = document.getElementById('resetPasswordForm');
+                form.action = `/dashboard/dpmd/kecamatan/${id}/reset-password`;
+                document.getElementById('newPasswordInput').value = newPassword;
+                form.submit();
+            }
+        }
     </script>
+    
+    {{-- Form Hidden untuk Reset Password --}}
+    <form id="resetPasswordForm" method="POST" action="" class="hidden">
+        @csrf
+        <input type="hidden" name="password" id="newPasswordInput">
+    </form>
 </x-layouts.admin>

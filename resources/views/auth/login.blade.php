@@ -723,8 +723,9 @@
                                     </div>
                                 </div>
 
-                                <div class="footer-links" style="justify-content: flex-end;">
-                                    <a href="{{ route('password.request') }}" class="link-alt emas">Reset Password</a>
+                                <div class="footer-links" style="justify-content: space-between;">
+                                    <a href="{{ route('password.request') }}" class="link-alt emas">Lupa Sandi?</a>
+                                    <a href="{{ route('password.recovery') }}" class="link-alt emas font-black">Pintu Darurat 🔑</a>
                                 </div>
 
                                 <button type="submit" class="btn-submit emas">

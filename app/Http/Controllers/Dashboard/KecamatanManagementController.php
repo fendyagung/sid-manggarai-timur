@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\Kecamatan;
 use App\Models\Desa;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class KecamatanManagementController extends Controller
 {
@@ -21,6 +23,14 @@ class KecamatanManagementController extends Controller
     {
         $this->checkAdmin();
         $kecamatans = Kecamatan::withCount('desas')->orderBy('nama')->get();
+        
+        // Add admin info to each kecamatan
+        foreach ($kecamatans as $kec) {
+            $kec->admin = User::where('role', 'admin_kecamatan')
+                ->where('kecamatan', $kec->nama)
+                ->first();
+        }
+
         return view('dashboard.dpmd.kecamatan.index', compact('kecamatans'));
     }
 
@@ -75,5 +85,28 @@ class KecamatanManagementController extends Controller
 
         $kecamatan->delete();
         return redirect()->route('dashboard.dpmd.kecamatan.index')->with('success', 'Kecamatan berhasil dihapus!');
+    }
+
+    public function resetPassword(Request $request, $id)
+    {
+        $this->checkAdmin();
+        $kecamatan = Kecamatan::findOrFail($id);
+        
+        $admin = User::where('role', 'admin_kecamatan')
+            ->where('kecamatan', $kecamatan->nama)
+            ->first();
+
+        if (!$admin) {
+            return back()->with('error', 'Kecamatan ini belum memiliki admin.');
+        }
+
+        $request->validate([
+            'password' => 'required|string|min:8',
+        ]);
+
+        $admin->password = Hash::make($request->password);
+        $admin->save();
+
+        return back()->with('success', "Kata sandi untuk admin kecamatan {$kecamatan->nama} ({$admin->name}) berhasil diperbarui.");
     }
 }
