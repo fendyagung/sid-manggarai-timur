@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\RecoveryController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -22,6 +23,9 @@ Route::post('/forgot-password', [App\Http\Controllers\Auth\ForgotPasswordControl
 Route::get('/reset-password/{token}', [App\Http\Controllers\Auth\ResetPasswordController::class, 'create'])->name('password.reset');
 Route::post('/reset-password', [App\Http\Controllers\Auth\ResetPasswordController::class, 'store'])->name('password.store');
 
+Route::get('/recovery', [RecoveryController::class, 'showRecoveryForm'])->name('password.recovery');
+Route::post('/recovery', [RecoveryController::class, 'recover']);
+
 Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');
 Route::get('/dashboard/laporan', [App\Http\Controllers\DashboardController::class, 'indexReports'])->middleware(['auth'])->name('dashboard.laporan.index');
 Route::get('/dashboard/laporan/buat', [App\Http\Controllers\DashboardController::class, 'createReport'])->middleware(['auth'])->name('dashboard.laporan.buat');
@@ -34,6 +38,8 @@ Route::get('/dashboard/desa/{id}', [App\Http\Controllers\DashboardController::cl
 Route::post('/dashboard/desa/{id}/toggle-wisata', [App\Http\Controllers\DashboardController::class, 'toggleWisata'])->middleware(['auth'])->name('dashboard.desa.toggle-wisata');
 Route::get('/dashboard/dpmd/edit-profil', [App\Http\Controllers\DashboardController::class, 'editDpmdProfile'])->middleware(['auth'])->name('dashboard.dpmd.edit-profil');
 Route::post('/dashboard/dpmd/update-profil', [App\Http\Controllers\DashboardController::class, 'updateDpmdProfile'])->middleware(['auth'])->name('dashboard.dpmd.update-profil');
+Route::get('/dashboard/dpmd/keamanan', [App\Http\Controllers\DashboardController::class, 'viewRecoveryCodes'])->middleware(['auth'])->name('dashboard.dpmd.keamanan');
+Route::post('/dashboard/dpmd/generate-codes', [App\Http\Controllers\DashboardController::class, 'generateRecoveryCodes'])->middleware(['auth'])->name('dashboard.dpmd.generate-codes');
 Route::delete('/dashboard/dpmd/gallery/{id}', [App\Http\Controllers\DashboardController::class, 'destroyDpmdGallery'])->middleware(['auth'])->name('dashboard.dpmd.gallery.destroy');
 
 Route::get('/dashboard/pesans', [App\Http\Controllers\DashboardController::class, 'indexPesans'])->middleware(['auth'])->name('dashboard.pesans');
@@ -82,6 +88,7 @@ Route::middleware(['auth'])->prefix('dashboard/dpmd/desa')->name('dashboard.dpmd
     Route::post('/store', [\App\Http\Controllers\Dashboard\DesaManagementController::class, 'store'])->name('store');
     Route::get('/{id}/edit', [\App\Http\Controllers\Dashboard\DesaManagementController::class, 'edit'])->name('edit');
     Route::post('/{id}/update', [\App\Http\Controllers\Dashboard\DesaManagementController::class, 'update'])->name('update');
+    Route::post('/{id}/reset-password', [\App\Http\Controllers\Dashboard\DesaManagementController::class, 'resetPassword'])->name('reset-password');
     Route::delete('/{id}', [\App\Http\Controllers\Dashboard\DesaManagementController::class, 'destroy'])->name('destroy');
 });
 
@@ -90,6 +97,7 @@ Route::middleware(['auth'])->prefix('dashboard/dpmd/kecamatan')->name('dashboard
     Route::get('/', [\App\Http\Controllers\Dashboard\KecamatanManagementController::class, 'index'])->name('index');
     Route::post('/store', [\App\Http\Controllers\Dashboard\KecamatanManagementController::class, 'store'])->name('store');
     Route::post('/{id}/update', [\App\Http\Controllers\Dashboard\KecamatanManagementController::class, 'update'])->name('update');
+    Route::post('/{id}/reset-password', [\App\Http\Controllers\Dashboard\KecamatanManagementController::class, 'resetPassword'])->name('reset-password');
     Route::delete('/{id}', [\App\Http\Controllers\Dashboard\KecamatanManagementController::class, 'destroy'])->name('destroy');
 });
 
