@@ -2,23 +2,31 @@ PETUNJUK INSTALASI SID MANGGARAI TIMUR
 --------------------------------------
 
 1. Ekstrak file ZIP Proyek ke folder htdocs (XAMPP) atau direktori server.
-2. Buat database baru di MySQL dengan nama 'sid_manggarai_timur'.
-3. Import file 'database_sid_manggarai.sql' ke database tersebut.
-4. Copy file '.env.example' menjadi '.env' dan sesuaikan pengaturan database:
+2. (PENTING) Download dan Install "Git for Windows" dari https://git-scm.com/
+   Instalasi Git wajib dilakukan agar tampilan dashboard tidak berantakan (error proc_open).
+3. Buat database baru di MySQL dengan nama 'sid_manggarai_timur'.
+4. Import file 'database_sid_manggarai.sql' ke database tersebut melalui phpMyAdmin.
+5. Copy file '.env.example' menjadi '.env' dan sesuaikan pengaturan database:
    DB_DATABASE=sid_manggarai_timur
    DB_USERNAME=root
    DB_PASSWORD=
-5. Buka terminal (Command Prompt/PowerShell) di folder proyek, lalu jalankan perintah:
-   a. php artisan key:generate
-   b. php artisan storage:link
-   (Catatan: 'composer install' dan 'npm install' tidak perlu dijalankan karena folder vendor/build sudah disertakan)
-6. Akses website melalui web browser.
+6. Buka terminal (Sangat disarankan memakai "Git Bash" hasil instalasi poin 2) di folder proyek:
+   - (CATATAN KHUSUS): Jika di dalam folder ekstraksi ada folder lagi bernama "SID Manggarai Timur",
+     silakan MASUK ke folder terdalam tersebut (sampai Anda melihat file bernama "artisan").
+   - Caranya: Klik kanan di dalam folder terdalam itu, pilih "Git Bash Here".
+   - Jalankan perintah:
+     a. php artisan key:generate
+     b. php artisan storage:link
+     c. php artisan serve  (untuk menjalankan server lokal)
+     (Catatan: 'composer install' dan 'npm install' tidak perlu dijalankan karena folder vendor/build sudah disertakan)
+7. Akses website melalui web browser di alamat http://localhost:8000
+
 
 ----------------------------------------------------
 DATA LOKASI LOGIN KHUSUS ADMIN
 ----------------------------------------------------
 Setelah selesai install, Anda dapat login melalui: 
-Alamat: http://localhost/sid-manggarai-timur/public/login  (Atau sesuai nama folder Anda)
+Alamat: http://localhost:8000/login  (Jika menggunakan artisan serve)
 
 - ADMIN DINAS PMD 
   Email: admin@dpmd.com 
@@ -27,3 +35,4 @@ Alamat: http://localhost/sid-manggarai-timur/public/login  (Atau sesuai nama fol
 - CAMAT BORONG 
   Email: borong@kecamatan.com 
   Password: password
+

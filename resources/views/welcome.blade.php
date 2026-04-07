@@ -937,7 +937,7 @@
 
 
     <!-- SECTION: PENGUMUMAN TERKINI -->
-    <section class="py-24 bg-slate-50 dark:bg-slate-900/50" id="pengumuman">
+    <section class="py-24 bg-white dark:bg-slate-900/50" id="pengumuman">
         <div class="max-w-[1240px] mx-auto px-6">
             <div class="flex flex-col items-center text-center mb-20 reveal">
                 <h2 class="text-3xl md:text-5xl font-black font-serif text-slate-900 dark:text-white">Pengumuman Terkini</h2>
@@ -986,7 +986,7 @@
     </section>
 
     <!-- SECTION: BERITA TERKINI -->
-    <section class="py-24 bg-white dark:bg-slate-900" id="berita">
+    <section class="py-24 bg-[#f8fafc] dark:bg-slate-900" id="berita">
         <div class="max-w-[1240px] mx-auto px-6">
             <div class="text-center mb-20 reveal">
                 <h2 class="text-3xl md:text-5xl font-black font-serif text-slate-900 dark:text-white">Berita Terkini</h2>
@@ -1039,7 +1039,7 @@
 
 
     <!-- SECTION: POTENSI WISATA -->
-    <section class="py-24 bg-white dark:bg-slate-900" id="potensi">
+    <section class="py-24 bg-white dark:bg-slate-900/80" id="potensi">
         <div class="max-w-[1240px] mx-auto px-6">
             <div class="flex flex-col items-center text-center mb-12 reveal">
                 <div class="max-w-2xl">
