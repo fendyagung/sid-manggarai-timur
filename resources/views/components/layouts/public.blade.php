@@ -16,8 +16,8 @@
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Lora:wght@400;500;600&family=DM+Sans:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <script>
-        // On page load - Default to LIGHT unless explicitly DARK in localStorage
-        if (localStorage.getItem('color-theme') === 'dark') {
+        // On page load - Respect system preference if no explicit choice made
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
         } else {
             document.documentElement.classList.remove('dark')
@@ -68,20 +68,52 @@
 
         /* NAVBAR SCROLLED STATE */
         #navbar.nav-scrolled {
-            background-color: #0f172a !important; /* Navy/Slate-950 Solid */
+            background-color: rgba(255, 255, 255, 1) !important; 
             padding-top: 0.5rem !important;
             padding-bottom: 0.5rem !important;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .dark #navbar.nav-scrolled {
+            background-color: rgba(15, 23, 42, 1) !important;
+            border-color: rgba(255, 255, 255, 0.05);
         }
 
         #navbar.nav-scrolled .nav-text-white {
+            color: #1e293b !important;
+        }
+
+        .dark #navbar.nav-scrolled .nav-text-white {
             color: #ffffff !important;
         }
 
         #navbar.nav-scrolled .nav-text-white-bg {
+            color: #1e293b !important;
+            border-color: rgba(30, 41, 59, 0.2) !important;
+        }
+
+        .dark #navbar.nav-scrolled .nav-text-white-bg {
             color: #ffffff !important;
-            border-color: rgba(255,255,255,0.3) !important;
+            border-color: rgba(255, 255, 255, 0.2) !important;
+        }
+
+        #navbar.nav-scrolled a[id^="nav-"] {
+           color: #475569 !important;
+        }
+
+        .dark #navbar.nav-scrolled a[id^="nav-"] {
+           color: #cbd5e1 !important;
+        }
+
+        #navbar.nav-scrolled a[id^="nav-"].bg-white\/15 {
+           background-color: rgba(30, 41, 59, 0.05) !important;
+           color: #0d2818 !important;
+        }
+
+        .dark #navbar.nav-scrolled a[id^="nav-"].bg-white\/15 {
+           background-color: rgba(255, 255, 255, 0.1) !important;
+           color: #ffffff !important;
         }
     </style>
 </head>
@@ -97,9 +129,9 @@
         id="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
-                <div class="flex items-center gap-3 min-w-fit">
+                <div class="flex items-center min-w-fit" style="gap: 1.25rem;">
                     <!-- Hamburger / Mobile Menu Button -->
-                    <button id="mobile-menu-open" class="lg:hidden p-2 text-white/80 hover:text-white transition-all">
+                    <button id="mobile-menu-open" class="lg:hidden p-2 text-white hover:text-white nav-text-white transition-all">
                         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
@@ -120,7 +152,7 @@
                             <span
                                 class="block font-bold text-lg md:text-xl tracking-tighter text-white nav-text-white leading-tight">SID</span>
                             <span
-                                class="block text-[8px] md:text-[9px] font-extrabold text-white/60 nav-text-white tracking-[0.1em] md:tracking-[0.15em] whitespace-nowrap uppercase">Manggarai
+                                class="block text-[8px] md:text-[9px] font-extrabold text-white nav-text-white tracking-[0.1em] md:tracking-[0.15em] whitespace-nowrap uppercase">Manggarai
                                 Timur</span>
                         </div>
                     </a>
@@ -131,56 +163,56 @@
                             @if(request()->routeIs('public.home') || request()->is('/') || request()->path() == '/')
                                 <div class="flex items-center gap-6 mr-8 transition-all duration-300">
                                     <a href="#fitur"
-                                        class="text-[10px] font-black text-white/80 hover:text-amber-400 transition-all tracking-[0.2em] uppercase">Fitur</a>
+                                        class="text-[10px] font-black text-white hover:text-amber-400 transition-all tracking-[0.2em] uppercase">Fitur</a>
                                     <a href="#wisata"
-                                        class="text-[10px] font-black text-white/80 hover:text-amber-400 transition-all tracking-[0.2em] uppercase">Desa
+                                        class="text-[10px] font-black text-white hover:text-amber-400 transition-all tracking-[0.2em] uppercase">Desa
                                         Wisata</a>
                                     <a href="#pengumuman"
-                                        class="text-[10px] font-black text-white/80 hover:text-amber-400 transition-all tracking-[0.2em] uppercase">Berita Utama</a>
+                                        class="text-[10px] font-black text-white hover:text-amber-400 transition-all tracking-[0.2em] uppercase">Berita Utama</a>
                                     <a href="#cara"
-                                        class="text-[10px] font-black text-white/80 hover:text-amber-400 transition-all tracking-[0.2em] uppercase">Cara
+                                        class="text-[10px] font-black text-white hover:text-amber-400 transition-all tracking-[0.2em] uppercase">Cara
                                         Kerja</a>
                                 </div>
                                 <div class="w-px h-6 bg-white/10 mr-8"></div>
                             @endif
 
                             <a href="{{ url('/') }}"
-                                class="px-3 py-1.5 mx-0.5 flex items-center font-bold text-[11px] whitespace-nowrap transition-all duration-300 {{ Request::is('/') ? 'bg-white/15 text-white rounded-lg' : 'text-white/80 hover:text-white hover:bg-white/10 rounded-lg' }}"
+                                class="px-3 py-1.5 mx-0.5 flex items-center font-bold text-[11px] whitespace-nowrap transition-all duration-300 {{ Request::is('/') ? 'bg-white/15 text-white rounded-lg' : 'text-white hover:text-white hover:bg-white/10 rounded-lg' }}"
                                 id="nav-home">
                                 BERANDA
                             </a>
                             <a href="{{ route('public.profil') }}"
-                                class="px-3 py-1.5 mx-0.5 flex items-center font-bold text-[11px] whitespace-nowrap transition-all duration-300 {{ Request::is('profil') ? 'bg-white/15 text-white rounded-lg' : 'text-white/80 hover:text-white hover:bg-white/10 rounded-lg' }}"
+                                class="px-3 py-1.5 mx-0.5 flex items-center font-bold text-[11px] whitespace-nowrap transition-all duration-300 {{ Request::is('profil') ? 'bg-white/15 text-white rounded-lg' : 'text-white hover:text-white hover:bg-white/10 rounded-lg' }}"
                                 id="nav-profil">
                                 PROFIL
                             </a>
                             <a href="{{ route('public.desa-wisata') }}"
-                                class="px-3 py-1.5 mx-0.5 flex items-center font-bold text-[11px] whitespace-nowrap transition-all duration-300 {{ Request::is('jelajah/desa-wisata') ? 'bg-white/15 text-white rounded-lg' : 'text-white/80 hover:text-white hover:bg-white/10 rounded-lg' }}"
+                                class="px-3 py-1.5 mx-0.5 flex items-center font-bold text-[11px] whitespace-nowrap transition-all duration-300 {{ Request::is('jelajah/desa-wisata') ? 'bg-white/15 text-white rounded-lg' : 'text-white hover:text-white hover:bg-white/10 rounded-lg' }}"
                                 id="nav-desa-wisata">
                                 DESA WISATA
                             </a>
                             <a href="{{ route('public.komoditi') }}"
-                                class="px-3 py-1.5 mx-0.5 flex items-center font-bold text-[11px] whitespace-nowrap transition-all duration-300 {{ Request::is('jelajah/komoditi') ? 'bg-white/15 text-white rounded-lg' : 'text-white/80 hover:text-white hover:bg-white/10 rounded-lg' }}"
+                                class="px-3 py-1.5 mx-0.5 flex items-center font-bold text-[11px] whitespace-nowrap transition-all duration-300 {{ Request::is('jelajah/komoditi') ? 'bg-white/15 text-white rounded-lg' : 'text-white hover:text-white hover:bg-white/10 rounded-lg' }}"
                                 id="nav-komoditi">
                                 KOMODITI
                             </a>
                             <a href="{{ route('public.laporan-desa') }}"
-                                class="px-3 py-1.5 mx-0.5 flex items-center font-bold text-[11px] whitespace-nowrap transition-all duration-300 {{ Request::is('laporan-desa') ? 'bg-white/15 text-white rounded-lg' : 'text-white/80 hover:text-white hover:bg-white/10 rounded-lg' }}"
+                                class="px-3 py-1.5 mx-0.5 flex items-center font-bold text-[11px] whitespace-nowrap transition-all duration-300 {{ Request::is('laporan-desa') ? 'bg-white/15 text-white rounded-lg' : 'text-white hover:text-white hover:bg-white/10 rounded-lg' }}"
                                 id="nav-laporan">
                                 LAPORAN DESA
                             </a>
                             <a href="{{ route('public.bank-data') }}"
-                                class="px-3 py-1.5 mx-0.5 flex items-center font-bold text-[11px] whitespace-nowrap transition-all duration-300 {{ Request::is('layanan/bank-data') ? 'bg-white/15 text-white rounded-lg' : 'text-white/80 hover:text-white hover:bg-white/10 rounded-lg' }}"
+                                class="px-3 py-1.5 mx-0.5 flex items-center font-bold text-[11px] whitespace-nowrap transition-all duration-300 {{ Request::is('layanan/bank-data') ? 'bg-white/15 text-white rounded-lg' : 'text-white hover:text-white hover:bg-white/10 rounded-lg' }}"
                                 id="nav-regulasi">
                                 REGULASI
                             </a>
                             <a href="{{ route('public.berita') }}"
-                                class="px-3 py-1.5 mx-0.5 flex items-center font-bold text-[11px] whitespace-nowrap transition-all duration-300 {{ Request::is('berita') ? 'bg-white/15 text-white rounded-lg' : 'text-white/80 hover:text-white hover:bg-white/10 rounded-lg' }}"
+                                class="px-3 py-1.5 mx-0.5 flex items-center font-bold text-[11px] whitespace-nowrap transition-all duration-300 {{ Request::is('berita') ? 'bg-white/15 text-white rounded-lg' : 'text-white hover:text-white hover:bg-white/10 rounded-lg' }}"
                                 id="nav-berita">
                                 KEGIATAN
                             </a>
                             <a href="{{ route('public.kontak') }}"
-                                class="px-3 py-1.5 mx-0.5 flex items-center font-bold text-[11px] whitespace-nowrap transition-all duration-300 {{ Request::is('layanan/kontak') ? 'bg-white/15 text-white rounded-lg' : 'text-white/80 hover:text-white hover:bg-white/10 rounded-lg' }}"
+                                class="px-3 py-1.5 mx-0.5 flex items-center font-bold text-[11px] whitespace-nowrap transition-all duration-300 {{ Request::is('layanan/kontak') ? 'bg-white/15 text-white rounded-lg' : 'text-white hover:text-white hover:bg-white/10 rounded-lg' }}"
                                 id="nav-kontak">
                                 KONTAK
                             </a>
@@ -207,12 +239,12 @@
                         @auth
                             <a href="{{ route('dashboard') }}"
                                 class="flex items-center gap-2 px-5 py-2 text-[11px] font-black text-white nav-text-white-bg hover:bg-white/10 rounded-full transition-all border border-white/30">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 nav-text-white" fill="none" viewBox="0 0 24 24"
                                     stroke="currentColor" stroke-width="2.5">
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                                 </svg>
-                                <span class="nav-text-white">DASHBOARD</span>
+                                <span class="nav-text-white">BERANDA</span>
                             </a>
 
                             <div class="block">
@@ -221,9 +253,9 @@
 
                             <div class="relative group">
                                 <button
-                                    class="flex items-center gap-2 text-white/90 hover:text-white font-bold text-xs tracking-wider transition-colors focus:outline-none uppercase">
+                                    class="flex items-center gap-2 text-white hover:text-white font-bold text-xs tracking-wider transition-colors focus:outline-none uppercase">
                                     <span class="nav-text-white">{{ Auth::user()->name }}</span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 nav-text-white" fill="none" viewBox="0 0 24 24"
                                         stroke="currentColor" stroke-width="2.5">
                                         <path stroke-linecap="round" stroke-linejoin="round"
                                             d="M19 9l-7 7-7-7" />
@@ -246,8 +278,8 @@
                                 <a href="{{ route('login') }}"
                                     style="background: linear-gradient(135deg, #d97706, #f59e0b); color: #ffffff;"
                                     class="px-3 md:px-5 py-2 text-[10px] md:text-xs font-bold rounded-full shadow-lg shadow-amber-600/30 hover:scale-105 transition-all flex items-center gap-2">
-                                    <span class="hidden md:inline">🔐 Masuk / Login</span>
-                                    <span class="md:hidden">🔐 LOGIN</span>
+                                    <span class="hidden md:inline">🔐 Masuk</span>
+                                    <span class="md:hidden">🔐 MASUK</span>
                                 </a>
                                 <x-theme-switcher />
                             </div>
@@ -309,96 +341,109 @@
     <main>
         {{ $slot }}
     </main>
-
     @if(!Request::is('dashboard*') && !Request::is('login') && !Request::is('register') && !Request::is('forgot-password') && !Request::is('reset-password*'))
-        <!-- Footer -->
-        <footer class="bg-slate-900 text-white pt-16 pb-8">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-                    <div class="col-span-1 md:col-span-1">
-                        <div class="flex items-center gap-3 mb-6">
+        <!-- Footer: Wide & Slim Government Design [MATCHING REFERENCE B] -->
+        <footer class="text-white relative overflow-hidden" style="background: #0a1a0e !important; padding-top: 6rem; padding-bottom: 4rem;">
+            <!-- Subtle Glow -->
+            <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-500/5 rounded-full blur-[120px] pointer-events-none"></div>
+
+            <div class="max-w-none mx-auto px-6 md:px-12 lg:px-10 relative z-10">
+                <!-- Main Grid Layout: 2 Columns Wide (2x2 Structure) -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 items-start mb-10" style="column-gap: 3rem; row-gap: 2.5rem;">
+                    
+                    <!-- TOP LEFT: BRANDING -->
+                    <div class="flex flex-col space-y-6">
+                        <div class="flex items-center gap-8 group cursor-default">
                             @if($profile && $profile->logo_website)
-                                <img src="{{ asset('storage/' . $profile->logo_website) }}" alt="Logo"
-                                    class="h-10 w-auto object-contain bg-white/10 rounded p-1">
+                                <img src="{{ asset('storage/' . $profile->logo_website) }}" alt="Logo" class="h-16 w-auto object-contain drop-shadow-2xl">
                             @else
-                                <div
-                                    class="w-10 h-10 bg-emerald-500 rounded-lg flex items-center justify-center text-white font-bold text-xl">
-                                    M
-                                </div>
+                                <div class="w-14 h-14 bg-amber-600 rounded-xl flex items-center justify-center text-white font-black text-2xl shadow-xl">M</div>
                             @endif
-                            <span class="font-bold text-xl tracking-tight">SID Manggarai Timur</span>
+                            <div class="flex flex-col">
+                                <span class="font-bold text-3xl tracking-tight text-white italic">SID</span>
+                                <span class="text-[11px] font-black text-amber-500 tracking-[0.3em] uppercase ml-0.5">Manggarai Timur</span>
+                            </div>
                         </div>
-                        <p class="text-slate-300 text-sm leading-relaxed">
-                            Sistem Informasi Profil dan Pelaporan Desa Kabupaten Manggarai Timur. Mengintegrasikan potensi
-                            wisata dan administrasi desa dalam satu platform modern.
+                        <p class="text-slate-400 text-sm leading-relaxed max-w-lg opacity-80">
+                            Sistem Informasi Digital Terpadu Kabupaten Manggarai Timur. Mewujudkan tata kelola desa yang modern, transparan, dan kompetitif di era global.
                         </p>
                     </div>
+
+                    <!-- TOP RIGHT: JELAJAH SITUS -->
                     <div>
-                        <h3 class="font-bold text-lg mb-4">Jelajah</h3>
-                        <ul class="space-y-3 text-slate-300 text-sm">
-                            <li><a href="{{ route('public.desa-wisata') }}"
-                                    class="hover:text-amber-400 transition-colors">Desa Wisata</a></li>
-                            <li><a href="{{ route('public.komoditi') }}"
-                                    class="hover:text-amber-400 transition-colors">Komoditi Unggulan</a></li>
-                            <li><a href="{{ route('public.kuliner') }}"
-                                    class="hover:text-amber-400 transition-colors">Kuliner Khas</a></li>
-                            <li><a href="{{ route('public.kerajinan') }}"
-                                    class="hover:text-amber-400 transition-colors">Kerajinan Tangan</a></li>
-                            <li><a href="{{ route('public.event') }}" class="hover:text-amber-400 transition-colors">Event
-                                    Budaya</a></li>
+                        <h3 class="font-serif text-2xl text-white mb-8 italic font-bold tracking-wide">Jelajah Situs</h3>
+                        <ul class="space-y-4">
+                            <li><a href="{{ route('public.desa-wisata') }}" class="text-slate-400 hover:text-white transition-all text-sm font-bold flex items-center gap-3 group uppercase tracking-widest">
+                                <span class="opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all">→</span> Desa Wisata
+                            </a></li>
+                            <li><a href="{{ route('public.komoditi') }}" class="text-slate-400 hover:text-white transition-all text-sm font-bold flex items-center gap-3 group uppercase tracking-widest">
+                                <span class="opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all">→</span> Komoditi Unggulan
+                            </a></li>
+                            <li><a href="{{ route('public.laporan-desa') }}" class="text-slate-400 hover:text-white transition-all text-sm font-bold flex items-center gap-3 group uppercase tracking-widest">
+                                <span class="opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all">→</span> Laporan Desa
+                            </a></li>
+                            <li><a href="{{ route('public.berita') }}" class="text-slate-400 hover:text-white transition-all text-sm font-bold flex items-center gap-3 group uppercase tracking-widest">
+                                <span class="opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all">→</span> Berita Terbaru
+                            </a></li>
                         </ul>
                     </div>
-                    <div>
-                        <h3 class="font-bold text-lg mb-4">Layanan</h3>
-                        <ul class="space-y-3 text-slate-300 text-sm">
-                            <li><a href="{{ route('public.bank-data') }}" class="hover:text-amber-500 transition-colors">Bank Data & Regulasi</a></li>
-                            <li><a href="{{ route('public.panduan') }}" class="hover:text-amber-500 transition-colors">Panduan Pelaporan</a></li>
-                            <li><a href="{{ route('public.kontak') }}" class="hover:text-amber-500 transition-colors">Kontak
-                                    Bantuan</a></li>
+
+                    <!-- BOTTOM LEFT: LAYANAN PUBLIK -->
+                    <div class="lg:mt-0">
+                        <h3 class="font-serif text-2xl text-white mb-8 italic font-bold tracking-wide">Layanan Publik</h3>
+                        <ul class="space-y-4">
+                            <li><a href="{{ route('public.bank-data') }}" class="text-slate-400 hover:text-white transition-all text-sm font-bold flex items-center gap-3 group uppercase tracking-widest">
+                                <span class="opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all">→</span> Data & Regulasi
+                            </a></li>
+                            <li><a href="{{ url('/login') }}" class="text-slate-400 hover:text-white transition-all text-sm font-bold flex items-center gap-3 group uppercase tracking-widest">
+                                <span class="opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all">→</span> Portal Admin
+                            </a></li>
+                            <li><a href="{{ route('public.kontak') }}" class="text-slate-400 hover:text-white transition-all text-sm font-bold flex items-center gap-3 group uppercase tracking-widest">
+                                <span class="opacity-40 group-hover:opacity-100 group-hover:translate-x-1 transition-all">→</span> Hubungi Bantuan
+                            </a></li>
                         </ul>
                     </div>
-                    <div>
-                        <h3 class="font-bold text-lg mb-4">DPMD Manggarai Timur</h3>
-                        <p class="text-slate-300 text-sm leading-relaxed mb-4">
-                            {{ $dpmdProfile->alamat ?? 'Jl. Trans Flores, Borong, Kabupaten Manggarai Timur, Nusa Tenggara Timur.' }}
-                            <br>
-                            {{ $dpmdProfile->telepon ?? '(0385) 123456' }} • {{ $dpmdProfile->email ??
-                            'info@dpmdmatim.go.id' }}
-                        </p>
-                        <div class="flex space-x-4">
-                            <a href="#"
-                                class="w-10 h-10 bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] rounded-full flex items-center justify-center text-white transition-all transform hover:-translate-y-1 shadow-lg hover:shadow-purple-500/20">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path
-                                        d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-                                </svg>
+
+                    <!-- BOTTOM RIGHT: KONTAK & SOCIAL -->
+                    <div class="flex flex-col space-y-8 lg:mt-0">
+                        <h3 class="font-serif text-2xl text-white mb-4 italic font-bold tracking-wide">Kontak Kami</h3>
+                        <div class="space-y-5">
+                            <div class="flex items-start gap-4 text-sm text-slate-400 font-bold leading-relaxed group">
+                                <div class="w-10 h-10 flex-shrink-0 bg-white/5 rounded-lg flex items-center justify-center text-amber-500 border border-white/10 group-hover:bg-amber-500 group-hover:text-white transition-all">📍</div>
+                                <span>Jl. Trans Flores, Borong, Kab. Manggarai Timur, NTT.</span>
+                            </div>
+                            <div class="flex items-center gap-4 text-sm text-slate-400 font-bold group">
+                                <div class="w-10 h-10 flex-shrink-0 bg-white/5 rounded-lg flex items-center justify-center text-emerald-500 border border-white/10 group-hover:bg-emerald-500 group-hover:text-white transition-all">📞</div>
+                                <span>(0385) 123456</span>
+                            </div>
+                        </div>
+
+                        <!-- Social Bar: Horizontal under Contact -->
+                        <div class="flex items-center gap-4 pt-4">
+                            <a href="#" class="w-12 h-12 bg-white/5 hover:bg-white/10 rounded-xl flex items-center justify-center text-white transition-all transform hover:-translate-y-1 border border-white/10">
+                                <svg class="w-6 h-6 opacity-80" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0 3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" /></svg>
                             </a>
-                            <a href="#"
-                                class="w-10 h-10 bg-[#1877F2] rounded-full flex items-center justify-center text-white transition-all transform hover:-translate-y-1 shadow-lg hover:shadow-blue-500/20">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path
-                                        d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-                                </svg>
+                            <a href="#" class="w-12 h-12 bg-white/5 hover:bg-white/10 rounded-xl flex items-center justify-center text-white transition-all transform hover:-translate-y-1 border border-white/10">
+                                <svg class="w-7 h-7 opacity-80" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" /></svg>
                             </a>
-                            <a href="#"
-                                class="w-10 h-10 bg-[#FF0000] rounded-full flex items-center justify-center text-white transition-all transform hover:-translate-y-1 shadow-lg hover:shadow-red-500/20">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path
-                                        d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.377.505 9.377.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.930-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-                                </svg>
+                            <!-- YouTube -->
+                            <a href="#" class="w-12 h-12 bg-white/5 hover:bg-white/10 rounded-xl flex items-center justify-center text-white transition-all transform hover:-translate-y-1 border border-white/10">
+                                <svg class="w-7 h-7 opacity-80" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
                             </a>
                         </div>
                     </div>
                 </div>
-                <div
-                    class="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-slate-500">
-                    <p>&copy; 2026 DPMD Kabupaten Manggarai Timur. Developed by Mahasiswa Magang.</p>
-                    <div class="flex space-x-6 mt-4 md:mt-0">
-                        <a href="#" class="hover:text-slate-300">Privacy Policy</a>
-                        <a href="#" class="hover:text-slate-300">Terms of Service</a>
+
+                <!-- SLIM BOTTOM BAR -->
+                <div class="border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-[11px] text-slate-500 font-bold space-y-4 md:space-y-0" style="padding-top: 1.5rem; gap: 2rem;">
+                    <div class="flex flex-col">
+                        <p>&copy; 2026 PEMERINTAH KABUPATEN MANGGARAI TIMUR.</p>
+                        <p class="text-[9px] opacity-40">HAK CIPTA DILINDUNGI.</p>
+                    </div>
+                    <div class="flex items-center uppercase tracking-widest text-[10px]" style="gap: 2rem;">
+                        <a href="#" class="hover:text-white transition-colors">Kebijakan Privasi</a>
+                        <a href="#" class="hover:text-white transition-colors">Syarat dan Ketentuan</a>
+                        <a href="#" class="hover:text-white transition-colors">Pusat Keamanan</a>
                     </div>
                 </div>
             </div>

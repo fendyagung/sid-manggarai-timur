@@ -13,9 +13,9 @@
                     class="inline-block py-1 px-3 rounded-full bg-blue-50 text-blue-600 text-xs font-bold uppercase tracking-widest mb-6">
                     Update Terkini
                 </span>
-                <h1 class="text-4xl md:text-5xl font-bold text-slate-900 mb-6">Berita & Informasi Desa</h1>
+                <h1 class="text-4xl md:text-5xl font-bold text-slate-900 mb-6">Kegiatan & Informasi Desa</h1>
                 <p class="text-slate-500 text-lg leading-relaxed">
-                    Kumpulan kabar terbaru dari pelosok desa, kebijakan Pemerintah Kabupaten, dan pengumuman resmi DPMD
+                    Kumpulan dokumentasi kegiatan dari pelosok desa, kebijakan Pemerintah Kabupaten, dan pengumuman resmi DPMD
                     Manggarai Timur.
                 </p>
             </div>
@@ -23,36 +23,55 @@
     </section>
 
     @if($featuredBerita)
-        <!-- Featured News -->
+        <!-- Featured News: Re-structured to stacked layout -->
         <section class="py-16 bg-white">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <a href="{{ route('public.berita.detail', $featuredBerita->slug) }}" class="block group">
-                    <div class="relative rounded-[3rem] overflow-hidden shadow-2xl h-[500px]">
-                        @if($featuredBerita->foto)
-                            <img src="{{ asset('storage/' . $featuredBerita->foto) }}" alt="{{ $featuredBerita->judul }}"
-                                class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105">
-                        @else
-                            <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb773b09?ixlib=rb-1.2.1&auto=format&fit=crop&w=1600&q=80"
-                                class="w-full h-full object-cover grayscale opacity-20">
-                        @endif
-                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent"></div>
-                        <div class="absolute bottom-0 left-0 right-0 p-8 md:p-16 text-white max-w-4xl">
-                            <span
-                                class="inline-block px-3 py-1 bg-emerald-500 text-white text-[10px] font-bold rounded-lg mb-4">UTAMA</span>
-                            <h2
-                                class="text-3xl md:text-4xl font-bold mb-4 leading-tight group-hover:text-emerald-400 transition-colors">
+                    <div class="bg-white rounded-[3rem] overflow-hidden shadow-2xl border border-slate-100 transition-all duration-500 hover:shadow-emerald-900/10">
+                        <!-- Image on Top -->
+                        <div class="relative h-[400px] md:h-[500px] overflow-hidden">
+                            @if($featuredBerita->foto)
+                                <img src="{{ asset('storage/' . $featuredBerita->foto) }}" alt="{{ $featuredBerita->judul }}"
+                                    class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105">
+                            @else
+                                <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb773b09?ixlib=rb-1.2.1&auto=format&fit=crop&w=1600&q=80"
+                                    class="w-full h-full object-cover grayscale opacity-20">
+                            @endif
+                            <div class="absolute top-8 left-8">
+                                <span class="px-4 py-2 bg-emerald-600 text-white text-xs font-black rounded-full shadow-lg shadow-emerald-900/20 uppercase tracking-widest italic">Kegiatan Utama</span>
+                            </div>
+                        </div>
+
+                        <!-- Content Below Image -->
+                        <div class="p-10 md:p-16">
+                            <div class="flex items-center gap-2 mb-6">
+                                <div class="w-10 h-0.5 bg-amber-500"></div>
+                                <span class="text-amber-600 text-xs font-black uppercase tracking-[0.2em]">{{ $featuredBerita->kategori ?? 'KEGIATAN' }}</span>
+                            </div>
+
+                            <h2 class="text-3xl md:text-5xl font-bold text-slate-900 mb-8 leading-tight group-hover:text-emerald-600 transition-colors font-serif italic">
                                 {{ $featuredBerita->judul }}
                             </h2>
-                            <p class="text-slate-200 text-lg line-clamp-2 md:line-clamp-none mb-8">
-                                {{ Str::limit(strip_tags($featuredBerita->isi), 180) }}
+
+                            <p class="text-slate-600 text-lg leading-relaxed mb-10 line-clamp-3">
+                                {{ Str::limit(strip_tags($featuredBerita->isi), 300) }}
                             </p>
-                            <div class="flex items-center gap-4 text-sm font-medium">
-                                <div
-                                    class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-md uppercase">
-                                    {{ substr($featuredBerita->user->name, 0, 1) }}
+
+                            <div class="flex flex-wrap items-center justify-between gap-6 pt-10 border-t border-slate-100">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-12 h-12 bg-slate-900 rounded-xl flex items-center justify-center text-white font-black text-xl shadow-lg shadow-slate-200">
+                                        {{ substr($featuredBerita->user->name, 0, 1) }}
+                                    </div>
+                                    <div class="flex flex-col">
+                                        <span class="text-sm font-black text-slate-900 uppercase tracking-widest">{{ $featuredBerita->user->name }}</span>
+                                        <span class="text-xs text-slate-400 font-bold uppercase tracking-widest mt-1">{{ $featuredBerita->created_at->format('d M Y') }}</span>
+                                    </div>
                                 </div>
-                                <span>{{ $featuredBerita->user->name }} •
-                                    {{ $featuredBerita->created_at->format('d M Y') }}</span>
+
+                                <div class="flex items-center gap-2 text-emerald-600 font-black text-xs uppercase tracking-widest group-hover:translate-x-2 transition-transform">
+                                    Baca Selengkapnya
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                                </div>
                             </div>
                         </div>
                     </div>

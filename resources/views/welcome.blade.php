@@ -171,21 +171,20 @@
 
         /* Premium Glassmorphism Card */
         .vis-card {
-            background: rgba(20, 55, 35, 0.85);
+            background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(20px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 2rem;
-            padding: 32px;
-            box-shadow: 0 30px 60px -10px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 2.5rem;
+            padding: 40px;
+            box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
             position: relative;
             z-index: 2;
             transition: all 0.5s ease;
         }
 
         .dark .vis-card {
-            background: rgba(10, 30, 18, 0.9);
+            background: rgba(10, 30, 18, 0.6);
             border-color: rgba(255, 255, 255, 0.08);
-            box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.6);
         }
 
         .hero-badge {
@@ -325,33 +324,28 @@
         }
 
         .fitur-card {
-            background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            border-radius: 2rem;
-            padding: 35px;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.02);
+            background: #ffffff;
+            border: 1px solid #f1f5f9;
+            border-radius: 2.5rem;
+            padding: 45px;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.01);
             position: relative;
-            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
 
         .dark .fitur-card {
-            background: rgba(15, 23, 42, 0.4);
+            background: #1e293b;
             border-color: rgba(255, 255, 255, 0.05);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
         }
 
         .fitur-card:hover {
-            transform: translateY(-10px);
-            background: white;
+            transform: translateY(-12px);
             border-color: #fbbf24;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
-        }
-
-        .dark .fitur-card:hover {
-            background: rgba(30, 41, 59, 0.6);
-            border-color: rgba(251, 191, 36, 0.3);
+            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.08);
         }
 
         .wisata-card {
@@ -413,6 +407,14 @@
 
         .dark .peng-card:hover {
             background: rgba(30, 41, 59, 0.6);
+        }
+
+        .cara-kerja-section {
+            background: linear-gradient(to bottom right, #fdfbf7, #f3f4f1);
+        }
+
+        .dark .cara-kerja-section {
+            background: linear-gradient(145deg, #0a1f12 0%, #152e1e 40%, #0c2519 70%, #081a0e 100%) !important;
         }
 
         @media (max-width: 768px) {
@@ -700,17 +702,23 @@
 
         <div class="hero-grid">
             <!-- LEFT -->
-            <div class="reveal flex flex-col items-center lg:items-start text-center lg:text-left">
-                <div class="hero-badge mx-auto lg:mx-0">🌿 DMPD Kab. Manggarai Timur — NTT</div>
-                <h1 class="hero-title">
-                    Sistem Informasi<br>
-                    <span class="text-2xl sm:text-3xl lg:text-4xl block mt-2">pelaporan dari desa dan</span>
-                    <em class="text-xl sm:text-2xl lg:text-3xl block mt-1">promosi potensi desa/desa wisata</em>
+            <div class="reveal flex flex-col items-center text-center">
+                <div class="hero-badge mx-auto mb-6 bg-amber-500/10 text-amber-500 border-amber-500/20">🌿 DMPD Kab. Manggarai Timur — NTT</div>
+                
+                <h1 class="hero-title text-3xl sm:text-5xl lg:text-7xl mb-8 leading-[1.1] tracking-tight font-serif font-black text-amber-500">
+                    <div>Sistem Informasi Pelaporan Desa</div>
+                    
+                    <div class="flex flex-col items-center -mt-2">
+                        <div class="h-6 w-[1px] bg-amber-500/40"></div>
+                        <span class="text-2xl sm:text-3xl my-1" style="color: #ffffff !important;">&</span>
+                        <div class="h-3 w-[1px] bg-amber-500/40"></div>
+                    </div>
+                    
+                    <em class="italic text-4xl sm:text-6xl lg:text-7xl block">Promosi Potensi Desa / Desa Wisata</em>
                 </h1>
-                <p class="text-white/70 text-lg mb-10 leading-relaxed max-w-xl mx-auto lg:mx-0">
-                    Platform digital terpadu milik Dinas Pemberdayaan Masyarakat dan Desa
-                    Kabupaten Manggarai Timur untuk monitoring pelaporan seluruh desa
-                    dan promosi potensi wisata Flores NTT kepada dunia.
+
+                <p class="text-white/80 text-lg md:text-xl mb-12 leading-relaxed max-w-3xl mx-auto font-serif italic text-justify">
+                    Platform digital terpadu milik <span class="text-white font-bold">Dinas Pemberdayaan Masyarakat dan Desa Kabupaten Manggarai Timur</span> untuk monitoring pelaporan seluruh desa dan promosi potensi wisata Flores NTT kepada dunia.
                 </p>
                 <div class="flex flex-wrap items-center justify-center lg:justify-start gap-5 mb-14">
                     <a href="{{ route('login') }}"
@@ -783,7 +791,7 @@
                             📊
                         </div>
                         <div>
-                            <div class="text-white font-black text-lg tracking-tight">Dashboard Pelaporan Desa</div>
+                            <p class="text-white font-bold text-xs uppercase tracking-widest">Dokumentasi Berita</p>
                             <div class="text-amber-400 text-xs font-bold uppercase tracking-widest mt-1">
                                 Kab. Manggarai Timur — {{ now()->isoFormat('MMM Y') }}
                             </div>
@@ -856,14 +864,14 @@
     <!-- SECTION: FITUR -->
     <section class="py-12 bg-white dark:bg-slate-900" id="fitur">
         <div class="max-w-[1240px] mx-auto px-6">
-            <div class="mb-12 reveal">
+            <div class="mb-12 flex flex-col items-center text-center reveal">
                 <span
                     class="px-4 py-1.5 bg-blue-50 text-[#1e293b] text-[11px] font-black uppercase tracking-widest rounded-full border border-blue-100">⚙️
                     Fitur Sistem</span>
                 <h2 class="text-4xl font-black mt-6 font-serif text-slate-900 dark:text-white">Semua yang Dibutuhkan
                     Dalam Satu Platform
                 </h2>
-                <p class="text-slate-600 dark:text-slate-400 mt-4 max-w-xl">Dirancang khusus untuk kebutuhan pelaporan
+                <p class="text-slate-600 dark:text-slate-400 mt-4 max-w-xl mx-auto">Dirancang khusus untuk kebutuhan pelaporan
                     dan promosi desa di
                     Kabupaten Manggarai Timur, Flores NTT.</p>
             </div>
@@ -893,7 +901,7 @@
         </div>
     </section>
 
-    <section class="py-12 dark:bg-slate-900/50" style="background: linear-gradient(to bottom right, #fdfbf7, #f3f4f1);"
+    <section class="py-12 cara-kerja-section"
         id="cara">
         <div class="max-w-[1240px] mx-auto px-6">
             <div class="text-center mb-12 reveal">
@@ -947,31 +955,28 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
                 @forelse($announcements as $an)
                     <div class="reveal">
-                        <div class="ann-card">
+                        <div class="ann-card h-full flex flex-col">
                             <div class="ann-image-wrapper">
-                                <div class="ann-badge">Pengumuman</div>
-                                <div class="ann-image-placeholder">
+                                <div class="ann-badge">Informasi Resmi</div>
+                                <div class="ann-image-placeholder bg-gradient-to-br from-blue-600 to-indigo-700">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
                                     </svg>
-                                    <div class="ann-image-text">
-                                        Informasi Resmi & Pengumuman DMPD
+                                    <div class="ann-image-text text-sm px-6 opacity-90">
+                                        Dinas Pemberdayaan Masyarakat dan Desa
                                     </div>
                                 </div>
                             </div>
-                            <div class="ann-content">
-                                <h3 class="ann-title">{{ $an->judul }}</h3>
-                                <div class="ann-footer">
-                                    <a href="{{ route('public.pengumuman.detail', $an->id) }}" class="ann-readmore">
+                            <div class="ann-content flex-1 flex flex-col">
+                                <h3 class="ann-title font-serif text-slate-900 dark:text-white text-xl">{{ $an->judul }}</h3>
+                                <div class="ann-footer mt-auto pt-6 border-t border-slate-50 dark:border-white/5">
+                                    <a href="{{ route('public.pengumuman.detail', $an->id) }}" class="ann-readmore group">
                                         READ MORE 
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                                         </svg>
                                     </a>
-                                    <div class="ann-date">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                        </svg>
+                                    <div class="ann-date text-slate-400">
                                         {{ $an->created_at->isoFormat('MMM DD, Y') }}
                                     </div>
                                 </div>
@@ -979,7 +984,7 @@
                         </div>
                     </div>
                 @empty
-                    <div class="col-span-full py-10 text-center opacity-50 italic text-slate-500">Belum ada pengumuman terbaru dari DMPD.</div>
+                    <div class="col-span-full py-20 text-center opacity-40 italic font-medium text-slate-500">Belum ada pengumuman terbaru saat ini.</div>
                 @endforelse
             </div>
         </div>
@@ -993,35 +998,32 @@
                 <div class="w-24 h-1.5 bg-slate-900 mx-auto mt-6 rounded-full opacity-20"></div>
                 <div class="mt-8">
                     <a href="{{ route('public.berita') }}"
-                        class="text-sm font-black text-slate-500 uppercase tracking-widest hover:text-slate-900 transition-colors">Lihat Semua Berita & Kegiatan →</a>
+                        class="text-sm font-black text-slate-500 uppercase tracking-widest hover:text-slate-900 transition-colors">Lihat Semua Berita Terbaru →</a>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
                 @forelse($latestNews as $news)
                     <div class="reveal">
-                        <div class="news-card">
-                            <div class="news-image-wrapper">
-                                <div class="news-badge">Berita</div>
+                        <div class="news-card h-full flex flex-col">
+                            <div class="news-image-wrapper rounded-3xl">
+                                <div class="news-badge bg-amber-500 text-white font-black">BERITA</div>
                                 @if($news->foto)
                                     <img src="{{ asset('storage/' . $news->foto) }}" class="news-image" alt="{{ $news->judul }}">
                                 @else
-                                    <div class="w-full h-full bg-slate-100 flex items-center justify-center text-4xl">📰</div>
+                                    <div class="w-full h-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-4xl">📰</div>
                                 @endif
                             </div>
-                            <div class="news-content">
-                                <h3 class="news-title">{{ $news->judul }}</h3>
-                                <div class="news-footer">
-                                    <a href="{{ route('public.berita.detail', $news->slug) }}" class="news-readmore">
+                            <div class="news-content flex-1 flex flex-col">
+                                <h3 class="news-title font-serif text-slate-900 dark:text-white text-xl">{{ $news->judul }}</h3>
+                                <div class="news-footer mt-auto pt-6 border-t border-slate-50 dark:border-white/5">
+                                    <a href="{{ route('public.berita.detail', $news->slug) }}" class="news-readmore group">
                                         READ MORE 
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                                         </svg>
                                     </a>
-                                    <div class="news-date">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                        </svg>
+                                    <div class="news-date text-slate-400">
                                         {{ $news->created_at->isoFormat('MMM DD, Y') }}
                                     </div>
                                 </div>
@@ -1029,7 +1031,7 @@
                         </div>
                     </div>
                 @empty
-                    <div class="col-span-full py-10 text-center opacity-50 italic">Belum ada berita terbaru.</div>
+                    <div class="col-span-full py-20 text-center opacity-40 italic">Belum ada berita terbaru untuk ditampilkan.</div>
                 @endforelse
             </div>
         </div>
@@ -1145,31 +1147,11 @@
         const heroHeight = document.querySelector('.hero') ? document.querySelector('.hero').offsetHeight : 600;
 
         function updateNavbar() {
-            if (window.scrollY > heroHeight - 100) {
-                // Scrolled past hero: switch to light navbar
-                navbar.classList.add('bg-white/95', 'dark:bg-slate-900/95', 'shadow-lg', 'border-b', 'border-slate-200');
-                navbar.classList.remove('bg-transparent');
-                // Update link colors
-                navLinks.forEach(link => {
-                    link.classList.remove('text-white/80', 'hover:text-white', 'hover:bg-white/10');
-                    link.classList.add('text-slate-600', 'hover:text-emerald-700', 'hover:bg-emerald-50');
-                });
-                navBrand.forEach(s => {
-                    s.classList.remove('text-white', 'text-white/60');
-                    s.classList.add('text-slate-800', 'dark:text-white', 'text-slate-400');
-                });
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 30) {
+                navbar.classList.add('nav-scrolled');
             } else {
-                // On hero: transparent dark
-                navbar.classList.remove('bg-white/95', 'dark:bg-slate-900/95', 'shadow-lg', 'border-b', 'border-slate-200');
-                navbar.classList.add('bg-transparent');
-                navLinks.forEach(link => {
-                    link.classList.add('text-white/80', 'hover:text-white', 'hover:bg-white/10');
-                    link.classList.remove('text-slate-600', 'hover:text-emerald-700', 'hover:bg-emerald-50');
-                });
-                navBrand.forEach(s => {
-                    s.classList.add('text-white', 'text-white/60');
-                    s.classList.remove('text-slate-800', 'dark:text-white', 'text-slate-400');
-                });
+                navbar.classList.remove('nav-scrolled');
             }
         }
 
