@@ -163,6 +163,10 @@ class DesaController extends Controller
     public function showPengumuman($id)
     {
         $announcement = \App\Models\Pengumuman::findOrFail($id);
+        
+        // Increment View Count
+        $announcement->increment('views');
+        
         return view('public.pengumuman-show', compact('announcement'));
     }
 }

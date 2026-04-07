@@ -6,7 +6,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
     <title>{{ config('app.name', 'Laravel') }} - Pesona Manggarai Timur</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <!-- Fonts -->
@@ -65,6 +65,24 @@
         .animate-bounce-subtle {
             animation: bounce-subtle 2s infinite;
         }
+
+        /* NAVBAR SCROLLED STATE */
+        #navbar.nav-scrolled {
+            background-color: #0f172a !important; /* Navy/Slate-950 Solid */
+            padding-top: 0.5rem !important;
+            padding-bottom: 0.5rem !important;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        #navbar.nav-scrolled .nav-text-white {
+            color: #ffffff !important;
+        }
+
+        #navbar.nav-scrolled .nav-text-white-bg {
+            color: #ffffff !important;
+            border-color: rgba(255,255,255,0.3) !important;
+        }
     </style>
 </head>
 
@@ -73,18 +91,25 @@
 @endphp
 
 <body
-    class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 antialiased transition-colors duration-300">
+    class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 antialiased transition-colors duration-300 overflow-x-hidden">
     <!-- Navigation -->
     <nav class="fixed w-full z-50 transition-all duration-300 bg-transparent dark:bg-transparent backdrop-blur-md border-b border-transparent"
         id="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
-                <div class="flex items-center gap-3 mr-8 min-w-fit">
+                <div class="flex items-center gap-3 min-w-fit">
+                    <!-- Hamburger / Mobile Menu Button -->
+                    <button id="mobile-menu-open" class="lg:hidden p-2 text-white/80 hover:text-white transition-all">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+
                     <!-- Logo Section -->
                     <a href="{{ url('/') }}" class="flex items-center gap-3">
                         @if($profile && $profile->logo_website)
                             <img src="{{ asset('storage/' . $profile->logo_website) }}" alt="Logo"
-                                class="h-12 w-auto object-contain">
+                                class="h-10 md:h-12 w-auto object-contain">
                         @else
                             <div
                                 class="w-10 h-10 bg-amber-600 rounded-lg flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-amber-600/30">
@@ -93,9 +118,9 @@
                         @endif
                         <div class="flex flex-col justify-center">
                             <span
-                                class="block font-bold text-xl tracking-tighter text-white dark:text-white leading-tight">SID</span>
+                                class="block font-bold text-lg md:text-xl tracking-tighter text-white nav-text-white leading-tight">SID</span>
                             <span
-                                class="block text-[9px] font-extrabold text-white/60 dark:text-white/60 tracking-[0.15em] whitespace-nowrap uppercase">Manggarai
+                                class="block text-[8px] md:text-[9px] font-extrabold text-white/60 nav-text-white tracking-[0.1em] md:tracking-[0.15em] whitespace-nowrap uppercase">Manggarai
                                 Timur</span>
                         </div>
                     </a>
@@ -180,27 +205,33 @@
                             </a>
                         @endif
                         @auth
+                            <a href="{{ route('dashboard') }}"
+                                class="flex items-center gap-2 px-5 py-2 text-[11px] font-black text-white nav-text-white-bg hover:bg-white/10 rounded-full transition-all border border-white/30">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor" stroke-width="2.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                                </svg>
+                                <span class="nav-text-white">DASHBOARD</span>
+                            </a>
+
+                            <div class="block">
+                                <x-theme-switcher />
+                            </div>
+
                             <div class="relative group">
                                 <button
-                                    class="flex items-center gap-2 text-slate-700 hover:text-emerald-600 font-medium transition-colors focus:outline-none">
-                                    <span>{{ Auth::user()->name }}</span>
+                                    class="flex items-center gap-2 text-white/90 hover:text-white font-bold text-xs tracking-wider transition-colors focus:outline-none uppercase">
+                                    <span class="nav-text-white">{{ Auth::user()->name }}</span>
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
-                                        stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        stroke="currentColor" stroke-width="2.5">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
                                             d="M19 9l-7 7-7-7" />
                                     </svg>
                                 </button>
-                                <div class="hidden md:block">
-                                    <x-theme-switcher />
-                                </div>
                                 <!-- Dropdown -->
                                 <div
                                     class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl py-2 invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all transform origin-top-right border border-gray-100 z-50">
-                                    <a href="{{ route('dashboard') }}"
-                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-emerald-50 hover:text-emerald-600">
-                                        Dashboard
-                                    </a>
-                                    <div class="border-t border-gray-100 my-1"></div>
                                     <form method="POST" action="{{ route('logout') }}">
                                         @csrf
                                         <button type="submit"
@@ -211,11 +242,12 @@
                                 </div>
                             </div>
                         @else
-                            <div class="flex items-center gap-4">
+                            <div class="flex items-center gap-2 md:gap-4">
                                 <a href="{{ route('login') }}"
                                     style="background: linear-gradient(135deg, #d97706, #f59e0b); color: #ffffff;"
-                                    class="px-5 py-2 text-xs font-bold rounded-full shadow-lg shadow-amber-600/30 hover:scale-105 transition-all flex items-center gap-2">
-                                    🔐 Masuk / Login
+                                    class="px-3 md:px-5 py-2 text-[10px] md:text-xs font-bold rounded-full shadow-lg shadow-amber-600/30 hover:scale-105 transition-all flex items-center gap-2">
+                                    <span class="hidden md:inline">🔐 Masuk / Login</span>
+                                    <span class="md:hidden">🔐 LOGIN</span>
                                 </a>
                                 <x-theme-switcher />
                             </div>
@@ -225,6 +257,53 @@
             </div>
         </div>
     </nav>
+
+    <!-- Mobile Menu Slide-over -->
+    <div id="mobile-menu-container" class="fixed inset-0 z-[100] invisible">
+        <!-- Backdrop -->
+        <div id="mobile-menu-backdrop" class="absolute inset-0 bg-navy-950/60 backdrop-blur-sm opacity-0 transition-opacity duration-300 pointer-events-none"></div>
+        
+        <!-- Sidebar -->
+        <div id="mobile-menu-sidebar" class="absolute left-0 top-0 bottom-0 w-[280px] bg-slate-900 shadow-2xl transform -translate-x-full transition-transform duration-300 ease-out flex flex-col">
+            <div class="p-6 flex items-center justify-between border-b border-white/10">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-amber-600 rounded flex items-center justify-center text-white font-bold">M</div>
+                    <span class="font-bold text-white tracking-widest text-sm uppercase">Menu NAVIGASI</span>
+                </div>
+                <button id="mobile-menu-close" class="p-2 text-white/50 hover:text-white transition-all">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="flex-1 overflow-y-auto p-4 space-y-2">
+                @php
+                    $mobileLinks = [
+                        ['Beranda', url('/'), Request::is('/'), 'nav-m-home'],
+                        ['Profil', route('public.profil'), Request::is('profil'), 'nav-m-profil'],
+                        ['Desa Wisata', route('public.desa-wisata'), Request::is('*desa-wisata*'), 'nav-m-desa'],
+                        ['Komoditi', route('public.komoditi'), Request::is('*komoditi*'), 'nav-m-komoditi'],
+                        ['Laporan Desa', route('public.laporan-desa'), Request::is('laporan-desa'), 'nav-m-laporan'],
+                        ['Regulasi', route('public.bank-data'), Request::is('*bank-data*'), 'nav-m-regulasi'],
+                        ['Kegiatan', route('public.berita'), Request::is('berita'), 'nav-m-berita'],
+                        ['Kontak', route('public.kontak'), Request::is('*kontak*'), 'nav-m-kontak'],
+                    ];
+                @endphp
+                
+                @foreach($mobileLinks as $ml)
+                    <a href="{{ $ml[1] }}" class="block px-4 py-3.5 rounded-xl text-sm font-bold tracking-widest uppercase transition-all {{ $ml[2] ? 'bg-amber-600 text-white shadow-lg shadow-amber-600/30' : 'text-white/60 hover:text-white hover:bg-white/5' }}">
+                        {{ $ml[0] }}
+                    </a>
+                @endforeach
+            </div>
+            
+            <div class="p-6 border-t border-white/10">
+                <p class="text-[10px] text-white/30 uppercase tracking-[0.2em] font-black">Kab. Manggarai Timur</p>
+                <p class="text-[9px] text-white/20 mt-1">Provinsi Nusa Tenggara Timur</p>
+            </div>
+        </div>
+    </div>
 
     <!-- Main Content -->
     <main>
@@ -330,14 +409,43 @@
         // Navbar Scroll Effect
         window.addEventListener('scroll', function () {
             const navbar = document.getElementById('navbar');
-            if (window.scrollY > 20) {
-                navbar.classList.add('shadow-md', 'bg-slate-900/90');
-                navbar.classList.remove('bg-transparent');
+            if (window.scrollY > 30) {
+                navbar.classList.add('nav-scrolled');
             } else {
-                navbar.classList.remove('shadow-md', 'bg-slate-900/90');
-                navbar.classList.add('bg-transparent');
+                navbar.classList.remove('nav-scrolled');
             }
         });
+
+        // Mobile Menu Logic
+        const mobileMenuOpenBtn = document.getElementById('mobile-menu-open');
+        const mobileMenuCloseBtn = document.getElementById('mobile-menu-close');
+        const mobileMenuContainer = document.getElementById('mobile-menu-container');
+        const mobileMenuBackdrop = document.getElementById('mobile-menu-backdrop');
+        const mobileMenuSidebar = document.getElementById('mobile-menu-sidebar');
+
+        function openMobileMenu() {
+            mobileMenuContainer.classList.remove('invisible');
+            setTimeout(() => {
+                mobileMenuBackdrop.classList.add('opacity-100');
+                mobileMenuBackdrop.classList.remove('pointer-events-none');
+                mobileMenuSidebar.classList.remove('-translate-x-full');
+                document.body.style.overflow = 'hidden';
+            }, 10);
+        }
+
+        function closeMobileMenu() {
+            mobileMenuBackdrop.classList.remove('opacity-100');
+            mobileMenuBackdrop.classList.add('pointer-events-none');
+            mobileMenuSidebar.classList.add('-translate-x-full');
+            document.body.style.overflow = '';
+            setTimeout(() => {
+                mobileMenuContainer.classList.add('invisible');
+            }, 300);
+        }
+
+        if(mobileMenuOpenBtn) mobileMenuOpenBtn.addEventListener('click', openMobileMenu);
+        if(mobileMenuCloseBtn) mobileMenuCloseBtn.addEventListener('click', closeMobileMenu);
+        if(mobileMenuBackdrop) mobileMenuBackdrop.addEventListener('click', closeMobileMenu);
 
         // Scroll Reveal Animation (Intersection Observer)
         const revealCallback = (entries, observer) => {

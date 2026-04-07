@@ -1,0 +1,29 @@
+PETUNJUK INSTALASI SID MANGGARAI TIMUR
+--------------------------------------
+
+1. Ekstrak file ZIP Proyek ke folder htdocs (XAMPP) atau direktori server.
+2. Buat database baru di MySQL dengan nama 'sid_manggarai_timur'.
+3. Import file 'database_sid_manggarai.sql' ke database tersebut.
+4. Copy file '.env.example' menjadi '.env' dan sesuaikan pengaturan database:
+   DB_DATABASE=sid_manggarai_timur
+   DB_USERNAME=root
+   DB_PASSWORD=
+5. Buka terminal (Command Prompt/PowerShell) di folder proyek, lalu jalankan perintah:
+   a. php artisan key:generate
+   b. php artisan storage:link
+   (Catatan: 'composer install' dan 'npm install' tidak perlu dijalankan karena folder vendor/build sudah disertakan)
+6. Akses website melalui web browser.
+
+----------------------------------------------------
+DATA LOKASI LOGIN KHUSUS ADMIN
+----------------------------------------------------
+Setelah selesai install, Anda dapat login melalui: 
+Alamat: http://localhost/sid-manggarai-timur/public/login  (Atau sesuai nama folder Anda)
+
+- ADMIN DINAS PMD 
+  Email: admin@dpmd.com 
+  Password: password 
+
+- CAMAT BORONG 
+  Email: borong@kecamatan.com 
+  Password: password

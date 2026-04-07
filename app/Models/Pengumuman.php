@@ -21,6 +21,8 @@ class Pengumuman extends Model
         'show_on_public',
         'file_path',
         'original_name',
+        'foto',
+        'views',
         'user_id',
     ];
 

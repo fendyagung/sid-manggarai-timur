@@ -64,11 +64,19 @@
                             placeholder="Tuliskan detail pengumuman di sini..."></textarea>
                     </div>
 
-                    <div>
-                        <label for="lampiran" class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Lampiran PDF (Wajib untuk Halaman Depan)</label>
-                        <input type="file" name="lampiran" id="lampiran" accept="application/pdf"
-                            class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-emerald-500 outline-none dark:text-white">
-                        <p class="text-[10px] text-slate-400 mt-2 italic">*Hanya file PDF, maksimal 10MB</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="foto" class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Foto Utama (Banner)</label>
+                            <input type="file" name="foto" id="foto" accept="image/*"
+                                class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-emerald-500 outline-none dark:text-white text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 transition-all">
+                            <p class="text-[10px] text-slate-400 mt-2 italic px-2">*JPG, PNG, WebP (Maks 5MB)</p>
+                        </div>
+                        <div>
+                            <label for="lampiran" class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Lampiran Dokumen (PDF)</label>
+                            <input type="file" name="lampiran" id="lampiran" accept="application/pdf"
+                                class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-emerald-500 outline-none dark:text-white text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 transition-all">
+                            <p class="text-[10px] text-slate-400 mt-2 italic px-2">*Maksimal 10MB</p>
+                        </div>
                     </div>
 
                     <div class="flex justify-end">

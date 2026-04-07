@@ -20,6 +20,7 @@ class PengumumanController extends Controller
             'judul' => 'required|string|max:255',
             'isi' => 'required|string',
             'tipe' => 'required|in:info,penting,darurat',
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
             'lampiran' => 'nullable|file|mimes:pdf|max:10240',
         ]);
 
@@ -31,6 +32,11 @@ class PengumumanController extends Controller
             $originalName = $file->getClientOriginalName();
         }
 
+        $fotoPath = null;
+        if ($request->hasFile('foto')) {
+            $fotoPath = $request->file('foto')->store('pengumuman-foto', 'public');
+        }
+
         Pengumuman::create([
             'judul' => $request->judul,
             'isi' => $request->isi,
@@ -40,6 +46,7 @@ class PengumumanController extends Controller
             'show_on_public' => $request->has('show_on_public'),
             'file_path' => $filePath,
             'original_name' => $originalName,
+            'foto' => $fotoPath,
             'user_id' => Auth::id(),
         ]);
 
