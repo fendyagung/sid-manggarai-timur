@@ -10,7 +10,8 @@
     $wisatawanCount = $dpmdProfile->stat_wisatawan ?? '0';
 
     // Kepatuhan (Reports this month)
-    $desaSudahLaporCount = \App\Models\Laporan::whereYear('tanggal_laporan', now()->year)
+    $desaSudahLaporCount = \App\Models\Laporan::whereNotNull('desa_id')
+        ->whereYear('tanggal_laporan', now()->year)
         ->whereMonth('tanggal_laporan', now()->month)
         ->distinct('desa_id')
         ->count();
@@ -33,10 +34,12 @@
     $latestPotensi = \App\Models\Potensi::with('desa')->latest()->take(9)->get();
 
     // Report Status Summary (Current Month)
-    $laporanSelesai = \App\Models\Laporan::whereYear('tanggal_laporan', now()->year)
+    $laporanSelesai = \App\Models\Laporan::whereNotNull('desa_id')
+        ->whereYear('tanggal_laporan', now()->year)
         ->whereMonth('tanggal_laporan', now()->month)
         ->where('status', 'diterima')->count();
-    $laporanProses = \App\Models\Laporan::whereYear('tanggal_laporan', now()->year)
+    $laporanProses = \App\Models\Laporan::whereNotNull('desa_id')
+        ->whereYear('tanggal_laporan', now()->year)
         ->whereMonth('tanggal_laporan', now()->month)
         ->where('status', 'pending')->count();
     $belumMelapor = max(0, $totalDesa - $desaSudahLaporCount);

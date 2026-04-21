@@ -41,6 +41,20 @@
                     </select>
                 </div>
 
+                @if(Auth::user()->role === 'admin_dpmd')
+                <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Tujuan Bidang (Opsional)</label>
+                    <select name="bidang"
+                        class="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all appearance-none cursor-pointer">
+                        <option value="">Umum / Publik</option>
+                        <option value="sekretariat" {{ $regulasi->bidang == 'sekretariat' ? 'selected' : '' }}>Sekretariat</option>
+                        <option value="pemerintahan" {{ $regulasi->bidang == 'pemerintahan' ? 'selected' : '' }}>Bidang 1 (Pemerintahan)</option>
+                        <option value="pemberdayaan" {{ $regulasi->bidang == 'pemberdayaan' ? 'selected' : '' }}>Bidang 2 (Pemberdayaan)</option>
+                        <option value="ekonomi" {{ $regulasi->bidang == 'ekonomi' ? 'selected' : '' }}>Bidang 3 (Ekonomi)</option>
+                    </select>
+                </div>
+                @endif
+
                 <div>
                     <label class="block text-sm font-bold text-slate-700 mb-2">Ganti File (Opsional)</label>
                     <div class="mb-3 p-4 bg-emerald-50 rounded-2xl border border-emerald-100 flex items-center gap-3">

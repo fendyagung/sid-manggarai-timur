@@ -1,4 +1,4 @@
-<x-layouts.public title="Login - SID Manggarai Timur">
+<x-layouts.public title="Login - Sistem Informasi Pelaporan Desa">
     <!-- v1.1.0-glassmorphism -->
     <!DOCTYPE html>
     <html lang="id">
@@ -582,8 +582,7 @@
             <header class="topbar">
                 <div class="topbar-logo">🌿</div>
                 <div class="topbar-text">
-                    <h1>Sistem Informasi Desa & Wisata</h1>
-                    <h2>DMPD Manggarai Timur</h2>
+                    <h1>SID Manggarai Timur</h1>
                 </div>
             </header>
 
@@ -682,7 +681,7 @@
                                 </div>
 
                                 <div class="footer-links" style="justify-content: flex-end;">
-                                    <a href="{{ route('password.request') }}" class="link-alt biru">Reset Password</a>
+                                    <a href="{{ route('password.request') }}" class="link-alt biru">Lupa Sandi?</a>
                                 </div>
 
                                 <button type="submit" class="btn-submit biru">

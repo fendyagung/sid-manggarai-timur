@@ -20,6 +20,7 @@ class Laporan extends Model
         'tanggal_laporan',
         'status',
         'catatan_admin',
+        'bidang',
     ];
 
     protected $casts = [

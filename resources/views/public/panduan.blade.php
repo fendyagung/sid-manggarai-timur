@@ -7,7 +7,7 @@
                     class="inline-block px-4 py-1.5 rounded-full bg-blue-500/20 text-blue-300 text-sm font-bold tracking-wider mb-6 border border-blue-500/30">
                     BANTUAN & PANDUAN
                 </span>
-                <h1 class="text-4xl md:text-5xl font-bold mb-6 leading-tight">Pusat Panduan SID Manggarai Timur</h1>
+                <h1 class="text-4xl md:text-5xl font-bold mb-6 leading-tight">Pusat Panduan Pelaporan Desa</h1>
                 <p class="text-slate-300 text-lg md:text-xl leading-relaxed">
                     Panduan lengkap penggunaan Sistem Informasi Desa (SID) untuk Admin Desa dan Admin
                     DPMD.
@@ -47,7 +47,7 @@
                     <div class="space-y-6">
                         <p class="text-slate-600 leading-relaxed text-lg">
                             Untuk mulai bekerja, Anda harus masuk ke dalam sistem menggunakan akun yang telah diberikan
-                            oleh Admin DPMD Manggarai Timur.
+                            oleh Pemerintah Kabupaten Manggarai Timur.
                         </p>
                         <div class="space-y-4">
                             <div class="flex items-start gap-3">
@@ -237,7 +237,8 @@
         <div class="absolute inset-0 bg-blue-600/[0.05] pointer-events-none"></div>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative text-center">
             <h2 class="text-3xl font-bold mb-6">Butuh Bantuan Lebih Lanjut?</h2>
-            <p class="text-slate-400 mb-10 max-w-xl mx-auto">Tim teknis DPMD Manggarai Timur siap membantu Anda jika
+            <p class="text-slate-400 mb-10 max-w-xl mx-auto">Tim teknis Dinas PMD Kabupaten Manggarai Timur siap
+                membantu Anda jika
                 mengalami kendala teknis dalam penggunaan sistem.</p>
             <div class="flex flex-wrap justify-center gap-6">
                 <a href="mailto:it@dpmdmatim.go.id"

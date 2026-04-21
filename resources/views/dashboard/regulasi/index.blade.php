@@ -2,15 +2,15 @@
     <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-100">
         <div class="p-8 bg-emerald-900 text-white flex justify-between items-center transition-colors">
             <div>
-                <h1 class="text-2xl font-bold">Bank Data & Regulasi</h1>
+                <h1 class="text-2xl font-bold">Bank Data & Regulasi {{ request('bidang') ? ' - ' . ucfirst(request('bidang')) : '' }}</h1>
                 <p class="text-emerald-100/80">Kelola dokumen resmi, peraturan daerah, dan template laporan desa.</p>
             </div>
         </div>
 
         <div class="p-8">
             <!-- Upload Form -->
-            <!-- Upload Form (DPMD Only) -->
-            @if(Auth::user()->role === 'admin_dpmd')
+            <!-- Upload Form (DPMD & Kecamatan) -->
+            @if(in_array(Auth::user()->role, ['admin_dpmd', 'admin_kecamatan']))
                 <div
                     class="mb-12 bg-slate-50 dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-100 dark:border-slate-700 transition-colors">
                     <h3 class="font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
@@ -47,6 +47,21 @@
                                 <option value="Lainnya">Lainnya</option>
                             </select>
                         </div>
+
+                        @if(Auth::user()->role === 'admin_dpmd')
+                        <div>
+                            <label for="bidang"
+                                class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Tujuan Bidang (Opsional)</label>
+                            <select name="bidang" id="bidang"
+                                class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-emerald-500 outline-none bg-white dark:bg-slate-900 dark:text-slate-100 transition-all">
+                                <option value="">Umum / Publik</option>
+                                <option value="sekretariat" {{ request('bidang') === 'sekretariat' ? 'selected' : '' }}>Sekretariat</option>
+                                <option value="pemerintahan" {{ request('bidang') === 'pemerintahan' ? 'selected' : '' }}>Bidang 1 (Pemerintahan)</option>
+                                <option value="pemberdayaan" {{ request('bidang') === 'pemberdayaan' ? 'selected' : '' }}>Bidang 2 (Pemberdayaan)</option>
+                                <option value="ekonomi" {{ request('bidang') === 'ekonomi' ? 'selected' : '' }}>Bidang 3 (Ekonomi)</option>
+                            </select>
+                        </div>
+                        @endif
 
                         <div>
                             <label for="file"
@@ -86,7 +101,7 @@
                         <tr
                             class="text-sm text-slate-500 dark:text-slate-400 border-b border-slate-100 dark:border-slate-700 transition-colors">
                             <th class="py-4 font-semibold">Judul Dokumen</th>
-                            <th class="py-4 font-semibold">Kategori</th>
+                            <th class="py-4 font-semibold">Kategori @if(!request('bidang')) / Bidang @endif</th>
                             <th class="py-4 font-semibold">Tanggal Upload</th>
                             <th class="py-4 font-semibold text-right">Aksi</th>
                         </tr>
@@ -101,16 +116,23 @@
                                         {{ $reg->deskripsi }}</div>
                                 </td>
                                 <td class="py-4">
-                                    <span
-                                        class="px-3 py-1 rounded-full text-xs font-bold 
-                                                                    {{ $reg->kategori == 'Peraturan Daerah' ? 'bg-purple-100 text-purple-700' : '' }}
-                                                                    {{ $reg->kategori == 'Format Laporan' ? 'bg-blue-100 text-blue-700' : '' }}
-                                                                    {{ $reg->kategori == 'Template Surat' ? 'bg-amber-100 text-amber-700' : '' }}
-                                                                    {{ $reg->kategori == 'Materi Sosialisasi' ? 'bg-emerald-100 text-emerald-700' : '' }}
-                                                                    {{ $reg->kategori == 'Dokumen Penting' ? 'bg-rose-100 text-rose-700' : '' }}
-                                                                    {{ $reg->kategori == 'Lainnya' ? 'bg-slate-100 text-slate-700' : '' }}">
-                                        {{ $reg->kategori }}
-                                    </span>
+                                    <div class="flex flex-col gap-1">
+                                        <span
+                                            class="inline-block w-fit px-3 py-1 rounded-full text-[10px] font-bold 
+                                                                        {{ $reg->kategori == 'Peraturan Daerah' ? 'bg-purple-100 text-purple-700' : '' }}
+                                                                        {{ $reg->kategori == 'Format Laporan' ? 'bg-blue-100 text-blue-700' : '' }}
+                                                                        {{ $reg->kategori == 'Template Surat' ? 'bg-amber-100 text-amber-700' : '' }}
+                                                                        {{ $reg->kategori == 'Materi Sosialisasi' ? 'bg-emerald-100 text-emerald-700' : '' }}
+                                                                        {{ $reg->kategori == 'Dokumen Penting' ? 'bg-rose-100 text-rose-700' : '' }}
+                                                                        {{ $reg->kategori == 'Lainnya' ? 'bg-slate-100 text-slate-700' : '' }}">
+                                            {{ $reg->kategori }}
+                                        </span>
+                                        @if($reg->bidang)
+                                            <span class="text-[9px] font-black text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded uppercase w-fit">
+                                                📦 {{ $reg->bidang }}
+                                            </span>
+                                        @endif
+                                    </div>
                                 </td>
                                 <td class="py-4 text-slate-500">
                                     {{ $reg->created_at->format('d M Y') }}
@@ -125,7 +147,7 @@
                                                 d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                                         </svg>
                                     </a>
-                                    @if(Auth::user()->role === 'admin_dpmd')
+                                    @if(Auth::user()->role === 'admin_dpmd' || Auth::id() === $reg->user_id)
                                         <a href="{{ route('dashboard.regulasi.edit', $reg->id) }}"
                                             class="p-2 bg-amber-50 text-amber-600 rounded-lg hover:bg-amber-100 transition-colors"
                                             title="Edit">

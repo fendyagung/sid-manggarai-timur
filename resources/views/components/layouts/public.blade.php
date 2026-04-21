@@ -80,38 +80,49 @@
             border-color: rgba(255, 255, 255, 0.05);
         }
 
+        .nav-text-white {
+           color: #1e293b !important; /* Default dark for light mode */
+           transition: all 0.3s ease;
+        }
+
+        .dark .nav-text-white {
+           color: #f1f5f9 !important; /* White for dark mode */
+        }
+
+        /* EXCEPT: On hero pages when at the top (transparent), we want white text even in light mode */
+        #navbar.transparent-white-text:not(.nav-scrolled) .nav-text-white {
+           color: #ffffff !important;
+        }
+
+        #navbar.transparent-white-text:not(.nav-scrolled) .active-nav {
+           background-color: rgba(255, 255, 255, 0.15) !important;
+           color: #ffffff !important;
+        }
+
         #navbar.nav-scrolled .nav-text-white {
-            color: #1e293b !important;
+           color: #1e293b !important;
         }
 
         .dark #navbar.nav-scrolled .nav-text-white {
-            color: #ffffff !important;
+           color: #f1f5f9 !important;
         }
 
-        #navbar.nav-scrolled .nav-text-white-bg {
-            color: #1e293b !important;
-            border-color: rgba(30, 41, 59, 0.2) !important;
+        .active-nav {
+           background-color: rgba(30, 41, 59, 0.05);
+           color: #1e293b !important;
         }
 
-        .dark #navbar.nav-scrolled .nav-text-white-bg {
-            color: #ffffff !important;
-            border-color: rgba(255, 255, 255, 0.2) !important;
+        .dark .active-nav {
+           background-color: rgba(255, 255, 255, 0.1);
+           color: #ffffff !important;
         }
 
-        #navbar.nav-scrolled a[id^="nav-"] {
-           color: #475569 !important;
-        }
-
-        .dark #navbar.nav-scrolled a[id^="nav-"] {
-           color: #cbd5e1 !important;
-        }
-
-        #navbar.nav-scrolled a[id^="nav-"].bg-white\/15 {
+        #navbar.nav-scrolled .active-nav {
            background-color: rgba(30, 41, 59, 0.05) !important;
            color: #0d2818 !important;
         }
 
-        .dark #navbar.nav-scrolled a[id^="nav-"].bg-white\/15 {
+        .dark #navbar.nav-scrolled .active-nav {
            background-color: rgba(255, 255, 255, 0.1) !important;
            color: #ffffff !important;
         }
@@ -123,9 +134,17 @@
 @endphp
 
 <body
-    class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 antialiased transition-colors duration-300 overflow-x-hidden">
+    class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 antialiased transition-colors duration-300 overflow-x-hidden">    @php
+        $isHeroPage = request()->routeIs('public.home') || 
+                      request()->is('/') || 
+                      request()->routeIs('public.laporan-desa') || 
+                      request()->is('laporan-desa*') ||
+                      request()->routeIs('public.panduan') || 
+                      request()->routeIs('public.bank-data');
+    @endphp
+
     <!-- Navigation -->
-    <nav class="fixed w-full z-50 transition-all duration-300 bg-transparent dark:bg-transparent backdrop-blur-md border-b border-transparent"
+    <nav class="fixed w-full z-50 transition-all duration-300 bg-transparent dark:bg-transparent backdrop-blur-md border-b border-transparent {{ $isHeroPage ? 'transparent-white-text' : '' }}"
         id="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
@@ -150,10 +169,7 @@
                         @endif
                         <div class="flex flex-col justify-center">
                             <span
-                                class="block font-bold text-lg md:text-xl tracking-tighter text-white nav-text-white leading-tight">SID</span>
-                            <span
-                                class="block text-[8px] md:text-[9px] font-extrabold text-white nav-text-white tracking-[0.1em] md:tracking-[0.15em] whitespace-nowrap uppercase">Manggarai
-                                Timur</span>
+                                class="block font-bold text-lg md:text-xl tracking-tighter nav-text-white leading-tight">SID Manggarai Timur</span>
                         </div>
                     </a>
                 </div>
@@ -163,56 +179,56 @@
                             @if(request()->routeIs('public.home') || request()->is('/') || request()->path() == '/')
                                 <div class="flex items-center gap-6 mr-8 transition-all duration-300">
                                     <a href="#fitur"
-                                        class="text-[10px] font-black text-white hover:text-amber-400 transition-all tracking-[0.2em] uppercase">Fitur</a>
+                                        class="text-[10px] font-black nav-text-white hover:text-amber-400 transition-all tracking-[0.2em] uppercase">Fitur</a>
                                     <a href="#wisata"
-                                        class="text-[10px] font-black text-white hover:text-amber-400 transition-all tracking-[0.2em] uppercase">Desa
+                                        class="text-[10px] font-black nav-text-white hover:text-amber-400 transition-all tracking-[0.2em] uppercase">Desa
                                         Wisata</a>
                                     <a href="#pengumuman"
-                                        class="text-[10px] font-black text-white hover:text-amber-400 transition-all tracking-[0.2em] uppercase">Berita Utama</a>
+                                        class="text-[10px] font-black nav-text-white hover:text-amber-400 transition-all tracking-[0.2em] uppercase">Berita Utama</a>
                                     <a href="#cara"
-                                        class="text-[10px] font-black text-white hover:text-amber-400 transition-all tracking-[0.2em] uppercase">Cara
+                                        class="text-[10px] font-black nav-text-white hover:text-amber-400 transition-all tracking-[0.2em] uppercase">Cara
                                         Kerja</a>
                                 </div>
-                                <div class="w-px h-6 bg-white/10 mr-8"></div>
+                                <div class="w-px h-6 bg-slate-200 dark:bg-white/10 mr-8"></div>
                             @endif
 
                             <a href="{{ url('/') }}"
-                                class="px-3 py-1.5 mx-0.5 flex items-center font-bold text-[11px] whitespace-nowrap transition-all duration-300 {{ Request::is('/') ? 'bg-white/15 text-white rounded-lg' : 'text-white hover:text-white hover:bg-white/10 rounded-lg' }}"
+                                class="px-3 py-1.5 mx-0.5 flex items-center font-bold text-[11px] whitespace-nowrap transition-all duration-300 {{ Request::is('/') ? 'active-nav bg-white/15 nav-text-white rounded-lg' : 'nav-text-white hover:bg-white/10 rounded-lg' }}"
                                 id="nav-home">
                                 BERANDA
                             </a>
                             <a href="{{ route('public.profil') }}"
-                                class="px-3 py-1.5 mx-0.5 flex items-center font-bold text-[11px] whitespace-nowrap transition-all duration-300 {{ Request::is('profil') ? 'bg-white/15 text-white rounded-lg' : 'text-white hover:text-white hover:bg-white/10 rounded-lg' }}"
+                                class="px-3 py-1.5 mx-0.5 flex items-center font-bold text-[11px] whitespace-nowrap transition-all duration-300 {{ Request::is('profil') ? 'active-nav bg-white/15 nav-text-white rounded-lg' : 'nav-text-white hover:bg-white/10 rounded-lg' }}"
                                 id="nav-profil">
                                 PROFIL
                             </a>
                             <a href="{{ route('public.desa-wisata') }}"
-                                class="px-3 py-1.5 mx-0.5 flex items-center font-bold text-[11px] whitespace-nowrap transition-all duration-300 {{ Request::is('jelajah/desa-wisata') ? 'bg-white/15 text-white rounded-lg' : 'text-white hover:text-white hover:bg-white/10 rounded-lg' }}"
+                                class="px-3 py-1.5 mx-0.5 flex items-center font-bold text-[11px] whitespace-nowrap transition-all duration-300 {{ Request::is('jelajah/desa-wisata') ? 'active-nav bg-white/15 nav-text-white rounded-lg' : 'nav-text-white hover:bg-white/10 rounded-lg' }}"
                                 id="nav-desa-wisata">
                                 DESA WISATA
                             </a>
                             <a href="{{ route('public.komoditi') }}"
-                                class="px-3 py-1.5 mx-0.5 flex items-center font-bold text-[11px] whitespace-nowrap transition-all duration-300 {{ Request::is('jelajah/komoditi') ? 'bg-white/15 text-white rounded-lg' : 'text-white hover:text-white hover:bg-white/10 rounded-lg' }}"
+                                class="px-3 py-1.5 mx-0.5 flex items-center font-bold text-[11px] whitespace-nowrap transition-all duration-300 {{ Request::is('jelajah/komoditi') ? 'active-nav bg-white/15 nav-text-white rounded-lg' : 'nav-text-white hover:bg-white/10 rounded-lg' }}"
                                 id="nav-komoditi">
                                 KOMODITI
                             </a>
                             <a href="{{ route('public.laporan-desa') }}"
-                                class="px-3 py-1.5 mx-0.5 flex items-center font-bold text-[11px] whitespace-nowrap transition-all duration-300 {{ Request::is('laporan-desa') ? 'bg-white/15 text-white rounded-lg' : 'text-white hover:text-white hover:bg-white/10 rounded-lg' }}"
+                                class="px-3 py-1.5 mx-0.5 flex items-center font-bold text-[11px] whitespace-nowrap transition-all duration-300 {{ Request::is('laporan-desa') ? 'active-nav bg-white/15 nav-text-white rounded-lg' : 'nav-text-white hover:bg-white/10 rounded-lg' }}"
                                 id="nav-laporan">
                                 LAPORAN DESA
                             </a>
                             <a href="{{ route('public.bank-data') }}"
-                                class="px-3 py-1.5 mx-0.5 flex items-center font-bold text-[11px] whitespace-nowrap transition-all duration-300 {{ Request::is('layanan/bank-data') ? 'bg-white/15 text-white rounded-lg' : 'text-white hover:text-white hover:bg-white/10 rounded-lg' }}"
+                                class="px-3 py-1.5 mx-0.5 flex items-center font-bold text-[11px] whitespace-nowrap transition-all duration-300 {{ Request::is('layanan/bank-data') ? 'active-nav bg-white/15 nav-text-white rounded-lg' : 'nav-text-white hover:bg-white/10 rounded-lg' }}"
                                 id="nav-regulasi">
                                 REGULASI
                             </a>
                             <a href="{{ route('public.berita') }}"
-                                class="px-3 py-1.5 mx-0.5 flex items-center font-bold text-[11px] whitespace-nowrap transition-all duration-300 {{ Request::is('berita') ? 'bg-white/15 text-white rounded-lg' : 'text-white hover:text-white hover:bg-white/10 rounded-lg' }}"
+                                class="px-3 py-1.5 mx-0.5 flex items-center font-bold text-[11px] whitespace-nowrap transition-all duration-300 {{ Request::is('berita') ? 'active-nav bg-white/15 nav-text-white rounded-lg' : 'nav-text-white hover:bg-white/10 rounded-lg' }}"
                                 id="nav-berita">
                                 KEGIATAN
                             </a>
                             <a href="{{ route('public.kontak') }}"
-                                class="px-3 py-1.5 mx-0.5 flex items-center font-bold text-[11px] whitespace-nowrap transition-all duration-300 {{ Request::is('layanan/kontak') ? 'bg-white/15 text-white rounded-lg' : 'text-white hover:text-white hover:bg-white/10 rounded-lg' }}"
+                                class="px-3 py-1.5 mx-0.5 flex items-center font-bold text-[11px] whitespace-nowrap transition-all duration-300 {{ Request::is('layanan/kontak') ? 'active-nav bg-white/15 nav-text-white rounded-lg' : 'nav-text-white hover:bg-white/10 rounded-lg' }}"
                                 id="nav-kontak">
                                 KONTAK
                             </a>
@@ -238,7 +254,7 @@
                         @endif
                         @auth
                             <a href="{{ route('dashboard') }}"
-                                class="flex items-center gap-2 px-5 py-2 text-[11px] font-black text-white nav-text-white-bg hover:bg-white/10 rounded-full transition-all border border-white/30">
+                                class="flex items-center gap-2 px-5 py-2 text-[11px] font-black nav-text-white bg-white/10 dark:bg-white/5 hover:bg-white/20 rounded-full transition-all border border-slate-200 dark:border-white/30">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 nav-text-white" fill="none" viewBox="0 0 24 24"
                                     stroke="currentColor" stroke-width="2.5">
                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -253,7 +269,7 @@
 
                             <div class="relative group">
                                 <button
-                                    class="flex items-center gap-2 text-white hover:text-white font-bold text-xs tracking-wider transition-colors focus:outline-none uppercase">
+                                    class="flex items-center gap-2 nav-text-white hover:text-amber-500 font-bold text-xs tracking-wider transition-colors focus:outline-none uppercase">
                                     <span class="nav-text-white">{{ Auth::user()->name }}</span>
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 nav-text-white" fill="none" viewBox="0 0 24 24"
                                         stroke="currentColor" stroke-width="2.5">

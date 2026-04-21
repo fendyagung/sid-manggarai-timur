@@ -2,7 +2,7 @@
     <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-100">
         <div class="p-8 bg-slate-900 text-white flex justify-between items-center transition-colors">
             <div>
-                <h1 class="text-2xl font-bold">Arsip Pribadi</h1>
+                <h1 class="text-2xl font-bold">Arsip Dinas</h1>
                 <p class="text-slate-300">Simpan berkas-berkas penting Anda di sini. Berkas ini bersifat privat dan hanya dapat diakses oleh Anda.</p>
             </div>
         </div>
@@ -27,10 +27,10 @@
 
                     <div>
                         <label for="file" class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">File Dokumen</label>
-                        <input type="file" name="file" id="file_arsip" required
+                        <input type="file" name="file" id="file_arsip" required accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png"
                             onchange="showFileName(this, 'arsip-filename')"
                             class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-blue-500 outline-none text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 dark:bg-slate-900 dark:text-slate-300">
-                        <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-2" id="arsip-filename">Max 10MB</p>
+                        <p class="text-[10px] text-slate-400 dark:text-slate-500 mt-2" id="arsip-filename">Format: PDF, Word, Excel, JPG, PNG (Max 10MB)</p>
                     </div>
 
                     <div class="md:col-span-2">

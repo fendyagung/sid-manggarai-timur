@@ -21,7 +21,7 @@ class ArsipController extends Controller
     {
         $request->validate([
             'judul' => 'required|string|max:255',
-            'file' => 'required|file|max:10240', // 10MB
+            'file' => 'required|file|mimes:pdf,doc,docx,xls,xlsx,jpg,jpeg,png|max:10240', // Limit to safe formats, Max 10MB
             'keterangan' => 'nullable|string',
         ]);
 
@@ -37,7 +37,7 @@ class ArsipController extends Controller
             'keterangan' => $request->keterangan,
         ]);
 
-        return redirect()->route('dashboard.arsip.index')->with('success', 'Berkas berhasil disimpan ke arsip pribadi!');
+        return redirect()->route('dashboard.arsip.index')->with('success', 'Berkas berhasil disimpan ke arsip dinas!');
     }
 
     public function download($id)

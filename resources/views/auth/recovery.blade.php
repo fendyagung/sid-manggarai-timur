@@ -1,4 +1,4 @@
-<x-layouts.public title="Pintu Darurat - SID Manggarai Timur">
+<x-layouts.public title="Pintu Darurat - Sistem Informasi Pelaporan Desa">
     <div class="min-h-screen bg-canvas dark:bg-slate-900 flex items-center justify-center p-6">
         <div class="glass-card w-full max-w-md p-10 bg-white/70 backdrop-blur-2xl rounded-3xl border border-white/50 shadow-2xl">
             <div class="text-center mb-8">

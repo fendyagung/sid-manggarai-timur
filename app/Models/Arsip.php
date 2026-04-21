@@ -12,6 +12,7 @@ class Arsip extends Model
         'file_path',
         'original_name',
         'keterangan',
+        'bidang',
     ];
 
     public function user()

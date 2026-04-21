@@ -12,9 +12,41 @@ class RegulasiController extends Controller
     /**
      * Display a listing of the resource (Admin View).
      */
-    public function index()
+    public function index(Request $request)
     {
-        $regulasis = Regulasi::latest()->paginate(10);
+        $query = Regulasi::latest();
+        $user = Auth::user();
+
+        if ($user->role === 'admin_dpmd') {
+            // Admin DPMD sees everything and can filter by bidang
+            if ($request->has('bidang') && $request->bidang != '') {
+                $query->where('bidang', $request->bidang);
+            }
+        } elseif ($user->role === 'admin_kecamatan') {
+            // Admin Kecamatan sees everything that is "Public" (bidang null)
+            // OR documents they uploaded themselves (regardless of bidang)
+            $query->where(function ($q) use ($user) {
+                $q->whereNull('bidang')
+                    ->orWhere('user_id', $user->id);
+            });
+        } elseif ($user->role === 'admin_desa') {
+            // Admin Desa sees "Public" (bidang null) documents that are:
+            // 1. Sent by DPMD
+            // 2. Sent by THEIR OWN Kecamatan
+            $desaKecamatan = $user->desa ? $user->desa->kecamatan : $user->kecamatan;
+
+            $query->whereNull('bidang')
+                ->where(function ($q) use ($desaKecamatan) {
+                    $q->whereHas('user', function ($inner) {
+                        $inner->where('role', 'admin_dpmd');
+                    })->orWhereHas('user', function ($inner) use ($desaKecamatan) {
+                        $inner->where('role', 'admin_kecamatan')
+                            ->where('kecamatan', $desaKecamatan);
+                    });
+                });
+        }
+
+        $regulasis = $query->paginate(10);
         return view('dashboard.regulasi.index', compact('regulasis'));
     }
 
@@ -26,6 +58,7 @@ class RegulasiController extends Controller
         $request->validate([
             'judul' => 'required|string|max:255',
             'kategori' => 'required|string|in:Format Laporan,Peraturan Daerah,Template Surat,Materi Sosialisasi,Dokumen Penting,Lainnya',
+            'bidang' => 'nullable|string|in:sekretariat,pemerintahan,pemberdayaan,ekonomi',
             'deskripsi' => 'nullable|string',
             'file' => 'required|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,zip,rar|max:10240', // Max 10MB
         ]);
@@ -37,6 +70,7 @@ class RegulasiController extends Controller
         Regulasi::create([
             'judul' => $request->judul,
             'kategori' => $request->kategori,
+            'bidang' => $request->bidang,
             'deskripsi' => $request->deskripsi,
             'file_path' => $filePath,
             'original_name' => $originalName,
@@ -55,6 +89,11 @@ class RegulasiController extends Controller
             abort(403);
         }
 
+        // Admin Kecamatan can only edit their own
+        if (Auth::user()->role === 'admin_kecamatan' && $regulasi->user_id !== Auth::id()) {
+            abort(403);
+        }
+
         return view('dashboard.regulasi.edit', compact('regulasi'));
     }
 
@@ -67,14 +106,20 @@ class RegulasiController extends Controller
             abort(403);
         }
 
+        // Admin Kecamatan can only update their own
+        if (Auth::user()->role === 'admin_kecamatan' && $regulasi->user_id !== Auth::id()) {
+            abort(403);
+        }
+
         $request->validate([
             'judul' => 'required|string|max:255',
             'kategori' => 'required|string|in:Format Laporan,Peraturan Daerah,Template Surat,Materi Sosialisasi,Dokumen Penting,Lainnya',
+            'bidang' => 'nullable|string|in:sekretariat,pemerintahan,pemberdayaan,ekonomi',
             'deskripsi' => 'nullable|string',
             'file' => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,zip,rar|max:10240',
         ]);
 
-        $data = $request->only(['judul', 'kategori', 'deskripsi']);
+        $data = $request->only(['judul', 'kategori', 'bidang', 'deskripsi']);
 
         if ($request->hasFile('file')) {
             // Delete old file
@@ -98,6 +143,11 @@ class RegulasiController extends Controller
     public function destroy(Regulasi $regulasi)
     {
         if (!in_array(Auth::user()->role, ['admin_dpmd', 'admin_kecamatan'])) {
+            abort(403);
+        }
+
+        // Admin Kecamatan can only delete their own
+        if (Auth::user()->role === 'admin_kecamatan' && $regulasi->user_id !== Auth::id()) {
             abort(403);
         }
 

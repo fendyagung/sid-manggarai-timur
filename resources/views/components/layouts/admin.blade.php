@@ -520,6 +520,57 @@
         .dark .sidebar-footer {
             border-top-color: rgba(255, 255, 255, 0.05);
         }
+        .nav-dropdown-btn {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 12px;
+            border-radius: 9px;
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 2px;
+            background: transparent;
+            border: none;
+            text-align: left;
+        }
+
+        .nav-dropdown-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .nav-dropdown-btn.active {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            font-weight: 700;
+        }
+
+        .nav-dropdown-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            padding-left: 8px;
+        }
+
+        .nav-dropdown-content.show {
+            max-height: 500px;
+            transition: max-height 0.5s ease-in;
+        }
+
+        .nav-dropdown-arrow {
+            transition: transform 0.3s;
+            font-size: 10px;
+            opacity: 0.5;
+        }
+
+        .nav-dropdown-btn.open .nav-dropdown-arrow {
+            transform: rotate(180deg);
+        }
+
     </style>
 </head>
 
@@ -541,7 +592,6 @@
             </div>
             <div class="s-logo-text">
                 <h2>SID Manggarai Timur</h2>
-                <p>Admin {{ $user->role === 'admin_dpmd' ? 'DPMD' : ($user->role === 'admin_kecamatan' ? 'Kecamatan' : 'Desa') }} Panel</p>
             </div>
         </div>
 
@@ -558,31 +608,52 @@
                 <span class="ni-icon">🏠</span> Dashboard
             </a>
 
-            @if($user->role === 'admin_desa')
-                <a href="{{ route('dashboard.laporan.buat') }}"
-                    class="nav-item {{ Request::is('dashboard/laporan/buat') ? 'active' : '' }}">
-                    <span class="ni-icon">📝</span> Input Laporan
+            <div class="nav-section-label" style="margin-top:12px;">PROSES INTERNAL</div>
+            
+            <button type="button" class="nav-dropdown-btn" id="btnBidang">
+                <span class="flex items-center gap-[10px]">
+                    <span class="ni-icon">🏛️</span> TATA KELOLA BIDANG
+                </span>
+                <span class="nav-dropdown-arrow">▼</span>
+            </button>
+            <div class="nav-dropdown-content" id="menuBidang">
+                @if($user->role === 'admin_dpmd')
+                    <a href="{{ route('dashboard.bidang.index', ['bidang' => 'sekretariat']) }}"
+                        class="nav-item {{ Request::query('bidang') === 'sekretariat' ? 'active' : '' }}" style="padding-left: 16px;">
+                        <span class="ni-icon">📂</span> Sekretariat
+                    </a>
+                    <a href="{{ route('dashboard.bidang.index', ['bidang' => 'pemerintahan']) }}"
+                        class="nav-item {{ Request::query('bidang') === 'pemerintahan' ? 'active' : '' }}" style="padding-left: 16px;">
+                        <span class="ni-icon">🏢</span> Bidang 1 (Pemerintahan)
+                    </a>
+                    <a href="{{ route('dashboard.bidang.index', ['bidang' => 'pemberdayaan']) }}"
+                        class="nav-item {{ Request::query('bidang') === 'pemberdayaan' ? 'active' : '' }}" style="padding-left: 16px;">
+                        <span class="ni-icon">🤝</span> Bidang 2 (Pemberdayaan)
+                    </a>
+                    <a href="{{ route('dashboard.bidang.index', ['bidang' => 'ekonomi']) }}"
+                        class="nav-item {{ Request::query('bidang') === 'ekonomi' ? 'active' : '' }}" style="padding-left: 16px;">
+                        <span class="ni-icon">💰</span> Bidang 3 (Ekonomi)
+                    </a>
+                @endif
+                <a href="{{ route('dashboard.arsip.index') }}"
+                    class="nav-item {{ Request::is('dashboard/arsip*') ? 'active' : '' }}" style="padding-left: 16px;">
+                    <span class="ni-icon">🗄️</span> Arsip Dinas
                 </a>
-            @endif
+                <a href="{{ route('dashboard.regulasi.index') }}"
+                    class="nav-item {{ Request::is('dashboard/regulasi*') ? 'active' : '' }}" style="padding-left: 16px;">
+                    <span class="ni-icon">📜</span> Surat & Regulasi
+                    @if($newRegulasiCount > 0 && $user->role === 'admin_desa')
+                        <span class="ni-badge">{{ $newRegulasiCount }}</span>
+                    @endif
+                </a>
+            </div>
 
+            <div class="nav-section-label" style="margin-top:8px;">Komunikasi & Berkas</div>
             <a href="{{ route('dashboard.dokumen.index') }}"
                 class="nav-item {{ Request::is('dashboard/dokumen*') ? 'active' : '' }}">
                 <span class="ni-icon">📂</span> Kotak Masuk Dokumen
                 @if($unreadCount > 0)
                     <span class="ni-badge">{{ $unreadCount }}</span>
-                @endif
-            </a>
-
-            <a href="{{ route('dashboard.arsip.index') }}"
-                class="nav-item {{ Request::is('dashboard/arsip*') ? 'active' : '' }}">
-                <span class="ni-icon">🗄️</span> Arsip Pribadi
-            </a>
-
-            <a href="{{ route('dashboard.regulasi.index') }}"
-                class="nav-item {{ Request::is('dashboard/regulasi*') ? 'active' : '' }}">
-                <span class="ni-icon">📜</span> Surat & Regulasi
-                @if($newRegulasiCount > 0 && $user->role === 'admin_desa')
-                    <span class="ni-badge">{{ $newRegulasiCount }}</span>
                 @endif
             </a>
 
@@ -666,19 +737,18 @@
                     class="hidden md:flex items-center gap-3 border-l border-slate-200 dark:border-slate-700 pl-10 h-full mr-4 overflow-x-auto no-scrollbar">
                     @php
                         $navItems = [
+                            ['label' => 'DASHBOARD', 'route' => route('dashboard'), 'pattern' => 'dashboard'],
                             ['label' => 'BERANDA', 'route' => url('/'), 'pattern' => '/'],
                             ['label' => 'PROFIL', 'route' => route('public.profil'), 'pattern' => 'profil'],
                             ['label' => 'WISATA', 'route' => route('public.desa-wisata'), 'pattern' => 'jelajah/desa-wisata'],
                             ['label' => 'KOMODITI', 'route' => route('public.komoditi'), 'pattern' => 'jelajah/komoditi'],
                             ['label' => 'LAPORAN', 'route' => route('public.laporan-desa'), 'pattern' => 'laporan-desa'],
-                            ['label' => 'KEGIATAN', 'route' => route('public.berita'), 'pattern' => 'berita'],
-                            ['label' => 'KONTAK', 'route' => route('public.kontak'), 'pattern' => 'layanan/kontak'],
                         ];
                     @endphp
 
                     @foreach($navItems as $item)
                         <a href="{{ $item['route'] }}"
-                            class="px-3 py-1.5 text-[11px] font-bold tracking-wider rounded-xl transition-all {{ Request::is($item['pattern']) ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-500/20' : 'text-slate-700 dark:text-slate-200 hover:bg-emerald-50 dark:hover:bg-emerald-900/40 hover:text-emerald-800 dark:hover:text-emerald-100' }}">
+                            class="px-3 py-1.5 text-[10px] font-extrabold tracking-widest rounded-xl transition-all {{ Request::is($item['pattern']) ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-500/20' : 'text-slate-900 dark:text-slate-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/40 hover:text-emerald-700 dark:hover:text-emerald-100' }}">
                             {{ $item['label'] }}
                         </a>
                     @endforeach
@@ -745,6 +815,24 @@
                             overlay.classList.remove('active');
                         }
                     });
+                });
+            }
+
+            // --- Dropdown Tata Kelola Bidang Logic ---
+            const btnBidang = document.getElementById('btnBidang');
+            const menuBidang = document.getElementById('menuBidang');
+
+            if (btnBidang && menuBidang) {
+                // Check if any child link is active on load
+                const hasActiveChild = menuBidang.querySelector('.active');
+                if (hasActiveChild) {
+                    menuBidang.classList.add('show');
+                    btnBidang.classList.add('open', 'active');
+                }
+
+                btnBidang.addEventListener('click', () => {
+                    menuBidang.classList.toggle('show');
+                    btnBidang.classList.toggle('open');
                 });
             }
         });

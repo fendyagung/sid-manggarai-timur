@@ -17,6 +17,7 @@ class Regulasi extends Model
         'original_name',
         'deskripsi',
         'user_id',
+        'bidang',
     ];
 
     public function user(): BelongsTo

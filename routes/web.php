@@ -153,3 +153,10 @@ Route::middleware(['auth'])->prefix('dashboard/potensi')->name('dashboard.potens
     Route::delete('/gallery/{id}', [App\Http\Controllers\Dashboard\PotensiController::class, 'destroyGallery'])->name('gallery.destroy');
 });
 
+Route::middleware(['auth'])->prefix('dashboard/bidang')->name('dashboard.bidang.')->group(function () {
+    Route::get('/', [\App\Http\Controllers\Dashboard\BidangController::class, 'index'])->name('index');
+    Route::post('/store-kegiatan', [\App\Http\Controllers\Dashboard\BidangController::class, 'storeKegiatan'])->name('store-kegiatan');
+    Route::post('/store-arsip', [\App\Http\Controllers\Dashboard\BidangController::class, 'storeArsip'])->name('store-arsip');
+    Route::delete('/kegiatan/{id}', [\App\Http\Controllers\Dashboard\BidangController::class, 'destroyKegiatan'])->name('destroy-kegiatan');
+    Route::delete('/arsip/{id}', [\App\Http\Controllers\Dashboard\BidangController::class, 'destroyArsip'])->name('destroy-arsip');
+});

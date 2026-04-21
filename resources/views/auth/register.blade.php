@@ -1,4 +1,4 @@
-<x-layouts.public title="Register - SID Manggarai Timur">
+<x-layouts.public title="Register - Sistem Informasi Pelaporan Desa">
     <style>
         .auth-container {
             min-height: calc(100vh - 80px);

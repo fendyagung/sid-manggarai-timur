@@ -1,11 +1,11 @@
-<x-layouts.public title="Lupa Sandi - SID Manggarai Timur">
+<x-layouts.public title="Lupa Sandi - Sistem Informasi Pelaporan Desa">
     <!DOCTYPE html>
     <html lang="id">
 
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Lupa Sandi — SID Manggarai Timur</title>
+        <title>Lupa Sandi — Sistem Informasi Pelaporan Desa</title>
         <link
             href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600;700;800&display=swap"
             rel="stylesheet">

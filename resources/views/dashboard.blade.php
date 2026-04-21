@@ -278,7 +278,7 @@
         <div class="welcome-banner mb-8 animate-fade-in"
             style="background: linear-gradient(135deg, #022c22 0%, #064e3b 100%);">
             <div class="wb-text">
-                <h2 class="text-2xl font-black font-serif mb-1">Selamat Datang, {{ $data['desa_nama'] ?? 'Admin Desa' }}! 👋
+                <h2 class="text-2xl font-black font-serif mb-1">Selamat Datang, Desa {{ $data['desa_nama'] ?? 'Desa' }}! 👋
                 </h2>
                 <p class="text-sm text-white/80 max-w-xl">Pantau perkembangan desa Anda melalui dashboard terpadu. Pastikan
                     data profil dan potensi desa selalu diperbarui.</p>
@@ -375,7 +375,7 @@
             style="background: linear-gradient(135deg, #022c22 0%, #064e3b 100%);">
             <div class="wb-text">
                 <h2 class="text-2xl font-black font-serif mb-1">
-                    Selamat Datang, {{ $isKecamatan ? 'Admin Kecamatan ' . $user->kecamatan : 'Admin DMPD' }}! 🏛️
+                    Selamat Datang, {{ $isKecamatan ? 'Kecamatan ' . $user->kecamatan : 'Admin DPMD' }}! 👋
                 </h2>
                 <p class="text-sm text-white/70 max-w-xl">Saat ini terdapat <strong
                         style="color:var(--emas-muda)">{{ $data['laporan_pending'] }} laporan menunggu verifikasi</strong>.
@@ -392,10 +392,6 @@
                     <a href="{{ route('dashboard.regulasi.index') }}"
                         class="px-6 py-3 bg-white/10 border border-white/20 text-white font-bold rounded-xl text-sm hover:bg-white/20 transition-all flex items-center gap-2">
                         <span>📜</span> {{ $isDpmd ? 'Kelola' : 'Lihat' }} Surat & Regulasi
-                    </a>
-                    <a href="{{ route('dashboard.arsip.index') }}"
-                        class="px-6 py-3 bg-blue-500/20 border border-blue-400/30 text-white font-bold rounded-xl text-sm hover:bg-blue-500/40 transition-all flex items-center gap-2">
-                        <span>🗄️</span> Arsip Pribadi
                     </a>
                 </div>
             </div>
