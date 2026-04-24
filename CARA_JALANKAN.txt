@@ -1,0 +1,12 @@
+PETUNJUK PENJALANKAN SISTEM SID MANGGARAI TIMUR
+------------------------------------------
+
+Untuk menjalankan sistem ini, silakan buka Git Bash di dalam folder proyek dan jalankan perintah berikut satu per satu secara berurutan:
+
+1. composer install
+2. npm install
+3. npm run build
+4. php artisan storage:link
+5. php artisan serve
+
+Setelah menjalankan 'php artisan serve', Anda dapat mengakses aplikasi melalui browser di alamat: http://127.0.0.1:8000

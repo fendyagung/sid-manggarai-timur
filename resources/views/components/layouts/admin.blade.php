@@ -624,15 +624,15 @@
                     </a>
                     <a href="{{ route('dashboard.bidang.index', ['bidang' => 'pemerintahan']) }}"
                         class="nav-item {{ Request::query('bidang') === 'pemerintahan' ? 'active' : '' }}" style="padding-left: 16px;">
-                        <span class="ni-icon">🏢</span> Bidang 1 (Pemerintahan)
+                        <span class="ni-icon">📂</span> Bidang PEMDES
                     </a>
                     <a href="{{ route('dashboard.bidang.index', ['bidang' => 'pemberdayaan']) }}"
                         class="nav-item {{ Request::query('bidang') === 'pemberdayaan' ? 'active' : '' }}" style="padding-left: 16px;">
-                        <span class="ni-icon">🤝</span> Bidang 2 (Pemberdayaan)
+                        <span class="ni-icon">📂</span> Bidang pemberdayaan Lembaga Kemasyarakatan (PLK)
                     </a>
                     <a href="{{ route('dashboard.bidang.index', ['bidang' => 'ekonomi']) }}"
                         class="nav-item {{ Request::query('bidang') === 'ekonomi' ? 'active' : '' }}" style="padding-left: 16px;">
-                        <span class="ni-icon">💰</span> Bidang 3 (Ekonomi)
+                        <span class="ni-icon">📂</span> Bidang Penataan dan kerja sama Desa
                     </a>
                 @endif
                 <a href="{{ route('dashboard.arsip.index') }}"

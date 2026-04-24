@@ -6,10 +6,10 @@
             <div class="relative z-10">
                 <div class="flex items-center gap-4 mb-4">
                     <div class="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/30 rounded-2xl flex items-center justify-center text-2xl">
-                        @if($bidang === 'sekretariat') 📂 @elseif($bidang === 'pemerintahan') 🏢 @elseif($bidang === 'pemberdayaan') 🤝 @else 💰 @endif
+                        📂
                     </div>
                     <div>
-                        <h2 class="text-3xl font-black text-slate-800 dark:text-white">{{ $title }}</h2>
+                        <h1 class="text-3xl font-bold text-slate-800 dark:text-white transition-colors">{{ $title }}</h1>
                         <p class="text-slate-500 dark:text-slate-400">Manajemen laporan kegiatan internal dan pengarsipan berkas bidang.</p>
                     </div>
                 </div>

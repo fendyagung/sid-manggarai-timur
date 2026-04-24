@@ -56,9 +56,9 @@
                                 class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 focus:ring-2 focus:ring-emerald-500 outline-none bg-white dark:bg-slate-900 dark:text-slate-100 transition-all">
                                 <option value="">Umum / Publik</option>
                                 <option value="sekretariat" {{ request('bidang') === 'sekretariat' ? 'selected' : '' }}>Sekretariat</option>
-                                <option value="pemerintahan" {{ request('bidang') === 'pemerintahan' ? 'selected' : '' }}>Bidang 1 (Pemerintahan)</option>
-                                <option value="pemberdayaan" {{ request('bidang') === 'pemberdayaan' ? 'selected' : '' }}>Bidang 2 (Pemberdayaan)</option>
-                                <option value="ekonomi" {{ request('bidang') === 'ekonomi' ? 'selected' : '' }}>Bidang 3 (Ekonomi)</option>
+                                <option value="pemerintahan" {{ request('bidang') === 'pemerintahan' ? 'selected' : '' }}>Bidang (Pemerintahan Desa)</option>
+                                <option value="pemberdayaan" {{ request('bidang') == 'pemberdayaan' ? 'selected' : '' }}>Bidang (Pemberdayaan dan Lembaga Kemasyarakatan)</option>
+                                <option value="ekonomi" {{ request('bidang') === 'ekonomi' ? 'selected' : '' }}>Bidang (Penataan dan kerja sama)</option>
                             </select>
                         </div>
                         @endif

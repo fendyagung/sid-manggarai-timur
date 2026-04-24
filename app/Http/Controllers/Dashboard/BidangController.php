@@ -36,9 +36,9 @@ class BidangController extends Controller
             ->get();
 
         $title = "Dashboard - " . ucwords($bidang);
-        if ($bidang === 'pemerintahan') $title = "Bidang Pemerintahan (Bidang 1)";
-        if ($bidang === 'pemberdayaan') $title = "Bidang Pemberdayaan (Bidang 2)";
-        if ($bidang === 'ekonomi') $title = "Bidang Ekonomi (Bidang 3)";
+        if ($bidang === 'pemerintahan') $title = "Bidang (Pemerintahan Desa)";
+        if ($bidang === 'pemberdayaan') $title = "Bidang (Pemberdayaan dan Lembaga Kemasyarakatan)";
+        if ($bidang === 'ekonomi') $title = "Bidang (Penataan dan kerja sama)";
 
         return view('dashboard.bidang.index', compact('kegiatans', 'arsips', 'regulasis', 'bidang', 'title'));
     }

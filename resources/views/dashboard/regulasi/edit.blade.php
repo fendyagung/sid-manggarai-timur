@@ -48,9 +48,9 @@
                         class="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:ring-4 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all appearance-none cursor-pointer">
                         <option value="">Umum / Publik</option>
                         <option value="sekretariat" {{ $regulasi->bidang == 'sekretariat' ? 'selected' : '' }}>Sekretariat</option>
-                        <option value="pemerintahan" {{ $regulasi->bidang == 'pemerintahan' ? 'selected' : '' }}>Bidang 1 (Pemerintahan)</option>
-                        <option value="pemberdayaan" {{ $regulasi->bidang == 'pemberdayaan' ? 'selected' : '' }}>Bidang 2 (Pemberdayaan)</option>
-                        <option value="ekonomi" {{ $regulasi->bidang == 'ekonomi' ? 'selected' : '' }}>Bidang 3 (Ekonomi)</option>
+                        <option value="pemerintahan" {{ $regulasi->bidang == 'pemerintahan' ? 'selected' : '' }}>Bidang (Pemerintahan Desa)</option>
+                        <option value="pemberdayaan" {{ old('bidang', $regulasi->bidang) == 'pemberdayaan' ? 'selected' : '' }}>Bidang (Pemberdayaan dan Lembaga Kemasyarakatan)</option>
+                        <option value="ekonomi" {{ $regulasi->bidang == 'ekonomi' ? 'selected' : '' }}>Bidang (Penataan dan kerja sama)</option>
                     </select>
                 </div>
                 @endif

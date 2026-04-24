@@ -240,129 +240,141 @@
                 
                 <!-- LEVEL 1: KEPALA DINAS -->
                 <div class="relative group reveal">
-                    <div class="relative p-6 bg-white dark:bg-slate-900 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 w-72 md:w-80 border-2 border-emerald-500/30">
+                    <div class="relative p-8 bg-white dark:bg-slate-900 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 w-72 md:w-80 border-2 border-emerald-500/30">
                         <div class="space-y-1.5 text-center">
-                            <h4 class="font-black text-black dark:text-white leading-tight text-sm">{{ $kadis->nama }}</h4>
+                            <h4 class="font-black text-black dark:text-white leading-tight text-[12px] uppercase">{{ $kadis->nama }}</h4>
                             <div class="pt-2 border-t border-slate-100 dark:border-slate-800">
                                 <span class="font-black uppercase tracking-widest italic text-black dark:text-white text-[10px]">Kepala Dinas</span>
                             </div>
                         </div>
                     </div>
-                    <!-- Connection Line Down -->
-                    <div class="hidden md:block absolute left-1/2 top-full w-px h-10 bg-slate-200 dark:bg-slate-800 -translate-x-1/2"></div>
                 </div>
 
-                <!-- LEVEL 2: MIDDLE MANAGEMENT (Asymmetrical Tree) -->
-                <div class="relative w-full flex flex-col items-center mt-8 md:mt-0">
-                    <!-- Main Vertical Trunk from Kadis down to Bidang -->
-                    <div class="hidden md:block absolute left-1/2 top-[-48px] bottom-0 w-px bg-slate-200 dark:bg-slate-800 -translate-x-1/2"></div>
-                    
-                    <!-- Horizontal Branch Right to Sekretaris -->
-                    <div class="hidden md:block absolute left-1/2 top-[-10px] w-[25%] lg:w-[30%] h-px bg-slate-200 dark:bg-slate-800"></div>
+                <!-- LEVEL 2 & 3: MIDDLE MANAGEMENT (Asymmetrical Tree) -->
+                <div class="relative w-full max-w-6xl mx-auto">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-start">
+                        
+                        <!-- LEFT SIDE: KELOMPOK JABATAN FUNGSIONAL -->
+                        <div class="flex flex-col items-center">
+                            <div class="w-full max-w-[360px] p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm hover:shadow-md transition-shadow reveal" style="transition-delay: 0.1s">
+                                <div class="space-y-4">
+                                    <div class="pb-3 border-b border-slate-50 dark:border-slate-800 text-center">
+                                        <span class="font-black uppercase tracking-widest italic text-black dark:text-white text-[10px]">Kelompok Jabatan Fungsional</span>
+                                    </div>
+                                    <ul class="grid grid-cols-1 gap-1.5 text-left list-none">
+                                        @foreach($staffFungsional->take(11) as $index => $staff)
+                                        <li class="flex gap-2 text-[10px] text-slate-700 dark:text-slate-300 font-bold uppercase leading-tight">
+                                            <span class="w-4 text-slate-400 font-medium">{{ $index + 1 }}.</span>
+                                            <span>{{ $staff->nama }}</span>
+                                        </li>
+                                        @endforeach
+                                        
+                                        @if($staffFungsional->isEmpty())
+                                            @php
+                                                $fallbackNames = [
+                                                    'ALEKSANDER TANDUNG, S. PT', 'VITALIS JEBARUS', 'YOHANES TRIATMA, S.SOS',
+                                                    'GRADIANA I.H.MURNIATI, SE', 'FRANSISKUS SIMAN, S.IP', 'FLORIANUS MASRUL, SE',
+                                                    'WILHELMUS RAMBUNG, S.SOS', 'FIDENSIANUS SARU', 'SERVASIUS DAUD, S.IP',
+                                                    'VINSENSIA PRISCILLA SASMITA, S.IP', 'ALFIANUS HAMIN, S.M'
+                                                ];
+                                            @endphp
+                                            @foreach($fallbackNames as $index => $name)
+                                            <li class="flex gap-2 text-[10px] text-slate-700 dark:text-slate-300 font-bold uppercase leading-tight">
+                                                <span class="w-4 text-slate-400 font-medium">{{ $index + 1 }}.</span>
+                                                <span>{{ $name }}</span>
+                                            </li>
+                                            @endforeach
+                                        @endif
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
 
-                    <!-- Right Side: Sekretaris & Sub Bagian -->
-                    <div class="w-full md:w-1/2 flex justify-center md:items-start md:ml-[50%] lg:ml-[60%] relative z-10 pt-4 md:pt-[14px]">
-                        <div class="flex flex-col items-center gap-6 relative reveal" style="transition-delay: 0.2s">
-                            <!-- Connection down to Sekretaris box -->
-                            <div class="hidden md:block absolute left-1/2 bottom-full w-px h-[24px] bg-slate-200 dark:bg-slate-800 -translate-x-1/2"></div>
-                            
+                        <!-- RIGHT SIDE: SEKRETARIAT -->
+                        <div class="flex flex-col items-center gap-8">
                             <!-- Sekretaris Box -->
-                            <div class="relative group">
-                                <div class="relative p-5 bg-white dark:bg-slate-900 rounded-2xl shadow-lg w-64 border-2 border-blue-500/30 text-center">
+                            <div class="relative group reveal" style="transition-delay: 0.2s">
+                                <div class="relative p-8 bg-white dark:bg-slate-900 rounded-2xl shadow-md border-2 border-blue-500/30 text-center w-72 md:w-80">
                                     <div class="space-y-1.5">
-                                        <h4 class="font-black uppercase leading-tight text-black dark:text-white text-[12px]">{{ $sekretaris->nama ?? 'Nama Sekretaris' }}</h4>
+                                        <h4 class="font-black leading-tight text-black dark:text-white text-[12px] uppercase">{{ $sekretaris->nama ?? 'Nama Sekretaris' }}</h4>
                                         <div class="pt-2 border-t border-slate-50 dark:border-slate-800">
                                             <span class="font-black uppercase tracking-widest italic text-black dark:text-white text-[10px]">Sekretaris</span>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="absolute left-1/2 top-full w-px h-6 bg-slate-200 dark:bg-slate-800 -translate-x-1/2"></div>
                             </div>
 
                             <!-- Sub Bagian Level (L+R) -->
-                            <div class="flex flex-col sm:flex-row gap-5 relative pt-4">
-                                <!-- Horizontal Sub-line -->
-                                <div class="hidden sm:block absolute left-1/2 right-1/2 top-0 h-px bg-slate-200 dark:bg-slate-800"></div>
-                                
-                                <!-- Sub Bagian Kepegawaian -->
-                                <div class="relative flex flex-col items-center">
-                                    <div class="hidden sm:block absolute left-1/2 bottom-full w-px h-4 bg-slate-200 dark:bg-slate-800 -translate-x-1/2"></div>
-                                    <div class="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-md text-center w-48">
-                                        <p class="text-[8px] text-black opacity-50 uppercase font-black mb-1">Sub Bagian</p>
-                                        <h5 class="text-black dark:text-white font-black text-[10px] mb-2 leading-[1.2] min-h-[1.5rem] flex items-center justify-center uppercase">Kepegawaian Dan Umum</h5>
-                                        <div class="pt-2 border-t border-slate-50 dark:border-slate-800 space-y-0.5">
-                                            <p class="text-black dark:text-white font-black text-[10px] uppercase leading-tight">{{ $kasubagKepegawaian->nama ?? '-' }}</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
+                                <!-- Sub Bagian 1 -->
+                                <div class="reveal" style="transition-delay: 0.3s">
+                                    <div class="p-6 bg-slate-50/50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800 rounded-2xl text-center min-h-[140px] flex flex-col justify-center">
+                                        <h4 class="text-black dark:text-white font-bold text-[11px] uppercase leading-tight mb-2">{{ $kasubagKepegawaian->nama ?? '-' }}</h4>
+                                        <div class="pt-2 border-t border-slate-100 dark:border-slate-800">
+                                            <span class="font-bold uppercase tracking-widest italic text-slate-500 dark:text-slate-400 text-[9px] leading-tight">Sub Bagian <br> Kepegawaian Dan Umum</span>
                                         </div>
                                     </div>
                                 </div>
 
-                                <!-- Sub Bagian Keuangan -->
-                                <div class="relative flex flex-col items-center">
-                                    <div class="hidden sm:block absolute left-1/2 bottom-full w-px h-4 bg-slate-200 dark:bg-slate-800 -translate-x-1/2"></div>
-                                    <div class="p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-md text-center w-48">
-                                        <p class="text-[8px] text-black opacity-50 uppercase font-black mb-1">Sub Bagian</p>
-                                        <h5 class="text-black dark:text-white font-black text-[10px] mb-2 leading-[1.2] min-h-[1.5rem] flex items-center justify-center uppercase">Keuangan</h5>
-                                        <div class="pt-2 border-t border-slate-50 dark:border-slate-800 space-y-0.5">
-                                            <p class="text-black dark:text-white font-black text-[10px] uppercase leading-tight">{{ $kasubagKeuangan->nama ?? '-' }}</p>
+                                <!-- Sub Bagian 2 -->
+                                <div class="reveal" style="transition-delay: 0.4s">
+                                    <div class="p-6 bg-slate-50/50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-800 rounded-2xl text-center min-h-[140px] flex flex-col justify-center">
+                                        <h4 class="text-black dark:text-white font-bold text-[11px] uppercase leading-tight mb-2">{{ $kasubagKeuangan->nama ?? '-' }}</h4>
+                                        <div class="pt-2 border-t border-slate-100 dark:border-slate-800">
+                                            <span class="font-bold uppercase tracking-widest italic text-slate-500 dark:text-slate-400 text-[9px] leading-tight">Sub Bagian <br> Keuangan</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- LEVEL 3: BIDANG-BIDANG -->
-                <div class="relative w-full pt-4">
-                    <!-- Central Connector from Middle -->
-                    <div class="hidden md:block absolute left-1/2 top-0 h-4 w-px bg-slate-200 dark:bg-slate-800 -translate-x-1/2"></div>
-                    <!-- Horizontal Connector for Bidang -->
-                    <div class="hidden md:block absolute left-[16.6%] right-[16.6%] top-4 h-px bg-slate-200 dark:bg-slate-800"></div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 pt-6">
-                        
-                        <!-- BIDANG 1 -->
-                        <div class="relative flex flex-col items-center reveal" style="transition-delay: 0.3s">
-                            <div class="hidden md:block absolute left-1/2 bottom-full w-px h-6 bg-slate-200 dark:bg-slate-800 -translate-x-1/2"></div>
-                            <div class="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-lg text-center w-full max-w-[280px]">
-                                <h4 class="text-black dark:text-white opacity-60 font-black text-[9px] uppercase tracking-widest mb-2 min-h-[1.5rem] flex items-center justify-center">Bidang Pemerintahan Desa</h4>
-                                <div class="h-px w-6 bg-amber-500 mx-auto mb-3"></div>
-                                <div class="space-y-1">
-                                    <p class="text-black dark:text-white font-black uppercase text-[11px] leading-tight">{{ $kabidPemerintahan->nama ?? 'Nama Kabid' }}</p>
+                    <!-- BOTTOM LEVEL: BIDANG-BIDANG -->
+                    <div class="mt-16 pt-12 border-t border-slate-200/60 dark:border-slate-800/60">
+                        <div class="text-center mb-10">
+                            <span class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Unsur Pelaksana Teknis</span>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+                            
+                            <!-- BIDANG 1 -->
+                            <div class="flex flex-col items-center reveal" style="transition-delay: 0.5s">
+                                <div class="p-8 bg-white dark:bg-slate-900 border-2 border-amber-500/30 rounded-2xl shadow-sm hover:shadow-md transition-all text-center w-full min-h-[180px] flex flex-col group">
+                                    <div class="mb-auto">
+                                        <h4 class="font-black leading-tight text-black dark:text-white text-[12px] uppercase">{{ $kabidPemerintahan->nama ?? 'Nama Kabid' }}</h4>
+                                    </div>
+                                    <div class="pt-4 border-t border-slate-50 dark:border-slate-800">
+                                        <span class="font-black tracking-widest italic text-black dark:text-white text-[10px] leading-tight flex items-center justify-center min-h-[2.5rem]">Bidang <br> Pemerintahan Desa</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- BIDANG 2 -->
-                        <div class="relative flex flex-col items-center reveal" style="transition-delay: 0.4s">
-                            <div class="hidden md:block absolute left-1/2 bottom-full w-px h-6 bg-slate-200 dark:bg-slate-800 -translate-x-1/2"></div>
-                            <div class="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-lg text-center w-full max-w-[280px]">
-                                <h4 class="text-black dark:text-white opacity-60 font-black text-[9px] uppercase tracking-widest mb-2 min-h-[1.5rem] flex items-center justify-center">Bidang Penataan Desa Dan Peningkatan Kerjasama Desa</h4>
-                                <div class="h-px w-6 bg-emerald-500 mx-auto mb-3"></div>
-                                <div class="space-y-1">
-                                    <p class="text-black dark:text-white font-black uppercase text-[11px] leading-tight">{{ $kabidPenataan->nama ?? 'Nama Kabid' }}</p>
+                            <!-- BIDANG 2 -->
+                            <div class="flex flex-col items-center reveal" style="transition-delay: 0.6s">
+                                <div class="p-8 bg-white dark:bg-slate-900 border-2 border-emerald-500/30 rounded-2xl shadow-sm hover:shadow-md transition-all text-center w-full min-h-[180px] flex flex-col group">
+                                    <div class="mb-auto">
+                                        <h4 class="font-black leading-tight text-black dark:text-white text-[12px] uppercase">{{ $kabidPenataan->nama ?? 'Nama Kabid' }}</h4>
+                                    </div>
+                                    <div class="pt-4 border-t border-slate-50 dark:border-slate-800">
+                                        <span class="font-black tracking-widest italic text-black dark:text-white text-[10px] leading-tight flex items-center justify-center min-h-[2.5rem]">Bidang <br> Penataan dan kerja sama Desa</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- BIDANG 3 -->
-                        <div class="relative flex flex-col items-center reveal" style="transition-delay: 0.5s">
-                            <div class="hidden md:block absolute left-1/2 bottom-full w-px h-6 bg-slate-200 dark:bg-slate-800 -translate-x-1/2"></div>
-                            <div class="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-lg text-center w-full max-w-[280px]">
-                                <h4 class="text-black dark:text-white opacity-60 font-black text-[9px] uppercase tracking-widest mb-2 min-h-[2rem] flex items-center justify-center px-2 text-center">Bidang Pemberdayaan Lembaga Kemasyarakatan</h4>
-                                <div class="h-px w-6 bg-blue-500 mx-auto mb-3"></div>
-                                <div class="space-y-1">
-                                    <p class="text-black dark:text-white font-black uppercase text-[11px] leading-tight">{{ $kabidPemberdayaan->nama ?? 'Nama Kabid' }}</p>
+                            <!-- BIDANG 3 -->
+                            <div class="flex flex-col items-center reveal" style="transition-delay: 0.7s">
+                                <div class="p-8 bg-white dark:bg-slate-900 border-2 border-blue-500/30 rounded-2xl shadow-sm hover:shadow-md transition-all text-center w-full min-h-[180px] flex flex-col group">
+                                    <div class="mb-auto">
+                                        <h4 class="font-black leading-tight text-black dark:text-white text-[12px] uppercase">{{ $kabidPemberdayaan->nama ?? 'Nama Kabid' }}</h4>
+                                    </div>
+                                    <div class="pt-4 border-t border-slate-50 dark:border-slate-800">
+                                        <span class="font-black tracking-widest italic text-black dark:text-white text-[10px] leading-tight flex items-center justify-center min-h-[2.5rem]">Bidang <br> pemberdayaan Lembaga Kemasyarakatan (PLK)</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                    </div>
-                </div>
 
-                    </div>
-                </div>
 
                 <!-- DOWNLOAD BUTTON FOR ORIGINAL IMAGE -->
                 @if($profile->foto_struktur)
