@@ -38,7 +38,7 @@ class KecamatanSeeder extends Seeder
                 ['email' => strtolower(str_replace(' ', '', $kecamatan)) . '@kecamatan.com'],
                 [
                     'name' => 'Admin Kec. ' . $kecamatan,
-                    'password' => \Hash::make('password'),
+                    'password' => \Hash::make('AdminMatim2026'),
                     'role' => 'admin_kecamatan',
                     'kecamatan' => $kecamatan
                 ]

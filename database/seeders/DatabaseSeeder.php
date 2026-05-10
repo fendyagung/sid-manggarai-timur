@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
             ['email' => 'admin@dpmd.com'],
             [
                 'name' => 'Admin DPMD Manggarai Timur',
-                'password' => \Hash::make('password'),
+                'password' => \Hash::make('AdminMatim2026'),
                 'role' => 'admin_dpmd',
             ]
         );

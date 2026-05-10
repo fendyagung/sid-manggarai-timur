@@ -6,20 +6,28 @@ PETUNJUK INSTALASI SID MANGGARAI TIMUR
    Instalasi Git wajib dilakukan agar tampilan dashboard tidak berantakan (error proc_open).
 3. Buat database baru di MySQL dengan nama 'sid_manggarai_timur'.
 4. Import file 'database_sid_manggarai.sql' ke database tersebut melalui phpMyAdmin.
-5. Copy file '.env.example' menjadi '.env' dan sesuaikan pengaturan database:
-   DB_DATABASE=sid_manggarai_timur
-   DB_USERNAME=root
-   DB_PASSWORD=
-6. Buka terminal (Sangat disarankan memakai "Git Bash" hasil instalasi poin 2) di folder proyek:
-   - (CATATAN KHUSUS): Jika di dalam folder ekstraksi ada folder lagi bernama "SID Manggarai Timur",
-     silakan MASUK ke folder terdalam tersebut (sampai Anda melihat file bernama "artisan").
-   - Caranya: Klik kanan di dalam folder terdalam itu, pilih "Git Bash Here".
-   - Jalankan perintah:
-     a. php artisan key:generate
-     b. php artisan storage:link
-     c. php artisan serve  (untuk menjalankan server lokal)
-     (Catatan: 'composer install' dan 'npm install' tidak perlu dijalankan karena folder vendor/build sudah disertakan)
-7. Akses website melalui web browser di alamat http://localhost:8000
+5. Buka File Explorer, lalu masuk ke folder hasil ekstrak proyek (misalnya di C:\xampp\htdocs\SID Manggarai Timur).
+   - (PENTING): Pastikan Anda berada di dalam folder yang menampilkan file bernama "artisan" dan ".env.example". Jika saat dibuka masih ada folder "SID Manggarai Timur" lagi, masuklah ke folder terdalam tersebut.
+6. Klik kanan di area putih/kosong di dalam folder tersebut, lalu pilih "Git Bash Here" (atau "Open Git Bash here").
+7. Di jendela terminal (layar hitam) yang muncul, ketik perintah berikut satu per satu (tekan Enter setelah mengetik tiap baris):
+     
+     a. cp .env.example .env
+        (Perintah ini akan otomatis membuat file konfigurasi sistem)
+     
+     b. composer install
+        (Tunggu sampai proses download selesai)
+        
+     c. npm install
+     
+     d. npm run build
+     
+     e. php artisan key:generate
+     
+     f. php artisan storage:link
+     
+     g. php artisan serve
+        (Perintah terakhir ini untuk menjalankan server lokal. Biarkan jendela terminal/Git Bash tetap terbuka).
+8. Akses website melalui web browser di alamat http://localhost:8000
 
 
 ----------------------------------------------------
@@ -30,9 +38,43 @@ Alamat: http://localhost:8000/login  (Jika menggunakan artisan serve)
 
 - ADMIN DINAS PMD 
   Email: admin@dpmd.com 
-  Password: password 
+  Password: AdminMatim2026 
 
 - CAMAT BORONG 
   Email: borong@kecamatan.com 
-  Password: password
+  Password: AdminMatim2026
 
+
+----------------------------------------------------
+TIPS MENGHAPUS AKUN UJI COBA
+----------------------------------------------------
+Jika Anda mencoba registrasi akun baru untuk melihat-lihat tampilan dashboard Desa/Kecamatan, dan ingin menghapusnya kembali setelah selesai menguji, Anda bisa melakukan salah satu cara berikut:
+
+CARA 1: Hapus dari Dashboard Dinas
+1. Login menggunakan akun ADMIN DINAS PMD (email: admin@dpmd.com).
+2. Cari menu "Pengaturan Desa" atau Manajemen Pengguna di sidebar kiri.
+3. Cari akun yang baru saja Anda buat, lalu klik tombol Hapus (Delete).
+
+CARA 2: RESET MENGGUNAKAN PERINTAH (Tergampang & Paling Aman)
+Kami sudah menyiapkan perintah khusus untuk menghapus seluruh akun yang pernah Anda buat secara manual, lalu mengembalikan 100% akun bawaan (Dinas, 12 Kecamatan, dan 175 Desa).
+1. Buka kembali terminal/Git Bash di dalam folder proyek Anda.
+2. Ketik perintah berikut lalu tekan Enter:
+   php artisan sid:reset-users
+3. Tunggu hingga muncul tulisan "Proses reset selesai!". Sekarang semua akun coba-coba sudah musnah.
+
+⚠️ PERINGATAN KERAS UNTUK CARA 2 ⚠️
+Cara 2 HANYA BOLEH digunakan jika Anda SEKADAR LOGIN dan melihat-lihat. 
+JANGAN gunakan Cara 2 jika Anda sudah terlanjur memposting Berita Palsu atau Pengumuman Palsu menggunakan akun uji coba! 
+Jika Anda memaksa memakai Cara 2, akun Anda akan terhapus namun beritanya tetap tertinggal. Hal ini akan menyebabkan ERROR (Website Blank/Rusak) ketika pengunjung mencoba membaca berita tersebut!
+
+CARA 3: RESET TOTAL DATABASE (WAJIB JIKA SUDAH MEMBUAT BERITA/LAPORAN PALSU)
+Jika Anda sudah terlanjur mengotori sistem dengan membuat Berita, Pengumuman, Dokumen, atau Laporan uji coba, JANGAN pakai Cara 2. Anda WAJIB mereset ulang seluruh database agar kembali seperti baru tanpa sisa error.
+1. Buka http://localhost/phpmyadmin
+2. Klik database 'sid_manggarai_timur'.
+3. Centang "Check all", klik "With selected:", lalu pilih "Drop" (Yes).
+4. Setelah kosong, IMPORT ULANG file 'database_sid_manggarai.sql'.
+Sistem Anda akan kembali bersih seperti baru pertama kali diinstal!
+
+----------------------------------------------------
+Terima kasih, selamat mencoba, dan semoga sukses!
+----------------------------------------------------

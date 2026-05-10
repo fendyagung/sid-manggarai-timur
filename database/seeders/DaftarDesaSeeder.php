@@ -202,7 +202,7 @@ class DaftarDesaSeeder extends Seeder
                 ['email' => $email],
                 [
                     'name' => 'Admin ' . $v['type'] . ' ' . $v['nama'],
-                    'password' => Hash::make('password'),
+                    'password' => Hash::make('AdminMatim2026'),
                     'role' => 'admin_desa',
                     'kecamatan' => $v['kecamatan']
                 ]
