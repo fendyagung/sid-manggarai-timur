@@ -293,6 +293,8 @@ class DashboardController extends Controller
             'luas_wilayah' => 'nullable|string|max:255',
             'deskripsi_batas' => 'nullable|string',
             'potensi_ekonomi' => 'nullable|string',
+            'latitude' => 'nullable|numeric|between:-90,90',
+            'longitude' => 'nullable|numeric|between:-180,180',
             'gallery_photos.*' => 'nullable|image|mimes:jpg,jpeg,png|max:5120',
             'gallery_videos.*' => 'nullable|url|max:255',
         ]);
@@ -308,7 +310,9 @@ class DashboardController extends Controller
             'jumlah_kk',
             'luas_wilayah',
             'deskripsi_batas',
-            'potensi_ekonomi'
+            'potensi_ekonomi',
+            'latitude',
+            'longitude'
         ]);
         $data['is_desa_wisata'] = $request->has('is_desa_wisata');
 

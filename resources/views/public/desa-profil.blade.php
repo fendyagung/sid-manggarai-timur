@@ -1,4 +1,70 @@
 <x-layouts.public>
+    @push('styles')
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+        <style>
+            #map { height: 380px; width: 100%; border-radius: 1.5rem; z-index: 10; }
+            .chart-container { position: relative; height: 260px; }
+        </style>
+    @endpush
+    @push('scripts')
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // --- Peta Leaflet ---
+                var lat = {{ $desa->latitude ?? -8.59 }};
+                var lng = {{ $desa->longitude ?? 120.64 }};
+                var zoom = {{ $desa->latitude ? 15 : 10 }};
+                var map = L.map('map').setView([lat, lng], zoom);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                }).addTo(map);
+                @if($desa->latitude && $desa->longitude)
+                    L.marker([lat, lng]).addTo(map)
+                        .bindPopup('<b>{{ $desa->nama_desa }}</b><br>Kecamatan {{ $desa->kecamatan }}')
+                        .openPopup();
+                @endif
+
+                // --- Grafik Demografi Chart.js ---
+                @php
+                    $laki = $desa->jumlah_laki ?? 0;
+                    $perempuan = $desa->jumlah_perempuan ?? 0;
+                    $penduduk = $desa->jumlah_penduduk ?? ($laki + $perempuan);
+                    $kk = $desa->jumlah_kk ?? 0;
+                @endphp
+                var jmlLaki = {{ $laki }};
+                var jmlPerempuan = {{ $perempuan }};
+
+                if (jmlLaki > 0 || jmlPerempuan > 0) {
+                    var ctxPie = document.getElementById('chartGender');
+                    if (ctxPie) {
+                        new Chart(ctxPie, {
+                            type: 'doughnut',
+                            data: {
+                                labels: ['Laki-laki', 'Perempuan'],
+                                datasets: [{
+                                    data: [jmlLaki, jmlPerempuan],
+                                    backgroundColor: ['#3b82f6', '#f43f5e'],
+                                    borderWidth: 0,
+                                    hoverOffset: 8
+                                }]
+                            },
+                            options: {
+                                responsive: true, maintainAspectRatio: false, cutout: '65%',
+                                plugins: {
+                                    legend: { position: 'bottom', labels: { padding: 20, font: { size: 12, weight: 'bold' } } },
+                                    tooltip: { callbacks: { label: function(c) { return ' ' + c.label + ': ' + c.raw.toLocaleString('id') + ' jiwa'; } } }
+                                }
+                            }
+                        });
+                    }
+                } else {
+                    var el = document.getElementById('chartGenderWrap');
+                    if (el) el.style.display = 'none';
+                }
+            });
+        </script>
+    @endpush
     <!-- Simple Header (No Banner Photo) -->
     <section class="pt-32 pb-16 bg-[#064e3b] text-white relative">
         <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
@@ -118,6 +184,78 @@
 
                     <!-- Statistics & Data -->
                     <div class="mt-20">
+                        <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-8 flex items-center gap-2">
+                            <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                            </svg>
+                            Statistik & Data Desa
+                        </h3>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Chart Demografi -->
+                            <div id="chartGenderWrap" class="p-6 bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-[2rem] shadow-sm">
+                                <h4 class="font-bold text-slate-700 dark:text-slate-300 mb-4 text-sm uppercase tracking-wider flex items-center gap-2">
+                                    <span class="w-3 h-3 bg-blue-500 rounded-full"></span> Komposisi Penduduk
+                                </h4>
+                                <div class="chart-container">
+                                    <canvas id="chartGender"></canvas>
+                                </div>
+                                <p class="text-center text-xs text-slate-400 mt-3">Total: <strong class="text-slate-700 dark:text-slate-200">{{ $desa->jumlah_penduduk ? number_format($desa->jumlah_penduduk) . ' Jiwa' : '-' }}</strong></p>
+                            </div>
+
+                            <!-- Statistik Ringkas -->
+                            <div class="space-y-4">
+                                <!-- Demografi -->
+                                <div class="p-5 bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-[1.5rem]">
+                                    <h4 class="font-bold text-slate-600 dark:text-slate-400 mb-3 text-xs uppercase tracking-wider">Demografi</h4>
+                                    <div class="space-y-3">
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-slate-500 dark:text-slate-400 text-sm flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-blue-500 inline-block"></span>Laki-laki</span>
+                                            <span class="font-bold text-slate-800 dark:text-slate-100">{{ $desa->jumlah_laki ? number_format($desa->jumlah_laki) . ' Jiwa' : '-' }}</span>
+                                        </div>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-slate-500 dark:text-slate-400 text-sm flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-rose-500 inline-block"></span>Perempuan</span>
+                                            <span class="font-bold text-slate-800 dark:text-slate-100">{{ $desa->jumlah_perempuan ? number_format($desa->jumlah_perempuan) . ' Jiwa' : '-' }}</span>
+                                        </div>
+                                        <div class="flex justify-between items-center pt-2 border-t border-slate-200 dark:border-slate-700">
+                                            <span class="text-slate-500 dark:text-slate-400 text-sm">Jumlah KK</span>
+                                            <span class="font-bold text-slate-800 dark:text-slate-100">{{ $desa->jumlah_kk ? number_format($desa->jumlah_kk) . ' KK' : '-' }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Geografis -->
+                                <div class="p-5 bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-[1.5rem]">
+                                    <h4 class="font-bold text-slate-600 dark:text-slate-400 mb-3 text-xs uppercase tracking-wider">Geografis</h4>
+                                    <div class="space-y-3">
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-slate-500 dark:text-slate-400 text-sm">Luas Wilayah</span>
+                                            <span class="font-bold text-slate-800 dark:text-slate-100">{{ $desa->luas_wilayah ?? '-' }}</span>
+                                        </div>
+                                        @if($desa->deskripsi_batas)
+                                        <div>
+                                            <span class="text-slate-500 dark:text-slate-400 text-sm block mb-1">Batas Wilayah</span>
+                                            <p class="font-medium text-slate-800 dark:text-slate-100 text-sm leading-relaxed">{{ $desa->deskripsi_batas }}</p>
+                                        </div>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Potensi Ekonomi -->
+                        @if($desa->potensi_ekonomi)
+                        <div class="mt-6 p-6 bg-amber-50 dark:bg-amber-900/10 rounded-[2rem] border border-amber-100 dark:border-amber-800/30">
+                            <h4 class="font-bold text-amber-800 dark:text-amber-400 mb-3 flex items-center gap-2 text-sm uppercase tracking-wider">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                Potensi Ekonomi
+                            </h4>
+                            <p class="text-amber-900/80 dark:text-amber-400/80 leading-relaxed">{{ $desa->potensi_ekonomi }}</p>
+                        </div>
+                        @endif
+                    </div>
+
+                    <div class="mt-20">
                         <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
                             <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -201,6 +339,23 @@
                             </div>
                         </div>
                     </div>
+            </div>
+
+            <!-- Map Section -->
+            <div class="max-w-4xl mx-auto mt-20">
+                <h3 class="text-2xl font-bold text-slate-800 dark:text-white mb-8 flex items-center gap-3">
+                    <span class="w-2 h-6 bg-blue-500 rounded-full"></span>
+                    Lokasi Geografis
+                </h3>
+                <div class="bg-white dark:bg-slate-800 p-4 rounded-[2.5rem] border border-slate-100 dark:border-slate-700 shadow-xl overflow-hidden">
+                    <div id="map"></div>
+                    @if(!$desa->latitude || !$desa->longitude)
+                        <div class="mt-4 p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-100 dark:border-amber-800/50 rounded-2xl flex items-center gap-3">
+                            <span class="text-lg">📍</span>
+                            <p class="text-xs text-amber-800 dark:text-amber-400 font-medium italic">Titik koordinat spesifik belum diatur oleh pengelola desa.</p>
+                        </div>
+                    @endif
+                </div>
             </div>
         </div>
     </div>

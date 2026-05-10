@@ -158,6 +158,8 @@ return [
         'description' => 'Deskripsi',
         'phone' => 'Nomor Telepon',
         'address' => 'Alamat',
+        'latitude' => 'Garis Lintang',
+        'longitude' => 'Garis Bujur',
     ],
 
 ];

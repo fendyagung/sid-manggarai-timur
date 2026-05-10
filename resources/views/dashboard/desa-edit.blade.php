@@ -65,6 +65,35 @@
                     menarik.</p>
             </div>
 
+            <div class="border-t border-slate-100 dark:border-slate-700 pt-8 transition-colors">
+                <h3 class="text-lg font-bold text-slate-800 dark:text-white mb-2 flex items-center gap-2">
+                    <span class="w-2 h-6 bg-blue-500 rounded-full"></span>
+                    Koordinat Geografis (GIS)
+                </h3>
+                <p class="text-[11px] text-slate-400 mb-6">Klik langsung pada peta untuk menentukan lokasi desa, atau masukkan koordinat secara manual. Lokasi ini akan tampil di halaman publik.</p>
+
+                <!-- Map Picker -->
+                <div id="map-picker" style="height: 320px; border-radius: 1.5rem; overflow: hidden; border: 2px solid #e2e8f0; margin-bottom: 1rem; z-index: 0;"></div>
+                <p class="text-[10px] text-blue-600 dark:text-blue-400 mb-4 font-medium flex items-center gap-1">
+                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/></svg>
+                    Klik di peta untuk otomatis mengisi koordinat di bawah ini.
+                </p>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="latitude" class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 ml-1">Garis Lintang (Lat)</label>
+                        <input type="text" name="latitude" id="latitude" value="{{ old('latitude', $desa->latitude) }}"
+                            class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-blue-500 transition-all outline-none dark:text-white"
+                            placeholder="Contoh: -8.590000">
+                    </div>
+                    <div>
+                        <label for="longitude" class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 ml-1">Garis Bujur (Lng)</label>
+                        <input type="text" name="longitude" id="longitude" value="{{ old('longitude', $desa->longitude) }}"
+                            class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-blue-500 transition-all outline-none dark:text-white"
+                            placeholder="Contoh: 120.640000">
+                    </div>
+                </div>
+            </div>
+
             <!-- Multi Gallery Section -->
             <div class="border-t border-slate-100 dark:border-slate-700 pt-8 space-y-8 transition-colors">
                 <div>
@@ -341,4 +370,52 @@
             animation: fadeIn 0.3s ease-out forwards;
         }
     </style>
+
+    @push('styles')
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+    @endpush
+    @push('scripts')
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var initLat = parseFloat(document.getElementById('latitude').value) || -8.59;
+                var initLng = parseFloat(document.getElementById('longitude').value) || 120.64;
+                var initZoom = document.getElementById('latitude').value ? 14 : 10;
+
+                var pickerMap = L.map('map-picker').setView([initLat, initLng], initZoom);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; OpenStreetMap contributors'
+                }).addTo(pickerMap);
+
+                var marker = null;
+                if (document.getElementById('latitude').value) {
+                    marker = L.marker([initLat, initLng], { draggable: true }).addTo(pickerMap);
+                    marker.bindPopup('Lokasi Desa').openPopup();
+                    marker.on('dragend', function(e) {
+                        var p = e.target.getLatLng();
+                        document.getElementById('latitude').value = p.lat.toFixed(7);
+                        document.getElementById('longitude').value = p.lng.toFixed(7);
+                    });
+                }
+
+                pickerMap.on('click', function(e) {
+                    var lat = e.latlng.lat.toFixed(7);
+                    var lng = e.latlng.lng.toFixed(7);
+                    document.getElementById('latitude').value = lat;
+                    document.getElementById('longitude').value = lng;
+                    if (marker) {
+                        marker.setLatLng(e.latlng);
+                    } else {
+                        marker = L.marker(e.latlng, { draggable: true }).addTo(pickerMap);
+                        marker.on('dragend', function(ev) {
+                            var p = ev.target.getLatLng();
+                            document.getElementById('latitude').value = p.lat.toFixed(7);
+                            document.getElementById('longitude').value = p.lng.toFixed(7);
+                        });
+                    }
+                    marker.bindPopup('📍 Lokasi Desa Dipilih').openPopup();
+                });
+            });
+        </script>
+    @endpush
 </x-layouts.admin>

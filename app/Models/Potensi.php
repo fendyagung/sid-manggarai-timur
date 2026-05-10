@@ -17,6 +17,8 @@ class Potensi extends Model
         'deskripsi',
         'foto_utama',
         'lokasi',
+        'latitude',
+        'longitude',
     ];
 
     public function desa(): BelongsTo

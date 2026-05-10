@@ -637,7 +637,11 @@
                 @endif
                 <a href="{{ route('dashboard.arsip.index') }}"
                     class="nav-item {{ Request::is('dashboard/arsip*') ? 'active' : '' }}" style="padding-left: 16px;">
-                    <span class="ni-icon">🗄️</span> Arsip Dinas
+                    <span class="ni-icon">🗄️</span>
+                    @if($user->role === 'admin_desa') Arsip Desa
+                    @elseif($user->role === 'admin_kecamatan') Arsip Kecamatan
+                    @else Arsip Dinas
+                    @endif
                 </a>
                 <a href="{{ route('dashboard.regulasi.index') }}"
                     class="nav-item {{ Request::is('dashboard/regulasi*') ? 'active' : '' }}" style="padding-left: 16px;">

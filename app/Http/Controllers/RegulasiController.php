@@ -163,10 +163,26 @@ class RegulasiController extends Controller
     /**
      * Display a listing of the resource (Public/User View).
      */
-    public function publicIndex()
+    public function publicIndex(Request $request)
     {
-        $regulasis = Regulasi::latest()->get()->groupBy('kategori');
-        return view('public.bank-data', compact('regulasis'));
+        $query = Regulasi::query();
+
+        if ($request->has('q') && $request->q != '') {
+            $query->where(function($q) use ($request) {
+                $q->where('judul', 'like', '%' . $request->q . '%')
+                  ->orWhere('deskripsi', 'like', '%' . $request->q . '%')
+                  ->orWhere('nomor', 'like', '%' . $request->q . '%');
+            });
+        }
+
+        if ($request->has('tahun') && $request->tahun != '') {
+            $query->whereYear('created_at', $request->tahun);
+        }
+
+        $regulasis = $query->latest()->get()->groupBy('kategori');
+        $years = Regulasi::selectRaw('YEAR(created_at) as year')->distinct()->orderBy('year', 'desc')->pluck('year');
+
+        return view('public.bank-data', compact('regulasis', 'years'));
     }
 
     /**

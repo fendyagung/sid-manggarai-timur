@@ -62,13 +62,28 @@
                         </div>
                     </div>
 
-                    <div class="space-y-2">
-                        <label for="lokasi" class="block text-sm font-bold text-slate-700 dark:text-slate-300">Lokasi /
-                            Desa
-                            (Opsional)</label>
-                        <input type="text" id="lokasi" name="lokasi" placeholder="Misal: Dusun A, Desa B"
-                            class="w-full px-5 py-3 rounded-2xl border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white focus:ring-4 focus:ring-emerald-500/10 focus:border-[#064e3b] transition-all outline-none">
-                        @error('lokasi') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-slate-50 dark:border-slate-700/50">
+                        <div class="space-y-2">
+                            <label for="lokasi" class="block text-sm font-bold text-slate-700 dark:text-slate-300">Lokasi / Desa (Opsional)</label>
+                            <input type="text" id="lokasi" name="lokasi" placeholder="Misal: Dusun A, Desa B"
+                                class="w-full px-5 py-3 rounded-2xl border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white focus:ring-4 focus:ring-emerald-500/10 focus:border-[#064e3b] transition-all outline-none">
+                            @error('lokasi') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="space-y-2">
+                                <label for="latitude" class="block text-sm font-bold text-slate-700 dark:text-slate-300">Garis Lintang (Lat)</label>
+                                <input type="text" id="latitude" name="latitude" placeholder="-8.590000"
+                                    class="w-full px-5 py-3 rounded-2xl border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white focus:ring-4 focus:ring-emerald-500/10 focus:border-[#064e3b] transition-all outline-none">
+                                @error('latitude') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                            </div>
+                            <div class="space-y-2">
+                                <label for="longitude" class="block text-sm font-bold text-slate-700 dark:text-slate-300">Garis Bujur (Lng)</label>
+                                <input type="text" id="longitude" name="longitude" placeholder="120.640000"
+                                    class="w-full px-5 py-3 rounded-2xl border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white focus:ring-4 focus:ring-emerald-500/10 focus:border-[#064e3b] transition-all outline-none">
+                                @error('longitude') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                            </div>
+                        </div>
                     </div>
 
                     <div class="space-y-2">

@@ -101,6 +101,9 @@ Route::middleware(['auth'])->prefix('dashboard/dpmd/kecamatan')->name('dashboard
     Route::delete('/{id}', [\App\Http\Controllers\Dashboard\KecamatanManagementController::class, 'destroy'])->name('destroy');
 });
 
+// Global Search
+Route::get('/search', [App\Http\Controllers\Public\SearchController::class, 'index'])->name('public.search');
+
 // Public Pages Routes
 Route::prefix('jelajah')->group(function () {
     Route::get('/desa-wisata', [App\Http\Controllers\Public\DesaController::class, 'desaWisata'])->name('public.desa-wisata');

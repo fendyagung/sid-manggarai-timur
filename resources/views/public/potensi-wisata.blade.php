@@ -1,8 +1,50 @@
 @php
     $potensis = \App\Models\Potensi::with('desa')->latest()->paginate(12);
+    $mapPotensis = \App\Models\Potensi::with('desa')->whereNotNull('latitude')->whereNotNull('longitude')->get();
 @endphp
 
 <x-layouts.public>
+    @push('styles')
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+        <style>
+            #global-map { height: 500px; width: 100%; border-radius: 2.5rem; z-index: 10; border: 8px solid white; box-shadow: 0 20px 50px rgba(0,0,0,0.1); }
+            .dark #global-map { border-color: #1e293b; }
+        </style>
+    @endpush
+
+    @push('scripts')
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var map = L.map('global-map').setView([-8.59, 120.64], 10);
+
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                }).addTo(map);
+
+                var markers = @json($mapPotensis->map(fn($p) => [
+                    'lat' => $p->latitude,
+                    'lng' => $p->longitude,
+                    'nama' => $p->nama_potensi,
+                    'desa' => $p->desa->nama_desa ?? '-',
+                    'kategori' => $p->kategori,
+                    'url' => route('public.potensi-wisata.detail', $p->id)
+                ]));
+
+                markers.forEach(function(m) {
+                    L.marker([m.lat, m.lng]).addTo(map)
+                        .bindPopup(`
+                            <div class="p-2">
+                                <b class="text-slate-800">${m.nama}</b><br>
+                                <span class="text-xs text-slate-500">${m.desa}</span><br>
+                                <span class="inline-block mt-2 px-2 py-0.5 bg-amber-100 text-amber-700 rounded text-[9px] font-bold uppercase">${m.kategori}</span><br>
+                                <a href="${m.url}" class="inline-block mt-2 text-xs font-bold text-red-600 hover:underline">Lihat Detail →</a>
+                            </div>
+                        `);
+                });
+            });
+        </script>
+    @endpush
     <!-- Hero Section -->
     <section class="pt-32 pb-16 bg-[#064e3b] text-white relative overflow-hidden">
 
@@ -21,6 +63,18 @@
     <!-- Content Section -->
     <section class="py-24 bg-slate-50 dark:bg-slate-900 transition-colors">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- Global Map Card -->
+            <div class="mb-20 reveal">
+                <div class="flex items-center justify-between mb-8">
+                    <div>
+                        <h2 class="text-2xl font-black text-slate-800 dark:text-white font-serif">Peta Sebaran Wisata</h2>
+                        <p class="text-sm text-slate-500">Eksplorasi seluruh destinasi unggulan Manggarai Timur secara visual.</p>
+                    </div>
+                </div>
+                <div id="global-map"></div>
+            </div>
+
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mb-12">
                 @forelse($potensis as $item)
                     <div class="bg-white dark:bg-slate-800 rounded-[2rem] overflow-hidden shadow-sm hover:shadow-2xl border border-slate-100 dark:border-slate-700 transition-all group flex flex-col h-full relative">

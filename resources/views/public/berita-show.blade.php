@@ -1,4 +1,28 @@
 <x-layouts.public>
+    @push('meta')
+        @php
+            $ogImage = $berita->foto ? asset('storage/' . $berita->foto) : asset('images/og-default.png');
+            $ogDesc  = $berita->ringkasan ?? Str::limit(strip_tags($berita->isi), 160);
+            $ogUrl   = url()->current();
+        @endphp
+        <!-- Article-specific OG Override -->
+        <meta property="og:type" content="article">
+        <meta property="og:title" content="{{ $berita->judul }} - SID Manggarai Timur">
+        <meta property="og:description" content="{{ $ogDesc }}">
+        <meta property="og:image" content="{{ $ogImage }}">
+        <meta property="og:image:width" content="1200">
+        <meta property="og:image:height" content="630">
+        <meta property="og:url" content="{{ $ogUrl }}">
+        <meta property="article:published_time" content="{{ $berita->created_at->toIso8601String() }}">
+        <meta property="article:author" content="{{ $berita->user->name ?? 'DPMD Manggarai Timur' }}">
+        <meta property="article:section" content="{{ $berita->kategori }}">
+        <!-- Twitter Card Override -->
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="{{ $berita->judul }}">
+        <meta name="twitter:description" content="{{ $ogDesc }}">
+        <meta name="twitter:image" content="{{ $ogImage }}">
+        <title>{{ $berita->judul }} - SID Manggarai Timur</title>
+    @endpush
     <!-- Article Header -->
     <section class="pt-32 pb-16 bg-white">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">

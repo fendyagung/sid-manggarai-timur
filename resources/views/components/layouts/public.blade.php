@@ -6,8 +6,29 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
-    <title>{{ config('app.name', 'Laravel') }} - Pesona Manggarai Timur</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+    <title>{{ config('app.name', 'SID Manggarai Timur') }} - Pesona Manggarai Timur</title>
+    <meta name="description" content="Sistem Informasi Digital Terpadu Kabupaten Manggarai Timur. Mewujudkan tata kelola desa yang modern, transparan, dan kompetitif.">
+
+    <!-- Default Open Graph Tags -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="SID Manggarai Timur">
+    <meta property="og:title" content="{{ config('app.name', 'SID Manggarai Timur') }} - Pesona Manggarai Timur">
+    <meta property="og:description" content="Sistem Informasi Digital Terpadu Kabupaten Manggarai Timur. Mewujudkan tata kelola desa yang modern, transparan, dan kompetitif.">
+    <meta property="og:url" content="{{ url()->current() }}">
+    @if($dpmdProfile && $dpmdProfile->logo_website)
+    <meta property="og:image" content="{{ asset('storage/' . $dpmdProfile->logo_website) }}">
+    @else
+    <meta property="og:image" content="{{ asset('images/og-default.png') }}">
+    @endif
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ config('app.name', 'SID Manggarai Timur') }} - Pesona Manggarai Timur">
+    <meta name="twitter:description" content="Sistem Informasi Digital Terpadu Kabupaten Manggarai Timur.">
+
+    @stack('meta')
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -127,6 +148,7 @@
            color: #ffffff !important;
         }
     </style>
+    @stack('styles')
 </head>
 
 @php
@@ -134,7 +156,80 @@
 @endphp
 
 <body
-    class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 antialiased transition-colors duration-300 overflow-x-hidden">    @php
+    class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 antialiased transition-colors duration-300 overflow-x-hidden">
+    
+    <!-- Global Search Modal (Top Level) -->
+    <div id="search-modal" style="display:none; position:fixed; inset:0; z-index:9999; overflow-y:auto;">
+        <div style="min-height:100vh; padding:0 1rem; text-align:center;">
+            <div id="search-backdrop" style="position:fixed; inset:0; background:rgba(15,23,42,0.95); backdrop-filter:blur(24px);"></div>
+            
+            <div style="display:inline-block; width:100%; max-width:42rem; margin-top:4rem; text-align:left; position:relative; z-index:1;">
+                <div style="background:white; border-radius:2rem; box-shadow:0 25px 50px rgba(0,0,0,0.25); overflow:hidden;">
+                    <form action="{{ route('public.search') }}" method="GET" style="padding:2rem;">
+                        <div style="position:relative; display:flex; align-items:center;">
+                            <svg style="position:absolute; left:1.25rem; width:1.5rem; height:1.5rem; color:#94a3b8;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                            <input type="text" name="q" id="search-input" autocomplete="off"
+                                style="width:100%; padding:1.25rem 1rem 1.25rem 3.5rem; background:#f8fafc; border:none; border-radius:1rem; font-size:1.25rem; outline:none;"
+                                placeholder="Cari berita, regulasi, atau potensi desa...">
+                            <button type="button" id="search-close" onclick="closeSearchModal()" style="position:absolute; right:1rem; padding:0.5rem; cursor:pointer; background:none; border:none;">
+                                <svg style="width:1.5rem; height:1.5rem; color:#94a3b8;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+                        
+                        <div style="margin-top:2rem;">
+                            <p style="font-size:0.7rem; font-weight:900; color:#94a3b8; text-transform:uppercase; letter-spacing:0.2em; margin-bottom:1rem;">Saran Pencarian</p>
+                            <div style="display:flex; flex-wrap:wrap; gap:0.5rem;">
+                                <a href="{{ route('public.search', ['q' => 'Pariwisata']) }}" style="padding:0.5rem 1rem; background:#f1f5f9; border-radius:0.75rem; font-size:0.875rem; font-weight:500; color:#475569; text-decoration:none;">Pariwisata</a>
+                                <a href="{{ route('public.search', ['q' => 'Regulasi Desa']) }}" style="padding:0.5rem 1rem; background:#f1f5f9; border-radius:0.75rem; font-size:0.875rem; font-weight:500; color:#475569; text-decoration:none;">Regulasi Desa</a>
+                                <a href="{{ route('public.search', ['q' => 'Dana Desa']) }}" style="padding:0.5rem 1rem; background:#f1f5f9; border-radius:0.75rem; font-size:0.875rem; font-weight:500; color:#475569; text-decoration:none;">Dana Desa</a>
+                                <a href="{{ route('public.search', ['q' => 'Kopi Colol']) }}" style="padding:0.5rem 1rem; background:#f1f5f9; border-radius:0.75rem; font-size:0.875rem; font-weight:500; color:#475569; text-decoration:none;">Kopi Colol</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <p style="margin-top:1.5rem; text-align:center; color:#94a3b8; font-size:0.875rem;">Tekan <kbd style="padding:0.25rem 0.5rem; background:#1e293b; border-radius:0.25rem; color:white; font-size:0.75rem;">ESC</kbd> untuk menutup</p>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        @keyframes search-in {
+            from { opacity: 0; transform: scale(0.95) translateY(-20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .animate-search-in { animation: search-in 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+
+        @media (max-width: 768px) {
+            /* Prevent oversized text on mobile */
+            h1 { font-size: clamp(1.75rem, 8vw, 4rem) !important; }
+            h2 { font-size: clamp(1.25rem, 6vw, 3rem) !important; }
+
+            /* Fix padding overflow on mobile */
+            .max-w-7xl { padding-left: 1rem !important; padding-right: 1rem !important; }
+
+            /* Search modal full width on mobile */
+            #search-modal > div > div:last-child {
+                margin-top: 5rem;
+                margin-bottom: 2rem;
+            }
+            #search-input { font-size: 1rem !important; }
+
+            /* Prevent horizontal scroll */
+            body { overflow-x: hidden; }
+        }
+
+        @media (max-width: 480px) {
+            /* Extra small screens */
+            #search-modal { padding: 0 0.5rem; }
+        }
+    </style>
+
+    @php
         $isHeroPage = request()->routeIs('public.home') || 
                       request()->is('/') || 
                       request()->routeIs('public.laporan-desa') || 
@@ -239,7 +334,16 @@
                         </div>
                     @endif
                 </div>
-                <div class="flex items-center space-x-4">
+                <div class="flex items-center space-x-2 md:space-x-3">
+                    <!-- Global Search Button -->
+                    @if(!Request::is('login') && !Request::is('register') && !Request::is('forgot-password') && !Request::is('reset-password*'))
+                        <button id="search-open" onclick="openSearchModal(event)" class="p-2 text-white hover:text-amber-400 nav-text-white transition-all cursor-pointer">
+                            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                        </button>
+                    @endif
+
                     @if(!Request::is('login') && !Request::is('register') && !Request::is('forgot-password') && !Request::is('reset-password*'))
                         @if(Request::is('dashboard*'))
                             <a href="{{ url('/') }}"
@@ -544,7 +648,46 @@
             }
         }
     </script>
+    <script>
+        function openSearchModal(e) {
+            if(e) e.preventDefault();
+            var modal = document.getElementById('search-modal');
+            var input = document.getElementById('search-input');
+            if(modal) {
+                modal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+                if(input) setTimeout(function(){ input.focus(); }, 100);
+            }
+        }
+
+        function closeSearchModal() {
+            var modal = document.getElementById('search-modal');
+            if(modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = '';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var searchBackdrop = document.getElementById('search-backdrop');
+            var searchClose = document.getElementById('search-close');
+
+            if (searchClose) searchClose.onclick = closeSearchModal;
+            if (searchBackdrop) searchBackdrop.onclick = closeSearchModal;
+
+            window.addEventListener('keydown', function(e) {
+                var modal = document.getElementById('search-modal');
+                if (e.key === 'Escape' && modal && modal.style.display !== 'none') closeSearchModal();
+                if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+                    e.preventDefault();
+                    openSearchModal();
+                }
+            });
+        });
+    </script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fslightbox/3.0.9/index.js"></script>
+    @stack('scripts')
 </body>
 
 </html>

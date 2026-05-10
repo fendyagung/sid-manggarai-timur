@@ -1,8 +1,15 @@
 <x-layouts.admin>
+    @php
+        $arsipTitle = match(auth()->user()->role) {
+            'admin_desa'       => 'Arsip Desa',
+            'admin_kecamatan'  => 'Arsip Kecamatan',
+            default            => 'Arsip Dinas',
+        };
+    @endphp
     <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-100">
         <div class="p-8 bg-slate-900 text-white flex justify-between items-center transition-colors">
             <div>
-                <h1 class="text-2xl font-bold">Arsip Dinas</h1>
+                <h1 class="text-2xl font-bold">{{ $arsipTitle }}</h1>
                 <p class="text-slate-300">Simpan berkas-berkas penting Anda di sini. Berkas ini bersifat privat dan hanya dapat diakses oleh Anda.</p>
             </div>
         </div>

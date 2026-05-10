@@ -67,12 +67,38 @@
                         </div>
                     </div>
 
-                    <div class="space-y-2">
-                        <label class="block text-sm font-bold text-slate-700 dark:text-slate-300">Lokasi / Desa
-                            (Opsional)</label>
-                        <input type="text" name="lokasi" value="{{ $potensi->lokasi }}"
-                            class="w-full px-5 py-3 rounded-2xl border border-slate-100 focus:ring-emerald-50 focus:border-[#064e3b] transition-all outline-none">
-                        @error('lokasi') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-slate-50 dark:border-slate-700/50">
+                        <div class="space-y-2">
+                            <label class="block text-sm font-bold text-slate-700 dark:text-slate-300">Lokasi / Desa (Opsional)</label>
+                            <input type="text" name="lokasi" value="{{ $potensi->lokasi }}"
+                                class="w-full px-5 py-3 rounded-2xl border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white focus:ring-emerald-50 focus:border-[#064e3b] transition-all outline-none"
+                                placeholder="Contoh: Dusun A, Desa B">
+                            @error('lokasi') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                        </div>
+
+                        <!-- Map Picker Potensi -->
+                        <div>
+                            <label class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">📍 Pilih Lokasi di Peta</label>
+                            <div id="map-picker-potensi" style="height: 260px; border-radius: 1rem; overflow: hidden; border: 2px solid #e2e8f0; margin-bottom: 0.75rem; z-index: 0;"></div>
+                            <p class="text-[10px] text-emerald-600 font-medium mb-3">Klik peta atau seret marker untuk mengisi koordinat secara otomatis.</p>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="space-y-2">
+                                <label class="block text-sm font-bold text-slate-700 dark:text-slate-300">Garis Lintang (Lat)</label>
+                                <input type="text" name="latitude" id="lat-potensi" value="{{ $potensi->latitude }}"
+                                    class="w-full px-5 py-3 rounded-2xl border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white focus:ring-emerald-50 focus:border-[#064e3b] transition-all outline-none"
+                                    placeholder="-8.590000">
+                                @error('latitude') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                            </div>
+                            <div class="space-y-2">
+                                <label class="block text-sm font-bold text-slate-700 dark:text-slate-300">Garis Bujur (Lng)</label>
+                                <input type="text" name="longitude" id="lng-potensi" value="{{ $potensi->longitude }}"
+                                    class="w-full px-5 py-3 rounded-2xl border border-slate-200 dark:border-slate-600 dark:bg-slate-700 dark:text-white focus:ring-emerald-50 focus:border-[#064e3b] transition-all outline-none"
+                                    placeholder="120.640000">
+                                @error('longitude') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                            </div>
+                        </div>
                     </div>
 
                     <div class="space-y-2">
@@ -238,4 +264,52 @@
             animation: fadeIn 0.3s ease-out forwards;
         }
     </style>
+
+    @push('styles')
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+    @endpush
+    @push('scripts')
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var initLat = parseFloat(document.getElementById('lat-potensi').value) || -8.59;
+                var initLng = parseFloat(document.getElementById('lng-potensi').value) || 120.64;
+                var initZoom = document.getElementById('lat-potensi').value ? 14 : 10;
+
+                var pickerMap = L.map('map-picker-potensi').setView([initLat, initLng], initZoom);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; OpenStreetMap contributors'
+                }).addTo(pickerMap);
+
+                var marker = null;
+                if (document.getElementById('lat-potensi').value) {
+                    marker = L.marker([initLat, initLng], { draggable: true }).addTo(pickerMap);
+                    marker.bindPopup('Lokasi Wisata').openPopup();
+                    marker.on('dragend', function(e) {
+                        var p = e.target.getLatLng();
+                        document.getElementById('lat-potensi').value = p.lat.toFixed(7);
+                        document.getElementById('lng-potensi').value = p.lng.toFixed(7);
+                    });
+                }
+
+                pickerMap.on('click', function(e) {
+                    var lat = e.latlng.lat.toFixed(7);
+                    var lng = e.latlng.lng.toFixed(7);
+                    document.getElementById('lat-potensi').value = lat;
+                    document.getElementById('lng-potensi').value = lng;
+                    if (marker) {
+                        marker.setLatLng(e.latlng);
+                    } else {
+                        marker = L.marker(e.latlng, { draggable: true }).addTo(pickerMap);
+                        marker.on('dragend', function(ev) {
+                            var p = ev.target.getLatLng();
+                            document.getElementById('lat-potensi').value = p.lat.toFixed(7);
+                            document.getElementById('lng-potensi').value = p.lng.toFixed(7);
+                        });
+                    }
+                    marker.bindPopup('📍 Lokasi Wisata Dipilih').openPopup();
+                });
+            });
+        </script>
+    @endpush
 </x-layouts.admin>

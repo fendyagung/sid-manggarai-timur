@@ -12,8 +12,37 @@
     </section>
 
     <!-- Content -->
-    <section class="py-24 bg-slate-50">
+    <section class="py-12 bg-slate-50 min-h-screen">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Filter Bar -->
+            <div class="bg-white dark:bg-slate-800 p-4 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-700 mb-12 flex flex-col md:flex-row gap-4">
+                <form action="{{ route('public.bank-data') }}" method="GET" class="flex-1 flex flex-col md:flex-row gap-4">
+                    <div class="flex-1 relative">
+                        <svg class="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                        <input type="text" name="q" value="{{ request('q') }}"
+                            placeholder="Cari nama dokumen atau nomor regulasi..."
+                            class="w-full pl-12 pr-4 py-3 bg-slate-50 dark:bg-slate-900/50 border-none rounded-2xl focus:ring-2 focus:ring-emerald-500/20 text-sm">
+                    </div>
+                    <div class="md:w-48">
+                        <select name="tahun" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900/50 border-none rounded-2xl focus:ring-2 focus:ring-emerald-500/20 text-sm appearance-none cursor-pointer">
+                            <option value="">Semua Tahun</option>
+                            @foreach($years as $year)
+                                <option value="{{ $year }}" {{ request('tahun') == $year ? 'selected' : '' }}>Tahun {{ $year }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <button type="submit" class="px-8 py-3 bg-slate-900 dark:bg-emerald-600 text-white font-bold rounded-2xl hover:bg-slate-800 dark:hover:bg-emerald-700 transition-all text-sm">
+                        Filter Data
+                    </button>
+                    @if(request()->has('q') || request()->has('tahun'))
+                        <a href="{{ route('public.bank-data') }}" class="px-6 py-3 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 font-bold rounded-2xl hover:bg-slate-200 transition-all text-sm text-center">
+                            Reset
+                        </a>
+                    @endif
+                </form>
+            </div>
             <div class="space-y-16">
                 @forelse($regulasis as $kategori => $items)
                     <div>

@@ -43,12 +43,14 @@ class PotensiController extends Controller
             'foto_utama' => 'nullable|image|mimes:jpg,jpeg,png|max:5120',
             'gallery_photos.*' => 'nullable|image|mimes:jpg,jpeg,png|max:5120',
             'lokasi' => 'nullable|string|max:255',
+            'latitude' => 'nullable|numeric|between:-90,90',
+            'longitude' => 'nullable|numeric|between:-180,180',
         ]);
 
         $user = Auth::user();
         $desa = Desa::where('user_id', $user->id)->first();
 
-        $potensi = new Potensi($request->only(['nama_potensi', 'kategori', 'deskripsi', 'lokasi']));
+        $potensi = new Potensi($request->only(['nama_potensi', 'kategori', 'deskripsi', 'lokasi', 'latitude', 'longitude']));
 
         if ($user->role === 'admin_dpmd') {
             $request->validate([
@@ -121,9 +123,11 @@ class PotensiController extends Controller
             'foto_utama' => 'nullable|image|mimes:jpg,jpeg,png|max:5120',
             'gallery_photos.*' => 'nullable|image|mimes:jpg,jpeg,png|max:5120',
             'lokasi' => 'nullable|string|max:255',
+            'latitude' => 'nullable|numeric|between:-90,90',
+            'longitude' => 'nullable|numeric|between:-180,180',
         ]);
 
-        $potensi->fill($request->only(['nama_potensi', 'kategori', 'deskripsi', 'lokasi']));
+        $potensi->fill($request->only(['nama_potensi', 'kategori', 'deskripsi', 'lokasi', 'latitude', 'longitude']));
 
         if ($user->role === 'admin_dpmd' && $request->has('desa_id')) {
             $potensi->desa_id = $request->desa_id;

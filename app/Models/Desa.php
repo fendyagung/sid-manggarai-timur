@@ -28,6 +28,8 @@ class Desa extends Model
         'luas_wilayah',
         'deskripsi_batas',
         'potensi_ekonomi',
+        'latitude',
+        'longitude',
     ];
 
     /**
